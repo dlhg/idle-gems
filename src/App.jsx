@@ -14,8 +14,7 @@ function App() {
   return (
     <div>
       <GameCanvas />
-      <button onClick={spawnBall}>Spawn Blue Ball</button>
-      <button onClick={spawnBrick}>Spawn Brick</button>
+
     </div>
   );
 }
