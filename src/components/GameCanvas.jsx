@@ -7,7 +7,7 @@ function GameCanvas() {
 
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
-  const ballRadius = 20;
+  const ballRadius = 5;
   const brickRadius = 25;
   const canvasWidth = 800;
   const canvasHeight = 600;
@@ -133,7 +133,7 @@ function GameCanvas() {
         id: ballIdRef.current,
         x,
         y,
-        speed: 5,
+        speed: 1,
         direction: Math.random() * 2 * Math.PI,
         damage: 1,
       };
