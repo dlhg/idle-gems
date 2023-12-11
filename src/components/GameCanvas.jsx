@@ -42,46 +42,62 @@ function GameCanvas() {
     };
 
     const updateBallPosition = (ball) => {
+      // Update ball position
       ball.x += ball.speed * Math.cos(ball.direction);
       ball.y += ball.speed * Math.sin(ball.direction);
 
       // Collision with right or left canvas border
       if (ball.x + ballRadius > canvasWidth) {
-        ball.x = canvasWidth - ballRadius; // Adjust position
-        ball.direction = Math.PI - ball.direction; // Reflect direction
+        ball.x = canvasWidth - ballRadius; // Adjust position to avoid overlap
+        ball.direction = Math.PI - ball.direction; // Reflect horizontal direction
       } else if (ball.x - ballRadius < 0) {
-        ball.x = ballRadius; // Adjust position
-        ball.direction = Math.PI - ball.direction; // Reflect direction
+        ball.x = ballRadius; // Adjust position to avoid overlap
+        ball.direction = Math.PI - ball.direction; // Reflect horizontal direction
       }
 
       // Collision with bottom or top canvas border
       if (ball.y + ballRadius > canvasHeight) {
-        ball.y = canvasHeight - ballRadius; // Adjust position
-        ball.direction *= -1; // Reflect direction
+        ball.y = canvasHeight - ballRadius; // Adjust position to avoid overlap
+        ball.direction *= -1; // Reflect vertical direction
       } else if (ball.y - ballRadius < 0) {
-        ball.y = ballRadius; // Adjust position
-        ball.direction *= -1; // Reflect direction
+        ball.y = ballRadius; // Adjust position to avoid overlap
+        ball.direction *= -1; // Reflect vertical direction
       }
 
+      // Initialize variables for brick collision
+      let brickDestroyed = false;
+      let destroyedBrickId;
+
       // Check for collision with bricks
-      for (const brick of bricks) {
+      bricks.forEach((brick, index) => {
         const dx = ball.x - brick.x;
         const dy = ball.y - brick.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < ballRadius + brickRadius) {
-          console.log(`Ball ID ${ball.id} collided with brick ID ${brick.id}`);
-          // Adjust ball position to avoid overlap
-          const overlapDistance = ballRadius + brickRadius - distance;
-          const collisionAngle = Math.atan2(dy, dx);
-          ball.x += overlapDistance * Math.cos(collisionAngle);
-          ball.y += overlapDistance * Math.sin(collisionAngle);
+          // Decrement the brick's HP by the ball's damage
+          bricks[index].health -= ball.damage;
 
-          // Reflect ball direction based on collision angle
+          // Check if the brick is destroyed
+          if (bricks[index].health <= 0) {
+            brickDestroyed = true;
+            destroyedBrickId = brick.id;
+          }
+
+          // Adjust ball direction after collision
+          const collisionAngle = Math.atan2(dy, dx);
           ball.direction = 2 * collisionAngle - ball.direction + Math.PI;
 
-          break;
+          return; // Exit the forEach loop after handling collision
         }
+      });
+
+      // Remove destroyed brick and update state
+      if (brickDestroyed) {
+        setBricks(bricks.filter((brick) => brick.health > 0));
+        console.log(
+          `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
+        );
       }
     };
 
