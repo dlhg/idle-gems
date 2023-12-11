@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import stonetexture from "../assets/images/textures/bricks/stone.png";
+import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 
 function GameCanvas() {
   const canvasRef = useRef(null);
@@ -55,7 +55,7 @@ function GameCanvas() {
       ctx.restore();
 
       // Drawing HP text over the image
-      ctx.font = "16px Arial";
+      ctx.font = "25px Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -223,6 +223,7 @@ function GameCanvas() {
         width={canvasWidth}
         height={canvasHeight}
       />
+      <br />
       <button onClick={spawnBall}>Spawn Blue Ball</button>
       <button onClick={spawnBrick}>Spawn Red Brick</button>
       <button onClick={clearBlueBalls}>Clear Blue Balls</button>
