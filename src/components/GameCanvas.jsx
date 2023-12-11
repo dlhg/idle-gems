@@ -37,12 +37,22 @@ function GameCanvas() {
       ball.x += ball.speed * Math.cos(ball.direction);
       ball.y += ball.speed * Math.sin(ball.direction);
 
-      // Collision with canvas borders
-      if (ball.x + ballRadius > canvasWidth || ball.x - ballRadius < 0) {
-        ball.direction = Math.PI - ball.direction;
+      // Collision with right or left canvas border
+      if (ball.x + ballRadius > canvasWidth) {
+        ball.x = canvasWidth - ballRadius; // Adjust position
+        ball.direction = Math.PI - ball.direction; // Reflect direction
+      } else if (ball.x - ballRadius < 0) {
+        ball.x = ballRadius; // Adjust position
+        ball.direction = Math.PI - ball.direction; // Reflect direction
       }
-      if (ball.y + ballRadius > canvasHeight || ball.y - ballRadius < 0) {
-        ball.direction *= -1;
+
+      // Collision with bottom or top canvas border
+      if (ball.y + ballRadius > canvasHeight) {
+        ball.y = canvasHeight - ballRadius; // Adjust position
+        ball.direction *= -1; // Reflect direction
+      } else if (ball.y - ballRadius < 0) {
+        ball.y = ballRadius; // Adjust position
+        ball.direction *= -1; // Reflect direction
       }
 
       // Check for collision with bricks
