@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import stonetexture from "../assets/images/textures/bricks/stone.png";
+
 function GameCanvas() {
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
@@ -25,19 +27,38 @@ function GameCanvas() {
       ctx.closePath();
     };
 
+    const brickImage = new Image();
+    brickImage.src = stonetexture;
+
     const drawBrick = (brick) => {
+      // Save the current context state (style settings, transformations, etc.)
+      ctx.save();
+
+      // Create a circular path
       ctx.beginPath();
       ctx.arc(brick.x, brick.y, brickRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "red";
-      ctx.fill();
       ctx.closePath();
-      // Set the font for the HP text
+
+      // Clip to the circular path
+      ctx.clip();
+
+      // Draw the image within the clipped region
+      ctx.drawImage(
+        brickImage,
+        brick.x - brickRadius,
+        brick.y - brickRadius,
+        brickRadius * 2,
+        brickRadius * 2
+      );
+
+      // Restore the context to its original state
+      ctx.restore();
+
+      // Drawing HP text over the image
       ctx.font = "16px Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-
-      // Draw the HP text, centered in the brick
       ctx.fillText(brick.health, brick.x, brick.y);
     };
 
