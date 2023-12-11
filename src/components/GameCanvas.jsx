@@ -161,6 +161,14 @@ function GameCanvas() {
     setBricks([...bricks, newBrick]);
   };
 
+  function clearBlueBalls() {
+    setBalls([]);
+  }
+
+  function clearRedBricks() {
+    setBricks([]);
+  }
+
   return (
     <div>
       <canvas
@@ -171,6 +179,8 @@ function GameCanvas() {
       />
       <button onClick={spawnBall}>Spawn Blue Ball</button>
       <button onClick={spawnBrick}>Spawn Red Brick</button>
+      <button onClick={clearBlueBalls}>Clear Blue Balls</button>
+      <button onClick={clearRedBricks}>Clear Red Bricks</button>
     </div>
   );
 }
