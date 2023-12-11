@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 
 function GameCanvas() {
     const canvasRef = useRef(null);
+    const ballIdRef = useRef(0); // Ref to keep track of the next ball ID
+
     const [balls, setBalls] = useState([]);
     const ballRadius = 20;
     const canvasWidth = 800;
@@ -49,14 +51,16 @@ function GameCanvas() {
     }, [balls]);
 
     const spawnBall = () => {
-        let newBall;
+        let newBall; // Declared outside the loop
         let overlap;
         do {
             overlap = false;
             const x = Math.random() * (canvasWidth - ballRadius * 2) + ballRadius;
             const y = Math.random() * (canvasHeight - ballRadius * 2) + ballRadius;
-            newBall = { x, y, speed: 5, direction: 45 };
-            newBall.direction = Math.random() * 2 * Math.PI;
+            newBall = { // Assigning to the newBall declared outside
+                id: ballIdRef.current,
+                x, y, speed: 5, direction: Math.random() * 2 * Math.PI, damage: 1
+            };
 
             // Check for overlap with existing balls
             for (const ball of balls) {
@@ -69,9 +73,11 @@ function GameCanvas() {
                 }
             }
         } while (overlap);
-
+        ballIdRef.current += 1;
+        console.log([...balls, newBall])
         setBalls([...balls, newBall]);
     };
+
 
     return (
         <div>
