@@ -123,8 +123,11 @@ function GameCanvas() {
     let overlap;
     do {
       overlap = false;
-      const x = Math.random() * (canvasWidth - brickRadius * 2) + brickRadius;
-      const y = Math.random() * (canvasHeight - brickRadius * 2) + brickRadius;
+      // Calculate the position such that the brick is always at least 2x the brick radius away from the border
+      const x =
+        Math.random() * (canvasWidth - 4 * brickRadius) + 2 * brickRadius;
+      const y =
+        Math.random() * (canvasHeight - 4 * brickRadius) + 2 * brickRadius;
       newBrick = {
         id: brickIdRef.current,
         x,
@@ -132,6 +135,7 @@ function GameCanvas() {
         health: 100,
       };
 
+      // Check for overlap with existing bricks
       for (const brick of bricks) {
         const dx = brick.x - newBrick.x;
         const dy = brick.y - newBrick.y;
@@ -149,7 +153,12 @@ function GameCanvas() {
 
   return (
     <div>
-      <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
+      <canvas
+        className="game--canvas"
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+      />
       <button onClick={spawnBall}>Spawn Blue Ball</button>
       <button onClick={spawnBrick}>Spawn Red Brick</button>
     </div>
