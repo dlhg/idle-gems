@@ -70,6 +70,7 @@ function GameCanvas() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < ballRadius + brickRadius) {
+          console.log(`Ball ID ${ball.id} collided with brick ID ${brick.id}`);
           // Adjust ball position to avoid overlap
           const overlapDistance = ballRadius + brickRadius - distance;
           const collisionAngle = Math.atan2(dy, dx);
