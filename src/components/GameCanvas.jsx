@@ -31,6 +31,14 @@ function GameCanvas() {
       ctx.fillStyle = "red";
       ctx.fill();
       ctx.closePath();
+      // Set the font for the HP text
+      ctx.font = "16px Arial";
+      ctx.fillStyle = "white";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      // Draw the HP text, centered in the brick
+      ctx.fillText(brick.health, brick.x, brick.y);
     };
 
     const updateBallPosition = (ball) => {
