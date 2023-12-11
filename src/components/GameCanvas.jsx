@@ -2,21 +2,19 @@ import React, { useState, useRef, useEffect } from "react";
 
 function GameCanvas() {
   const canvasRef = useRef(null);
-  const ballIdRef = useRef(0); // Ref to keep track of the next ball ID
+  const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
 
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const ballRadius = 20;
-  const brickWidth = 100;
-  const brickHeight = 50;
+  const brickRadius = 25;
   const canvasWidth = 800;
   const canvasHeight = 600;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-
     let animationFrameId;
 
     const drawBall = (ball) => {
@@ -26,10 +24,15 @@ function GameCanvas() {
       ctx.fill();
       ctx.closePath();
     };
+
     const drawBrick = (brick) => {
+      ctx.beginPath();
+      ctx.arc(brick.x, brick.y, brickRadius, 0, Math.PI * 2);
       ctx.fillStyle = "red";
-      ctx.fillRect(brick.x, brick.y, brickWidth, brickHeight);
+      ctx.fill();
+      ctx.closePath();
     };
+
     const updateBallPosition = (ball) => {
       ball.x += ball.speed * Math.cos(ball.direction);
       ball.y += ball.speed * Math.sin(ball.direction);
@@ -44,16 +47,21 @@ function GameCanvas() {
 
       // Check for collision with bricks
       for (const brick of bricks) {
-        if (
-          ball.x + ballRadius > brick.x &&
-          ball.x - ballRadius < brick.x + brickWidth &&
-          ball.y + ballRadius > brick.y &&
-          ball.y - ballRadius < brick.y + brickHeight
-        ) {
-          // Handle collision
-          console.log(`Ball ID ${ball.id} collides with Brick ID ${brick.id}`);
-          ball.direction = Math.random() * 2 * Math.PI; // Change direction
-          break; // Exit loop after the first collision
+        const dx = ball.x - brick.x;
+        const dy = ball.y - brick.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < ballRadius + brickRadius) {
+          // Adjust ball position to avoid overlap
+          const overlapDistance = ballRadius + brickRadius - distance;
+          const collisionAngle = Math.atan2(dy, dx);
+          ball.x += overlapDistance * Math.cos(collisionAngle);
+          ball.y += overlapDistance * Math.sin(collisionAngle);
+
+          // Reflect ball direction based on collision angle
+          ball.direction = 2 * collisionAngle - ball.direction + Math.PI;
+
+          break;
         }
       }
     };
@@ -65,7 +73,6 @@ function GameCanvas() {
         drawBall(ball);
       });
 
-      // Draw the bricks
       bricks.forEach((brick) => {
         drawBrick(brick);
       });
@@ -74,20 +81,20 @@ function GameCanvas() {
     };
 
     update();
+
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
   }, [balls, bricks]);
 
   const spawnBall = () => {
-    let newBall; // Declared outside the loop
+    let newBall;
     let overlap;
     do {
       overlap = false;
       const x = Math.random() * (canvasWidth - ballRadius * 2) + ballRadius;
       const y = Math.random() * (canvasHeight - ballRadius * 2) + ballRadius;
       newBall = {
-        // Assigning to the newBall declared outside
         id: ballIdRef.current,
         x,
         y,
@@ -96,7 +103,6 @@ function GameCanvas() {
         damage: 1,
       };
 
-      // Check for overlap with existing balls
       for (const ball of balls) {
         const dx = ball.x - newBall.x;
         const dy = ball.y - newBall.y;
@@ -107,19 +113,18 @@ function GameCanvas() {
         }
       }
     } while (overlap);
+
     ballIdRef.current += 1;
-    console.log([...balls, newBall]);
     setBalls([...balls, newBall]);
   };
 
   const spawnBrick = () => {
-    console.log(`spawnBrick called`);
     let newBrick;
     let overlap;
     do {
       overlap = false;
-      const x = Math.random() * (canvasWidth - brickWidth);
-      const y = Math.random() * (canvasHeight - brickHeight);
+      const x = Math.random() * (canvasWidth - brickRadius * 2) + brickRadius;
+      const y = Math.random() * (canvasHeight - brickRadius * 2) + brickRadius;
       newBrick = {
         id: brickIdRef.current,
         x,
@@ -127,30 +132,17 @@ function GameCanvas() {
         health: 100,
       };
 
-      // Check for overlap with existing balls
-      for (const ball of balls) {
-        const dx = ball.x - newBrick.x;
-        const dy = ball.y - newBrick.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < ballRadius + brickWidth) {
-          overlap = true;
-          break;
-        }
-      }
-
-      // Check for overlap with existing bricks
       for (const brick of bricks) {
-        if (
-          newBrick.x < brick.x + brickWidth &&
-          newBrick.x + brickWidth > brick.x &&
-          newBrick.y < brick.y + brickHeight &&
-          newBrick.y + brickHeight > brick.y
-        ) {
+        const dx = brick.x - newBrick.x;
+        const dy = brick.y - newBrick.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < brickRadius * 2) {
           overlap = true;
           break;
         }
       }
     } while (overlap);
+
     brickIdRef.current += 1;
     setBricks([...bricks, newBrick]);
   };
@@ -159,7 +151,7 @@ function GameCanvas() {
     <div>
       <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />
       <button onClick={spawnBall}>Spawn Blue Ball</button>
-      <button onClick={spawnBrick}>Spawn Brick</button>
+      <button onClick={spawnBrick}>Spawn Red Brick</button>
     </div>
   );
 }
