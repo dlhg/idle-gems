@@ -250,8 +250,13 @@ function GameCanvas() {
   }
 
   const handleSpeedChange = (event) => {
-    setBallSpeed(Number(event.target.value));
-    console.log("jazzz");
+    const newSpeed = Number(event.target.value);
+    setBallSpeed(newSpeed);
+
+    // Update the speed of all existing balls
+    setBalls((currentBalls) =>
+      currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
+    );
   };
 
   return (
