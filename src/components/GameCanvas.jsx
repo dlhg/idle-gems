@@ -261,7 +261,7 @@ function GameCanvas() {
       <button onClick={spawnBrick}>Spawn Brick</button>
       <button onClick={clearBlueBalls}>Clear Balls</button>
       <button onClick={clearRedBricks}>Clear Bricks</button>
-      <div>score : {numOfDestroyedBricks}</div>
+      <span>score : {numOfDestroyedBricks}</span>
     </div>
   );
 }
