@@ -19,7 +19,7 @@ function GameCanvas() {
   const [ballSpeed, setBallSpeed] = useState(1);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   //give player gems to start (maybe rename this variable to gems)
-  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(10);
+  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(50);
   const ballRadius = 20;
   const brickRadius = 35;
   const canvasWidth = 900;
