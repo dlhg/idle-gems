@@ -22,8 +22,8 @@ function GameCanvas() {
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 5;
   const brickRadius = 30;
-  const canvasWidth = 600;
-  const canvasHeight = 600;
+  const canvasWidth = 900;
+  const canvasHeight = 900;
 
   const planetImages = [planet1, planet2, planet3, planet4];
   const backgroundImage = new Image();
