@@ -207,7 +207,7 @@ function GameCanvas() {
   }, [balls, bricks]);
 
   const spawnBall = () => {
-    if (numOfDestroyedBricks <= 5) {
+    if (numOfDestroyedBricks < 5) {
       return;
     }
     setNumOfDestroyedBricks((prev) => prev - 5);
@@ -255,7 +255,7 @@ function GameCanvas() {
         id: brickIdRef.current,
         x,
         y,
-        health: 500,
+        health: 200,
       };
 
       // Check for overlap with existing bricks
