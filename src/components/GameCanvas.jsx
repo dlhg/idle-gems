@@ -23,7 +23,7 @@ function GameCanvas() {
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.5);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.75);
   const ballRadius = 5;
-  const brickRadius = 35;
+  const brickRadius = window.innerWidth / 75;
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
@@ -261,11 +261,10 @@ function GameCanvas() {
     let overlap;
     do {
       overlap = false;
-      // Calculate the position such that the brick is always at least 2x the brick radius away from the border
-      const x =
-        Math.random() * (canvasWidth - 4 * brickRadius) + 2 * brickRadius;
-      const y =
-        Math.random() * (canvasHeight - 4 * brickRadius) + 2 * brickRadius;
+      // Calculate the position such that the brick is always at least 4x the brick radius away from the border
+      const x = Math.random() * (canvasWidth - 8 * brickRadius) + 4 * brickRadius;
+      const y = Math.random() * (canvasHeight - 8 * brickRadius) + 4 * brickRadius;
+
       newBrick = {
         id: brickIdRef.current,
         x,
