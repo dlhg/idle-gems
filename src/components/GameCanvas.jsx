@@ -23,7 +23,7 @@ function GameCanvas() {
   const ballRadius = 20;
   const brickRadius = 35;
   const canvasWidth = 900;
-  const canvasHeight = 900;
+  const canvasHeight = 600;
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
@@ -37,10 +37,10 @@ function GameCanvas() {
 
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
-        if (bricks.length <= 50) {
+        if (bricks.length <= 40) {
           spawnBrick();
         }
-      }, 100); // Spawn a brick every 100ms if the count is <= 50
+      }, 500); // Spawn a brick every 500ms if the count is <= 40
     }
 
     return () => {
