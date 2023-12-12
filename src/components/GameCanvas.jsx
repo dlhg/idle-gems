@@ -9,6 +9,7 @@ import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
 import planet2 from "../assets/images/textures/bricks/planet2.jpeg";
 import planet3 from "../assets/images/textures/bricks/planet3.jpeg";
 import planet4 from "../assets/images/textures/bricks/planet4.jpeg";
+import vortex from "../assets/images/textures/bricks/vortex.jpeg";
 
 function GameCanvas() {
   const canvasRef = useRef(null);
@@ -38,13 +39,13 @@ function GameCanvas() {
     const drawBall = (ball) => {
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "blue";
+      ctx.fillStyle = "white";
       ctx.fill();
       ctx.closePath();
     };
 
     const brickImage = new Image();
-    brickImage.src = stonetexture;
+    brickImage.src = vortex;
 
     const drawBrick = (brick) => {
       // Save the current context state (style settings, transformations, etc.)
