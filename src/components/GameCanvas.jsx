@@ -96,7 +96,7 @@ function GameCanvas() {
       // Fill the text after stroking so it appears on top
       ctx.fillText(brick.health, brick.x, brick.y);
 
-      // If you want to add text shadow
+      // Text shadow
       ctx.shadowOffsetX = 2;
       ctx.shadowOffsetY = 2;
       ctx.shadowBlur = 3;
