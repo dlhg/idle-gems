@@ -40,7 +40,7 @@ function GameCanvas() {
         if (bricks.length <= 50) {
           spawnBrick();
         }
-      }, 1000); // Spawn a brick every second if the count is <= 20
+      }, 100); // Spawn a brick every 100ms if the count is <= 50
     }
 
     return () => {
@@ -255,7 +255,7 @@ function GameCanvas() {
         id: brickIdRef.current,
         x,
         y,
-        health: 200,
+        health: 10,
       };
 
       // Check for overlap with existing bricks
@@ -316,6 +316,7 @@ function GameCanvas() {
       <div className="buttons--container">
         <button onClick={spawnBall}>Buy Ball (5 gems)</button>
         <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
+        <button>+Damage (work on this)</button>
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
