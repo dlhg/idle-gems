@@ -21,7 +21,7 @@ function GameCanvas() {
   const [ballSpeed, setBallSpeed] = useState(1);
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 5;
-  const brickRadius = 25;
+  const brickRadius = 30;
   const canvasWidth = 800;
   const canvasHeight = 600;
 
