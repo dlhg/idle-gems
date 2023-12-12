@@ -19,7 +19,7 @@ function GameCanvas() {
   const [ballSpeed, setBallSpeed] = useState(0.1);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   //give player gems to start (maybe rename this variable to gems)
-  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(50);
+  const [gems, setGems] = useState(50);
   const ballRadius = 5;
   const brickRadius = 35;
   const canvasWidth = 1200;
@@ -176,7 +176,7 @@ function GameCanvas() {
       // Remove destroyed brick and update state
       if (brickDestroyed) {
         setBricks(bricks.filter((brick) => brick.health > 0));
-        setNumOfDestroyedBricks((prev) => prev + 1);
+        setGems((prev) => prev + 1);
         console.log(
           `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
         );
@@ -207,10 +207,10 @@ function GameCanvas() {
   }, [balls, bricks]);
 
   const spawnBall = () => {
-    if (numOfDestroyedBricks < 5) {
+    if (gems < 5) {
       return;
     }
-    setNumOfDestroyedBricks((prev) => prev - 5);
+    setGems((prev) => prev - 5);
     let newBall;
     let overlap;
     do {
@@ -293,10 +293,10 @@ function GameCanvas() {
   };
 
   function buySpeedUpgrade() {
-    if (numOfDestroyedBricks < 1) {
+    if (gems < 1) {
       return;
     }
-    setNumOfDestroyedBricks((prev) => prev - 1);
+    setGems((prev) => prev - 1);
     const newSpeed = ballSpeed + 0.1;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
@@ -325,7 +325,7 @@ function GameCanvas() {
           {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
         </button>
       </div>
-      <span>Gems : {numOfDestroyedBricks}</span>
+      <span>Gems : {gems}</span>
 
       <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
       <input
