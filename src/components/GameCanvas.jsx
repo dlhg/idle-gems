@@ -302,7 +302,7 @@ function GameCanvas() {
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
         <button onClick={toggleBrickSpawning}>
-          {isSpawningBricks ? "Stop Spawning Bricks" : "Spawn Bricks"}
+          {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
         </button>
       </div>
       <span>score : {numOfDestroyedBricks}</span>
