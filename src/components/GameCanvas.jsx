@@ -282,11 +282,23 @@ function GameCanvas() {
           break;
         }
       }
+
+      // Check for overlap with existing balls
+      for (const ball of balls) {
+        const dx = ball.x - newBrick.x;
+        const dy = ball.y - newBrick.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < ballRadius + brickRadius) {
+          overlap = true;
+          break;
+        }
+      }
     } while (overlap);
 
     brickIdRef.current += 1;
     setBricks([...bricks, newBrick]);
   };
+
 
   function clearBlueBalls() {
     setBalls([]);
