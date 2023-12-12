@@ -224,10 +224,10 @@ function GameCanvas() {
         height={canvasHeight}
       />
       <br />
-      <button onClick={spawnBall}>Spawn Blue Ball</button>
-      <button onClick={spawnBrick}>Spawn Red Brick</button>
-      <button onClick={clearBlueBalls}>Clear Blue Balls</button>
-      <button onClick={clearRedBricks}>Clear Red Bricks</button>
+      <button onClick={spawnBall}>Spawn Ball</button>
+      <button onClick={spawnBrick}>Spawn Brick</button>
+      <button onClick={clearBlueBalls}>Clear Balls</button>
+      <button onClick={clearRedBricks}>Clear Bricks</button>
     </div>
   );
 }
