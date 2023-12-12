@@ -255,7 +255,7 @@ function GameCanvas() {
         id: brickIdRef.current,
         x,
         y,
-        health: 10,
+        health: 50,
       };
 
       // Check for overlap with existing bricks
