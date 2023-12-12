@@ -293,7 +293,7 @@ function GameCanvas() {
   };
 
   function buySpeedUpgrade() {
-    if (gems < 1) {
+    if (gems < 1 || balls.length < 1) {
       return;
     }
     setGems((prev) => prev - 1);
