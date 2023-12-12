@@ -18,12 +18,12 @@ function GameCanvas() {
   const [bricks, setBricks] = useState([]);
   const [ballSpeed, setBallSpeed] = useState(0.1);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  //give player gems to start (maybe rename this variable to gems)
+
   const [gems, setGems] = useState(50);
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
+  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.75);
   const ballRadius = 5;
   const brickRadius = 35;
-  const canvasWidth = 1200;
-  const canvasHeight = 600;
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
@@ -31,16 +31,31 @@ function GameCanvas() {
     // The background image is loaded, you can now proceed.
     // ...
   };
+
+  //   useEffect(() => {
+  //     // Function to update dimensions
+  //     const updateDimensions = () => {
+  //       setCanvasWidth(window.innerWidth * 0.5);
+  //       setCanvasHeight(window.innerHeight * 0.5);
+  //     };
+
+  //     // Add event listener for window resize
+  //     window.addEventListener("resize", updateDimensions);
+
+  //     // Clean up event listener
+  //     return () => window.removeEventListener("resize", updateDimensions);
+  //   }, []);
+
   // Use useEffect to control the spawning process
   useEffect(() => {
     let intervalId;
 
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
-        if (bricks.length <= 40) {
+        if (bricks.length <= 50) {
           spawnBrick();
         }
-      }, 500); // Spawn a brick every 500ms if the count is <= 40
+      }, 500); // Spawn a brick every 500ms if the count is <= 50
     }
 
     return () => {
