@@ -18,6 +18,7 @@ function GameCanvas() {
 
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
+  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 5;
   const brickRadius = 25;
   const canvasWidth = 800;
@@ -145,6 +146,7 @@ function GameCanvas() {
       // Remove destroyed brick and update state
       if (brickDestroyed) {
         setBricks(bricks.filter((brick) => brick.health > 0));
+        setNumOfDestroyedBricks((prev) => prev + 1);
         console.log(
           `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
         );
@@ -259,6 +261,7 @@ function GameCanvas() {
       <button onClick={spawnBrick}>Spawn Brick</button>
       <button onClick={clearBlueBalls}>Clear Balls</button>
       <button onClick={clearRedBricks}>Clear Bricks</button>
+      <div>score : {numOfDestroyedBricks}</div>
     </div>
   );
 }
