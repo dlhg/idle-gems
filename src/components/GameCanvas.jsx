@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 
-import space from "../assets/images/backgrounds/space.png";
+import space from "../assets/images/backgrounds/transparent.png";
 
 // brick textures
 import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
@@ -22,7 +22,7 @@ function GameCanvas() {
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 5;
   const brickRadius = 30;
-  const canvasWidth = 1000;
+  const canvasWidth = 600;
   const canvasHeight = 600;
 
   const planetImages = [planet1, planet2, planet3, planet4];
@@ -261,12 +261,32 @@ function GameCanvas() {
 
   return (
     <div className="canvas--wrapper">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
       <canvas
         className="game--canvas"
         ref={canvasRef}
         width={canvasWidth}
         height={canvasHeight}
       />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <br />
       <div className="buttons--container">
         <button onClick={spawnBall}>Spawn Ball</button>
