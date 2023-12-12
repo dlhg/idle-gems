@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 
 import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 
-import space from "../assets/images/backgrounds/space.jpeg";
+import space from "../assets/images/backgrounds/space.png";
 
 // brick textures
 import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
