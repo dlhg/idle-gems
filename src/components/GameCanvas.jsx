@@ -292,6 +292,18 @@ function GameCanvas() {
     );
   };
 
+  function buySpeedUpgrade() {
+    if (numOfDestroyedBricks < 1) {
+      return;
+    }
+    setNumOfDestroyedBricks((prev) => prev - 1);
+    const newSpeed = ballSpeed + 0.1;
+    setBallSpeed(newSpeed);
+    setBalls((currentBalls) =>
+      currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
+    );
+  }
+
   return (
     <div className="canvas--wrapper">
       <canvas
@@ -303,6 +315,7 @@ function GameCanvas() {
 
       <div className="buttons--container">
         <button onClick={spawnBall}>Buy Ball (1 gem)</button>
+        <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
@@ -312,7 +325,7 @@ function GameCanvas() {
       </div>
       <span>Gems : {numOfDestroyedBricks}</span>
 
-      <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed}</label>
+      <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
       <input
         type="range"
         id="ballSpeed"
