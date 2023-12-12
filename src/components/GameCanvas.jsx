@@ -2,6 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 
 import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 
+// brick textures
+import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
+import planet2 from "../assets/images/textures/bricks/planet2.jpeg";
+import planet3 from "../assets/images/textures/bricks/planet3.jpeg";
+import planet4 from "../assets/images/textures/bricks/planet4.jpeg";
+
 function GameCanvas() {
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
@@ -14,6 +20,7 @@ function GameCanvas() {
   const canvasWidth = 800;
   const canvasHeight = 600;
 
+  const planetImages = [planet1, planet2, planet3, planet4];
   const backgroundImage = new Image();
   backgroundImage.src = stonetexture;
   backgroundImage.onload = () => {
