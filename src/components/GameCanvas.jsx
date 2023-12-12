@@ -249,6 +249,11 @@ function GameCanvas() {
     setBricks([]);
   }
 
+  const handleSpeedChange = (event) => {
+    setBallSpeed(Number(event.target.value));
+    console.log("jazzz");
+  };
+
   return (
     <div>
       <canvas
@@ -263,6 +268,16 @@ function GameCanvas() {
       <button onClick={clearBlueBalls}>Clear Balls</button>
       <button onClick={clearRedBricks}>Clear Bricks</button>
       <span>score : {numOfDestroyedBricks}</span>
+      <label htmlFor="ballSpeed">Ball Speed: {ballSpeed}</label>
+      <input
+        type="range"
+        id="ballSpeed"
+        name="ballSpeed"
+        min="0"
+        max="20"
+        value={ballSpeed}
+        onChange={handleSpeedChange}
+      />
     </div>
   );
 }
