@@ -206,7 +206,7 @@ function GameCanvas() {
     };
   }, [balls, bricks]);
 
-  const spawnBall = () => {
+  const buyBall = () => {
     if (gems < 5) {
       return;
     }
@@ -314,7 +314,8 @@ function GameCanvas() {
       />
 
       <div className="buttons--container">
-        <button onClick={spawnBall}>Buy Ball (5 gems)</button>
+        <button onClick={buyBall}>Buy Ball (5 gems)</button>
+        <button>Buy Big Ball (20 gems)</button>
         <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
         <button>+Damage (todo)</button>
         <button>+Ball Size (todo)</button>
