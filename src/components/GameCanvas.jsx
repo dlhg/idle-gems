@@ -273,7 +273,8 @@ function GameCanvas() {
       <button onClick={clearBlueBalls}>Clear Balls</button>
       <button onClick={clearRedBricks}>Clear Bricks</button>
       <span>score : {numOfDestroyedBricks}</span>
-      <label htmlFor="ballSpeed">Ball Speed: {ballSpeed}</label>
+      <br />
+      <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed}</label>
       <input
         type="range"
         id="ballSpeed"
