@@ -17,6 +17,7 @@ function GameCanvas() {
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const [ballSpeed, setBallSpeed] = useState(1);
+  const [isSpawningBricks, setIsSpawningBricks] = useState(false);
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 20;
   const brickRadius = 50;
@@ -29,7 +30,27 @@ function GameCanvas() {
     // The background image is loaded, you can now proceed.
     // ...
   };
+  // Use useEffect to control the spawning process
+  useEffect(() => {
+    let intervalId;
 
+    if (isSpawningBricks) {
+      intervalId = setInterval(() => {
+        if (bricks.length <= 20) {
+          spawnBrick();
+        }
+      }, 1000); // Spawn a brick every second if the count is <= 20
+    }
+
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
+  }, [isSpawningBricks, bricks]);
+  const toggleBrickSpawning = () => {
+    setIsSpawningBricks(!isSpawningBricks);
+  };
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -280,6 +301,9 @@ function GameCanvas() {
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
+        <button onClick={toggleBrickSpawning}>
+          {isSpawningBricks ? "Stop Spawning Bricks" : "Spawn Bricks"}
+        </button>
       </div>
       <span>score : {numOfDestroyedBricks}</span>
 
