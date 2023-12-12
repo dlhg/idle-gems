@@ -12,6 +12,8 @@ body {
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
+  color: white;
+  font-size: 2rem;
 }
 
 .canvas--wrapper {
@@ -23,6 +25,7 @@ body {
   width: 100vw;
 }
 
-.buttons-container {
-  margin-top: 20px;
+.buttons--container {
+  margin: 20px;
+  font-size: 1rem;
 }

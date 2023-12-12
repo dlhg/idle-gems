@@ -268,45 +268,31 @@ function GameCanvas() {
 
   return (
     <div className="canvas--wrapper">
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-
       <canvas
         className="game--canvas"
         ref={canvasRef}
         width={canvasWidth}
         height={canvasHeight}
       />
-      <br />
 
-      <br />
       <div className="buttons--container">
         <button onClick={spawnBall}>Spawn Ball</button>
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
-        <span>score : {numOfDestroyedBricks}</span>
-        <br />
-        <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed}</label>
-        <input
-          type="range"
-          id="ballSpeed"
-          name="ballSpeed"
-          min="0"
-          max="20"
-          value={ballSpeed}
-          onChange={handleSpeedChange}
-        />
       </div>
+      <span>score : {numOfDestroyedBricks}</span>
+
+      <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed}</label>
+      <input
+        type="range"
+        id="ballSpeed"
+        name="ballSpeed"
+        min="0"
+        max="20"
+        value={ballSpeed}
+        onChange={handleSpeedChange}
+      />
     </div>
   );
 }
