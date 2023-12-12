@@ -21,8 +21,8 @@ function GameCanvas() {
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 20;
   const brickRadius = 50;
-  const canvasWidth = 1000;
-  const canvasHeight = 1000;
+  const canvasWidth = 900;
+  const canvasHeight = 900;
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
@@ -206,6 +206,10 @@ function GameCanvas() {
   }, [balls, bricks]);
 
   const spawnBall = () => {
+    if (numOfDestroyedBricks <= 0) {
+      return;
+    }
+    setNumOfDestroyedBricks((prev) => prev - 1);
     let newBall;
     let overlap;
     do {
@@ -297,7 +301,7 @@ function GameCanvas() {
       />
 
       <div className="buttons--container">
-        <button onClick={spawnBall}>Spawn Ball</button>
+        <button onClick={spawnBall}>Buy Ball (1 gem)</button>
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
@@ -305,7 +309,7 @@ function GameCanvas() {
           {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
         </button>
       </div>
-      <span>score : {numOfDestroyedBricks}</span>
+      <span>Gems : {numOfDestroyedBricks}</span>
 
       <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed}</label>
       <input
