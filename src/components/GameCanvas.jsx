@@ -14,6 +14,13 @@ function GameCanvas() {
   const canvasWidth = 800;
   const canvasHeight = 600;
 
+  const backgroundImage = new Image();
+  backgroundImage.src = stonetexture;
+  backgroundImage.onload = () => {
+    // The background image is loaded, you can now proceed.
+    // ...
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -124,6 +131,8 @@ function GameCanvas() {
 
     const update = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
       balls.forEach((ball) => {
         updateBallPosition(ball);
         drawBall(ball);
