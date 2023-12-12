@@ -23,8 +23,8 @@ function GameCanvas() {
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 20;
   const brickRadius = 40;
-  const canvasWidth = 900;
-  const canvasHeight = 900;
+  const canvasWidth = 1000;
+  const canvasHeight = 1000;
 
   const planetImages = [planet1, planet2, planet3, planet4];
   const backgroundImage = new Image();
@@ -48,8 +48,8 @@ function GameCanvas() {
         ball.y,
         ballRadius // x, y, and radius of the outer circle
       );
-      gradient.addColorStop(0, "white"); // White center
-      gradient.addColorStop(1, "blue"); // Blue edge
+      gradient.addColorStop(0, "lightblue"); // White center
+      gradient.addColorStop(1, "darkblue"); // Blue edge
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
