@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 
 import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 
+import space from "../assets/images/backgrounds/space.jpeg";
+
 // brick textures
 import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
 import planet2 from "../assets/images/textures/bricks/planet2.jpeg";
@@ -22,7 +24,7 @@ function GameCanvas() {
 
   const planetImages = [planet1, planet2, planet3, planet4];
   const backgroundImage = new Image();
-  backgroundImage.src = stonetexture;
+  backgroundImage.src = space;
   backgroundImage.onload = () => {
     // The background image is loaded, you can now proceed.
     // ...
