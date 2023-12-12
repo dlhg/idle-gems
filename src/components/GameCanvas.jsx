@@ -262,14 +262,16 @@ function GameCanvas() {
     do {
       overlap = false;
       // Calculate the position such that the brick is always at least 4x the brick radius away from the border
-      const x = Math.random() * (canvasWidth - 8 * brickRadius) + 4 * brickRadius;
-      const y = Math.random() * (canvasHeight - 8 * brickRadius) + 4 * brickRadius;
+      const x =
+        Math.random() * (canvasWidth - 8 * brickRadius) + 4 * brickRadius;
+      const y =
+        Math.random() * (canvasHeight - 8 * brickRadius) + 4 * brickRadius;
 
       newBrick = {
         id: brickIdRef.current,
         x,
         y,
-        health: 50,
+        health: 10,
       };
 
       // Check for overlap with existing bricks
@@ -298,7 +300,6 @@ function GameCanvas() {
     brickIdRef.current += 1;
     setBricks([...bricks, newBrick]);
   };
-
 
   function clearBlueBalls() {
     setBalls([]);
