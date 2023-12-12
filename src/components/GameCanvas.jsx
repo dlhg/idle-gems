@@ -19,7 +19,7 @@ function GameCanvas() {
   const [ballSpeed, setBallSpeed] = useState(1);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   //give player gems to start (maybe rename this variable to gems)
-  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(3);
+  const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(10);
   const ballRadius = 20;
   const brickRadius = 35;
   const canvasWidth = 900;
@@ -207,10 +207,10 @@ function GameCanvas() {
   }, [balls, bricks]);
 
   const spawnBall = () => {
-    if (numOfDestroyedBricks <= 0) {
+    if (numOfDestroyedBricks <= 5) {
       return;
     }
-    setNumOfDestroyedBricks((prev) => prev - 1);
+    setNumOfDestroyedBricks((prev) => prev - 5);
     let newBall;
     let overlap;
     do {
@@ -314,7 +314,7 @@ function GameCanvas() {
       />
 
       <div className="buttons--container">
-        <button onClick={spawnBall}>Buy Ball (1 gem)</button>
+        <button onClick={spawnBall}>Buy Ball (5 gems)</button>
         <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
