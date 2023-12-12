@@ -10,6 +10,7 @@ import planet2 from "../assets/images/textures/bricks/planet2.jpeg";
 import planet3 from "../assets/images/textures/bricks/planet3.jpeg";
 import planet4 from "../assets/images/textures/bricks/planet4.jpeg";
 import vortex from "../assets/images/textures/bricks/vortex.jpeg";
+import neon from "../assets/images/textures/bricks/neon.jpg";
 
 function GameCanvas() {
   const canvasRef = useRef(null);
@@ -20,8 +21,8 @@ function GameCanvas() {
   const [bricks, setBricks] = useState([]);
   const [ballSpeed, setBallSpeed] = useState(1);
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
-  const ballRadius = 5;
-  const brickRadius = 30;
+  const ballRadius = 20;
+  const brickRadius = 40;
   const canvasWidth = 900;
   const canvasHeight = 900;
 
@@ -39,15 +40,25 @@ function GameCanvas() {
     let animationFrameId;
 
     const drawBall = (ball) => {
+      const gradient = ctx.createRadialGradient(
+        ball.x,
+        ball.y,
+        0, // x, y, and radius of the inner circle (0 to start at the center)
+        ball.x,
+        ball.y,
+        ballRadius // x, y, and radius of the outer circle
+      );
+      gradient.addColorStop(0, "white"); // White center
+      gradient.addColorStop(1, "blue"); // Blue edge
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
+      ctx.fillStyle = gradient;
       ctx.fill();
       ctx.closePath();
     };
 
     const brickImage = new Image();
-    brickImage.src = vortex;
+    brickImage.src = neon;
 
     const drawBrick = (brick) => {
       // Save the current context state (style settings, transformations, etc.)
