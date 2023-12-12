@@ -18,6 +18,7 @@ function GameCanvas() {
 
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
+  const [ballSpeed, setBallSpeed] = useState(1);
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(0);
   const ballRadius = 5;
   const brickRadius = 25;
@@ -187,7 +188,7 @@ function GameCanvas() {
         id: ballIdRef.current,
         x,
         y,
-        speed: 1,
+        speed: ballSpeed,
         direction: Math.random() * 2 * Math.PI,
         damage: 1,
       };
