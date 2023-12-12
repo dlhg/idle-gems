@@ -5,10 +5,7 @@ import stonetexture from "../assets/images/textures/bricks/burger.jpg";
 import space from "../assets/images/backgrounds/transparent.png";
 
 // brick textures
-import planet1 from "../assets/images/textures/bricks/planet1.jpeg";
-import planet2 from "../assets/images/textures/bricks/planet2.jpeg";
-import planet3 from "../assets/images/textures/bricks/planet3.jpeg";
-import planet4 from "../assets/images/textures/bricks/planet4.jpeg";
+
 import vortex from "../assets/images/textures/bricks/vortex.jpeg";
 import neon from "../assets/images/textures/bricks/neon.jpg";
 
@@ -26,7 +23,6 @@ function GameCanvas() {
   const canvasWidth = 1000;
   const canvasHeight = 1000;
 
-  const planetImages = [planet1, planet2, planet3, planet4];
   const backgroundImage = new Image();
   backgroundImage.src = space;
   backgroundImage.onload = () => {
