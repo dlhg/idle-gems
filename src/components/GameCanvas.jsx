@@ -291,13 +291,7 @@ function GameCanvas() {
         height={canvasHeight}
       />
       <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+
       <br />
       <div className="buttons--container">
         <button onClick={spawnBall}>Spawn Ball</button>
