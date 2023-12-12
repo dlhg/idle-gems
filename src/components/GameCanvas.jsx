@@ -72,10 +72,22 @@ function GameCanvas() {
       ctx.restore();
 
       // Drawing HP text over the image
-      ctx.font = "25px Arial";
+      ctx.font = "bold 25px Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 3;
+      // Text stroke to create an outline
+      ctx.strokeText(brick.health, brick.x, brick.y);
+      // Fill the text after stroking so it appears on top
+      ctx.fillText(brick.health, brick.x, brick.y);
+
+      // If you want to add text shadow
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+      ctx.shadowBlur = 3;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
       ctx.fillText(brick.health, brick.x, brick.y);
     };
 
