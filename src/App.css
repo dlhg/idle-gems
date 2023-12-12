@@ -14,7 +14,7 @@ body {
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
   color: white;
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 .canvas--wrapper {
@@ -28,7 +28,7 @@ body {
 }
 
 .game--canvas {
-  margin-top: 7rem;
+  margin-top: 2rem;
   border: solid gray 5px;
 }
 
