@@ -1,6 +1,25 @@
 #root {
 }
 
+html,
+body {
+  height: 100%; 
+  margin: 0;
+  padding: 0;
+  width: 100%; 
+.canvas--wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  width: 100vw; 
+
 .game--canvas {
-  border: ridge black 5px;
+  margin: 0;
+  padding: 0;
+}
+
+.buttons-container {
+  margin-top: 20px;
 }
