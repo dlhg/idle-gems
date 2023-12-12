@@ -21,7 +21,7 @@ function GameCanvas() {
   //give player gems to start (maybe rename this variable to gems)
   const [numOfDestroyedBricks, setNumOfDestroyedBricks] = useState(3);
   const ballRadius = 20;
-  const brickRadius = 50;
+  const brickRadius = 35;
   const canvasWidth = 900;
   const canvasHeight = 900;
 
@@ -255,7 +255,7 @@ function GameCanvas() {
         id: brickIdRef.current,
         x,
         y,
-        health: 100,
+        health: 500,
       };
 
       // Check for overlap with existing bricks
