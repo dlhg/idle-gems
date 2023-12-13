@@ -30,7 +30,7 @@ function GameCanvas() {
   const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.75);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.75);
-  const ballRadius = 5;
+  const ballRadius = 10;
   const brickRadius = window.innerWidth / 75;
 
   const backgroundImage = new Image();
