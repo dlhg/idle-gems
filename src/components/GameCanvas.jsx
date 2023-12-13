@@ -63,6 +63,7 @@ function GameCanvas() {
   popSound.current.load(popsound);
   // Function to play pop sound
   const playPopSound = () => {
+    popSound.current.stop();
     popSound.current.start();
   };
 
