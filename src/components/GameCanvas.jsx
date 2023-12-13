@@ -26,8 +26,11 @@ function GameCanvas() {
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
 
+
+
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
+  const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
 
@@ -96,7 +99,41 @@ function GameCanvas() {
   // effects
 
   useEffect(() => {
-    // ... (existing useEffect hooks)
+    bricksRef.current = bricks; // Update the ref's current value whenever bricks change
+  }, [bricks]);
+
+  useEffect(() => {
+    const handleCanvasClick = (event) => {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      let brickDestroyed = false;
+
+      const newBricks = bricksRef.current.map(brick => {
+        const dx = x - brick.x;
+        const dy = y - brick.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < brickRadius) {
+          playPopSound();
+          const newHealth = brick.health - 1;
+          if (newHealth <= 0) {
+            brickDestroyed = true;
+          }
+          return { ...brick, health: newHealth };
+        }
+
+        return brick;
+      });
+
+      setBricks(newBricks.filter(brick => brick.health > 0));
+
+      if (brickDestroyed) {
+        playCoinSound();
+        setGems(prevGems => prevGems + 1);
+      }
+    };
 
     const canvas = canvasRef.current;
     canvas.addEventListener('click', handleCanvasClick);
@@ -104,7 +141,7 @@ function GameCanvas() {
     return () => {
       canvas.removeEventListener('click', handleCanvasClick);
     };
-  }, [bricks]); // Add bricks as a dependency
+  }, []);
 
   const handleCanvasClick = (event) => {
 
