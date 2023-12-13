@@ -24,7 +24,7 @@ function GameCanvas() {
 
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
-  const [ballSpeed, setBallSpeed] = useState(0.1);
+  const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
 
   const [gems, setGems] = useState(100);
