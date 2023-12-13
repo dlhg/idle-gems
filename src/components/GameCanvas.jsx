@@ -5,7 +5,7 @@ import * as Tone from "tone";
 import popsound from "../assets/sfx/thud.mp3";
 import poppedsound from "../assets/sfx/popped.mp3";
 import beep from "../assets/sfx/beep.mp3";
-import coin from "../assets/sfx/coin.mp3";
+import coin from "../assets/sfx/beep.mp3";
 import notice from "../assets/sfx/notice.mp3";
 
 import space from "../assets/images/backgrounds/transparent.png";
@@ -62,13 +62,22 @@ function GameCanvas() {
 
   //sfx player functions
 
-  // Initialize Tone.Player and connect to SFX channel
+  // Initialize Tone.Player for the popSound (impact sound - i should prob rename this) and connect to SFX channel
   const popSound = useRef(new Tone.Player().connect(sfxChannel.current));
   popSound.current.load(popsound);
   // Function to play pop sound
   const playPopSound = () => {
     popSound.current.stop();
     popSound.current.start();
+  };
+
+  // Initialize Tone.Player for the coin sound and connect to SFX channel
+  const coinSound = useRef(new Tone.Player().connect(sfxChannel.current));
+  coinSound.current.load(coin); // Load the coin sound
+
+  const playCoinSound = () => {
+    coinSound.current.stop(); // Stop the sound if it's already playing
+    coinSound.current.start(); // Start playing the sound
   };
 
   // Function to handle changes in SFX volume
@@ -239,6 +248,7 @@ function GameCanvas() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
+        playCoinSound(); // Play coin sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + 1);
         console.log(
