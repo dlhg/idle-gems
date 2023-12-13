@@ -3,7 +3,7 @@ import * as Tone from "tone";
 
 //sfx
 import popsound from "../assets/sfx/pop.mp3";
-const popSound = new Audio(popsound);
+
 import space from "../assets/images/backgrounds/transparent.png";
 
 // brick textures
@@ -12,6 +12,11 @@ import vortex from "../assets/images/textures/bricks/vortex.jpeg";
 import neon from "../assets/images/textures/bricks/neon.jpg";
 
 function GameCanvas() {
+  const playPopSound = () => {
+    const sound = new Audio(popsound);
+    sound.play();
+  };
+
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
@@ -176,7 +181,7 @@ function GameCanvas() {
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play pop sound
-          popSound.play();
+          playPopSound();
 
           // Check if the brick is destroyed
           if (bricks[index].health <= 0) {
