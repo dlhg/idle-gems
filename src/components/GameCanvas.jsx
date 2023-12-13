@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import * as Tone from "tone";
 
 import space from "../assets/images/backgrounds/transparent.png";
 
