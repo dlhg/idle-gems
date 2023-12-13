@@ -369,7 +369,7 @@ function GameCanvas() {
       return;
     }
     setGems((prev) => prev - 1);
-    const newSpeed = ballSpeed + 0.1;
+    const newSpeed = ballSpeed + 0.01;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
