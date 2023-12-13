@@ -7,9 +7,9 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-image: url("https://images.wallpaperscraft.com/image/single/texture_surface_dark_128260_3840x2400.jpg");
-  /* background-color: rgb(15, 0, 56); */
-  background-size: ;
+  background-image: url("https://wallpapercave.com/wp/wp2758170.gif");
+  background-color: rgb(1, 0, 69);
+  background-size: 100%;
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
