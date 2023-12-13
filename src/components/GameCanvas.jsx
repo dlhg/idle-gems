@@ -12,10 +12,8 @@ import vortex from "../assets/images/textures/bricks/vortex.jpeg";
 import neon from "../assets/images/textures/bricks/neon.jpg";
 
 function GameCanvas() {
-  const playPopSound = () => {
-    const sound = new Audio(popsound);
-    sound.play();
-  };
+  const [isSFXMuted, setIsSFXMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
@@ -54,6 +52,19 @@ function GameCanvas() {
   //   }, []);
 
   // Use useEffect to control the spawning process
+
+  //sfx player functions
+  const playPopSound = () => {
+    if (!isSFXMuted) {
+      const sound = new Audio(popsound);
+      sound.play();
+    }
+  };
+  const toggleSFXMute = () => {
+    setIsSFXMuted(!isSFXMuted);
+  };
+
+  // effects
   useEffect(() => {
     let intervalId;
 
@@ -360,6 +371,9 @@ function GameCanvas() {
         <button onClick={clearRedBricks}>Clear Bricks</button>
         <button onClick={toggleBrickSpawning}>
           {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
+        </button>
+        <button onClick={toggleSFXMute}>
+          {isSFXMuted ? "Unmute SFX" : "Mute SFX"}
         </button>
       </div>
       <span>Gems : {gems}</span>
