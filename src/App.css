@@ -7,14 +7,15 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-image: url("https://wallpapercave.com/wp/wp2758170.gif");
-  background-color: rgb(1, 0, 69);
+  background-image: url("https://wallpapercave.com/wp/wp9868363.jpg");
+  /* background-color: #f5f5dc; */
+
   background-size: 100%;
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
   color: white;
-  font-size: 1rem;
+  font-size: 2rem;
 }
 
 .canvas--wrapper {
