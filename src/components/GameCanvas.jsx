@@ -270,7 +270,7 @@ function GameCanvas() {
     if (gems < 5) {
       return;
     }
-    setGems((prev) => prev - 5);
+    setGems((prev) => prev - 20);
     let newBall;
     let overlap;
     do {
@@ -386,8 +386,8 @@ function GameCanvas() {
       />
 
       <div className="buttons--container">
-        <button onClick={buyBall}>Buy Ball (5 gems)</button>
-        <button>Buy Big Ball (20 gems)</button>
+        <button onClick={buyBall}>Buy Ball (20 gems)</button>
+        <button>Buy Big Ball (100 gems - todo)</button>
         <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
         <button>+Damage (todo)</button>
         <button>+Ball Size (todo)</button>
