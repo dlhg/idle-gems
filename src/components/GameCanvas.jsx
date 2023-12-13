@@ -53,7 +53,7 @@ function GameCanvas() {
         if (bricks.length <= 50) {
           spawnBrick();
         }
-      }, 500); // Spawn a brick every 500ms if the count is <= 50
+      }, 100); // Spawn a brick every 100ms if the count is <= 50
     }
 
     return () => {
