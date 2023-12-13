@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
 //sfx
-import popsound from "../assets/sfx/pop.mp3";
+import popsound from "../assets/sfx/thud.mp3";
 
 import space from "../assets/images/backgrounds/transparent.png";
 
