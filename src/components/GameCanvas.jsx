@@ -388,16 +388,18 @@ function GameCanvas() {
 
       <div className="buttons--container">
         <button onClick={buyBall}>Buy Ball (20 gems)</button>
-        <button>Buy Big Ball (100 gems - todo)</button>
+
         <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
-        <button>+Damage (todo)</button>
-        <button>+Ball Size (todo)</button>
+
         <button onClick={spawnBrick}>Spawn Brick</button>
         <button onClick={clearBlueBalls}>Clear Balls</button>
         <button onClick={clearRedBricks}>Clear Bricks</button>
         <button onClick={toggleBrickSpawning}>
           {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
         </button>
+        <button>Buy Big Ball (100 gems - todo)</button>
+        <button>+Damage (todo)</button>
+        <button>+Ball Size (todo)</button>
       </div>
       <span>Gems : {gems}</span>
 
