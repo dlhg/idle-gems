@@ -4,6 +4,9 @@ import * as Tone from "tone";
 //sfx
 import popsound from "../assets/sfx/thud.mp3";
 import poppedsound from "../assets/sfx/popped.mp3";
+import beep from "../assets/sfx/beep.mp3";
+import coin from "../assets/sfx/coin.mp3";
+import notice from "../assets/sfx/notice.mp3";
 
 import space from "../assets/images/backgrounds/transparent.png";
 
