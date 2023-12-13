@@ -400,6 +400,9 @@ function GameCanvas() {
         <button>Buy Big Ball (100 gems - todo)</button>
         <button>+Damage (todo)</button>
         <button>+Ball Size (todo)</button>
+        <button>+Number of bricks on screen (todo)</button>
+        <button>+Brick spawn rate (todo)</button>
+        <button>+Max balls allowed to be owned by player (todo)</button>
       </div>
       <span>Gems : {gems}</span>
 
