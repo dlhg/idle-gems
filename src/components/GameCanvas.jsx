@@ -12,8 +12,11 @@ import vortex from "../assets/images/textures/bricks/vortex.jpeg";
 import neon from "../assets/images/textures/bricks/neon.jpg";
 
 function GameCanvas() {
-  const [isSFXMuted, setIsSFXMuted] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
+  const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
+  // Using useRef to persist Gain nodes across renders
+  const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
+  const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
 
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
@@ -54,17 +57,38 @@ function GameCanvas() {
   // Use useEffect to control the spawning process
 
   //sfx player functions
+
+  // Initialize Tone.Player and connect to SFX channel
+  const popSound = useRef(new Tone.Player().connect(sfxChannel.current));
+  popSound.current.load(popsound);
+  // Function to play pop sound
   const playPopSound = () => {
-    if (!isSFXMuted) {
-      const sound = new Audio(popsound);
-      sound.play();
-    }
-  };
-  const toggleSFXMute = () => {
-    setIsSFXMuted(!isSFXMuted);
+    popSound.current.start();
   };
 
+  // Function to handle changes in SFX volume
+  const handleSfxVolumeChange = (event) => {
+    const volume = Number(event.target.value);
+    setSfxVolume(volume);
+    sfxChannel.current.gain.value = volume;
+  };
+
+  // Function to handle changes in music volume
+  const handleMusicVolumeChange = (event) => {
+    const volume = Number(event.target.value);
+    setMusicVolume(volume);
+    musicChannel.current.gain.value = volume;
+  };
   // effects
+
+  useEffect(() => {
+    // Ensure all buffers are loaded before setting up the game
+    Tone.loaded().then(() => {
+      // Now all audio is loaded
+      // Setup your game here
+    });
+  }, []);
+
   useEffect(() => {
     let intervalId;
 
@@ -372,9 +396,6 @@ function GameCanvas() {
         <button onClick={toggleBrickSpawning}>
           {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
         </button>
-        <button onClick={toggleSFXMute}>
-          {isSFXMuted ? "Unmute SFX" : "Mute SFX"}
-        </button>
       </div>
       <span>Gems : {gems}</span>
 
@@ -389,6 +410,31 @@ function GameCanvas() {
         value={ballSpeed}
         onChange={handleSpeedChange}
       />
+
+      <div className="volume-controls">
+        <label htmlFor="sfxVolume">SFX Volume:</label>
+        <input
+          type="range"
+          id="sfxVolume"
+          name="sfxVolume"
+          min="0"
+          max="1"
+          step="0.01"
+          value={sfxVolume}
+          onChange={handleSfxVolumeChange}
+        />
+        <label htmlFor="musicVolume">Music Volume:</label>
+        <input
+          type="range"
+          id="musicVolume"
+          name="musicVolume"
+          min="0"
+          max="1"
+          step="0.01"
+          value={musicVolume}
+          onChange={handleMusicVolumeChange}
+        />
+      </div>
     </div>
   );
 }
