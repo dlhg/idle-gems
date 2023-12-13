@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
+//sfx
+import popsound from "../assets/sfx/pop.mp3";
+const popSound = new Audio(popsound);
 import space from "../assets/images/backgrounds/transparent.png";
 
 // brick textures
@@ -172,6 +175,8 @@ function GameCanvas() {
         if (distance < ballRadius + brickRadius) {
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
+          // Play pop sound
+          popSound.play();
 
           // Check if the brick is destroyed
           if (bricks[index].health <= 0) {
