@@ -3,6 +3,7 @@ import * as Tone from "tone";
 
 //sfx
 import popsound from "../assets/sfx/thud.mp3";
+import poppedsound from "../assets/sfx/popped.mp3";
 
 import space from "../assets/images/backgrounds/transparent.png";
 
@@ -267,7 +268,7 @@ function GameCanvas() {
   }, [balls, bricks]);
 
   const buyBall = () => {
-    if (gems < 5) {
+    if (gems < 20) {
       return;
     }
     setGems((prev) => prev - 20);
