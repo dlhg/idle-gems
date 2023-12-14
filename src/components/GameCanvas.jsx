@@ -220,10 +220,10 @@ function GameCanvas() {
 
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
-        if (bricks.length <= 150) {
+        if (bricks.length <= 200) {
           spawnBrick();
         }
-      }, brickSpawnRate); // Spawn a brick every 500ms if the count is <= 150
+      }, brickSpawnRate); // Spawn a brick every 500ms if the count is <= 200
     }
 
     return () => {
