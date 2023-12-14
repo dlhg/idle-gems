@@ -50,10 +50,10 @@ function GameCanvas() {
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(1);
 
-  const [gems, setGems] = useState(1000);
+  const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.8);
-  const [ballRadius, setBallRadius] = useState(window.innerWidth / 1000);
+  const [ballRadius, setBallRadius] = useState(window.innerWidth / 500);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
 
   const backgroundImage = new Image();
