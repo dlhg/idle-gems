@@ -55,7 +55,7 @@ body {
   transition: transform 100ms ease-in-out;
   background-color: rgb(73, 73, 73);
   font-size: 0px;
-
+  user-select: none;
   margin-right: 0.5rem;
 }
 .settings--icon img {
