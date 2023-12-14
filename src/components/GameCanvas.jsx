@@ -189,7 +189,7 @@ function GameCanvas() {
         if (bricks.length <= 80) {
           spawnBrick();
         }
-      }, 1000); // Spawn a brick every 1000ms if the count is <= 30
+      }, 1); // Spawn a brick every 1000ms if the count is <= 30
     }
 
     return () => {
@@ -305,6 +305,15 @@ function GameCanvas() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < ballRadius + brickRadius) {
+          if (bricks[index].health < 0) {
+            console.log(
+              `collision registered on brick ${JSON.stringify(
+                bricks[index].id
+              )} with HP below 0, returning out of function`
+            );
+            return;
+          }
+
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play pop sound
