@@ -239,38 +239,6 @@ function GameCanvas() {
     };
   }, [handleCanvasClick]);
 
-  // const handleCanvasClick = (event) => {
-  //   const rect = canvasRef.current.getBoundingClientRect();
-  //   const x = event.clientX - rect.left;
-  //   const y = event.clientY - rect.top;
-
-  //   let brickDestroyed = false; // Flag to check if any brick is destroyed
-
-  //   const newBricks = bricks.map((brick) => {
-  //     const dx = x - brick.x;
-  //     const dy = y - brick.y;
-  //     const distance = Math.sqrt(dx * dx + dy * dy);
-
-  //     if (distance < brickRadius) {
-  //       playPopSound();
-  //       const newHealth = brick.health - 1;
-  //       if (newHealth <= 0) {
-  //         brickDestroyed = true; // Set the flag if the brick is destroyed
-  //       }
-  //       return { ...brick, health: newHealth }; // Decrement health
-  //     }
-
-  //     return brick;
-  //   });
-
-  //   setBricks(newBricks.filter((brick) => brick.health > 0)); // Remove bricks with zero health
-
-  //   if (brickDestroyed) {
-  //     playCoinSound(); // Play coin sound if a brick is destroyed
-  //     setGems((prevGems) => prevGems + 1); // Increment gems by 1
-  //   }
-  // };
-
   useEffect(() => {
     // Ensure all buffers are loaded before setting up the game
     Tone.loaded().then(() => {
