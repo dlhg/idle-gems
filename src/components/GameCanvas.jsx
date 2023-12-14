@@ -66,17 +66,19 @@ function GameCanvas() {
   // Initialize Tone.Player for the popSound (impact sound - i should prob rename this) and connect to SFX channel
   const popSound = useRef(new Tone.Player().connect(sfxChannel.current));
   popSound.current.load(popsound);
-  // Function to play pop sound - scheduling slightly in the future to avoid "Start time must be strictly greater than previous start time" error
+  // Function to play pop sound
   const playPopSound = () => {
-    popSound.current.start(Tone.now() + 0.01);
+    popSound.current.stop(Tone.now());
+    popSound.current.start(Tone.now());
   };
 
   // Initialize Tone.Player for the coin sound and connect to SFX channel
   const coinSound = useRef(new Tone.Player().connect(sfxChannel.current));
   coinSound.current.load(coin); // Load the coin sound
-  // Function to play brick break sound - scheduling slightly in the future to avoid "Start time must be strictly greater than previous start time" error
+  // Function to play brick break sound
   const playCoinSound = () => {
-    coinSound.current.start(Tone.now() + 0.01);
+    coinSound.current.stop(Tone.now());
+    coinSound.current.start(Tone.now());
   };
 
   // Function to handle changes in SFX volume
@@ -187,7 +189,7 @@ function GameCanvas() {
         if (bricks.length <= 80) {
           spawnBrick();
         }
-      }, 300); // Spawn a brick every 300ms if the count is <= 30
+      }, 1000); // Spawn a brick every 1000ms if the count is <= 30
     }
 
     return () => {
