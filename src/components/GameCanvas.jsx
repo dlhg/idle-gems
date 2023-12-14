@@ -34,9 +34,10 @@ function GameCanvas() {
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
+  const ballsRef = useRef(balls);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(500);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(1);
 
   const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
@@ -135,77 +136,110 @@ function GameCanvas() {
   }, [bricks]);
 
   useEffect(() => {
-    const handleCanvasClick = (event) => {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      let brickDestroyed = false;
-
-      const newBricks = bricksRef.current.map((brick) => {
-        const dx = x - brick.x;
-        const dy = y - brick.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < brickRadius) {
-          playPopSound();
-          const newHealth = brick.health - 1;
-          if (newHealth <= 0) {
-            brickDestroyed = true;
-          }
-          return { ...brick, health: newHealth };
-        }
-
-        return brick;
-      });
-
-      setBricks(newBricks.filter((brick) => brick.health > 0));
-
-      if (brickDestroyed) {
-        playCoinSound();
-        setGems((prevGems) => prevGems + 1);
-      }
-    };
-
-    const canvas = canvasRef.current;
-    canvas.addEventListener("click", handleCanvasClick);
-
-    return () => {
-      canvas.removeEventListener("click", handleCanvasClick);
-    };
-  }, []);
+    ballsRef.current = balls;
+  }, [balls]);
 
   const handleCanvasClick = (event) => {
     const rect = canvasRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    let brickDestroyed = false; // Flag to check if any brick is destroyed
+    let brickDestroyed = false;
+    let numOfBricksFarEnoughAway = 0;
 
-    const newBricks = bricks.map((brick) => {
+    const newBricks = bricksRef.current.map((brick) => {
       const dx = x - brick.x;
       const dy = y - brick.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
+      console.log(distance);
+
+      if (distance > brickRadius + ballRadius) {
+        console.log(
+          `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
+        );
+        console.log(`brick rad = ${brickRadius} and ball rad ${ballRadius}`);
+        console.log(`clicked at X:${x} and Y:${y}`);
+        console.log(
+          `distance between this click and brick ID ${brick.id} is ${distance}`
+        );
+        numOfBricksFarEnoughAway++;
+      }
+      console.log(
+        `numOfBricksFarEnoughAway = ${numOfBricksFarEnoughAway}, total bricks = ${bricks.length}`
+      );
+
+      if (numOfBricksFarEnoughAway === bricks.length) {
+        // in future - checked if player has unlocked this ability will be a state boolean prob
+        // relocate balls
+        setBalls(
+          ballsRef.current.map((ball) => ({
+            ...ball,
+            x: x,
+            y: y,
+          }))
+        );
+      }
 
       if (distance < brickRadius) {
         playPopSound();
         const newHealth = brick.health - 1;
         if (newHealth <= 0) {
-          brickDestroyed = true; // Set the flag if the brick is destroyed
+          brickDestroyed = true;
         }
-        return { ...brick, health: newHealth }; // Decrement health
-      }
 
+        return { ...brick, health: newHealth };
+      }
       return brick;
     });
 
-    setBricks(newBricks.filter((brick) => brick.health > 0)); // Remove bricks with zero health
+    setBricks(newBricks.filter((brick) => brick.health > 0));
 
     if (brickDestroyed) {
-      playCoinSound(); // Play coin sound if a brick is destroyed
-      setGems((prevGems) => prevGems + 1); // Increment gems by 1
+      playCoinSound();
+      setGems((prevGems) => prevGems + 1);
     }
   };
+  useEffect(() => {
+    console.log("clicked and brick not hit");
+    const canvas = canvasRef.current;
+    canvas.addEventListener("click", handleCanvasClick);
+
+    return () => {
+      canvas.removeEventListener("click", handleCanvasClick);
+    };
+  }, [handleCanvasClick]);
+
+  // const handleCanvasClick = (event) => {
+  //   const rect = canvasRef.current.getBoundingClientRect();
+  //   const x = event.clientX - rect.left;
+  //   const y = event.clientY - rect.top;
+
+  //   let brickDestroyed = false; // Flag to check if any brick is destroyed
+
+  //   const newBricks = bricks.map((brick) => {
+  //     const dx = x - brick.x;
+  //     const dy = y - brick.y;
+  //     const distance = Math.sqrt(dx * dx + dy * dy);
+
+  //     if (distance < brickRadius) {
+  //       playPopSound();
+  //       const newHealth = brick.health - 1;
+  //       if (newHealth <= 0) {
+  //         brickDestroyed = true; // Set the flag if the brick is destroyed
+  //       }
+  //       return { ...brick, health: newHealth }; // Decrement health
+  //     }
+
+  //     return brick;
+  //   });
+
+  //   setBricks(newBricks.filter((brick) => brick.health > 0)); // Remove bricks with zero health
+
+  //   if (brickDestroyed) {
+  //     playCoinSound(); // Play coin sound if a brick is destroyed
+  //     setGems((prevGems) => prevGems + 1); // Increment gems by 1
+  //   }
+  // };
 
   useEffect(() => {
     // Ensure all buffers are loaded before setting up the game
