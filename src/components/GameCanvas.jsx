@@ -34,7 +34,7 @@ function GameCanvas() {
   const [brickSpawnRate, setBrickSpawnRate] = useState(500);
 
   const [gems, setGems] = useState(100);
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.25);
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.5);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.5);
   const ballRadius = 10;
   const brickRadius = window.innerWidth / 100;
