@@ -133,7 +133,7 @@ function GameCanvas() {
   useEffect(() => {
     const updateSize = () => {
       setCanvasWidth(window.innerWidth);
-      setCanvasHeight(window.innerHeight * 0.8); // Update this based on your layout logic
+      setCanvasHeight(window.innerHeight * 0.7); // Update this based on your layout logic
     };
 
     // Set up a ResizeObserver to listen for changes in size of the canvas element
