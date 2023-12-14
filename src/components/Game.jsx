@@ -14,6 +14,7 @@ damage over time
 unlockable perk - when player clicks brick to damage it, it starts doing damage over time
 perk enhancement: 
   - player can level up this perk so that it lasts for longer
+  - player can level up this perk so that they can use it more often (cooldown reduction)
   - player can level up this perk so that it does more damage
   - player can level up this perk so that once the damage destroys a brick, the effect continues on the nearest brick
   - player can level up how many bricks the damage can spread to
