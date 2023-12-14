@@ -66,19 +66,17 @@ function GameCanvas() {
   // Initialize Tone.Player for the popSound (impact sound - i should prob rename this) and connect to SFX channel
   const popSound = useRef(new Tone.Player().connect(sfxChannel.current));
   popSound.current.load(popsound);
-  // Function to play pop sound
+  // Function to play pop sound - scheduling slightly in the future to avoid "Start time must be strictly greater than previous start time" error
   const playPopSound = () => {
-    popSound.current.stop();
-    popSound.current.start();
+    popSound.current.start(Tone.now() + 0.01);
   };
 
   // Initialize Tone.Player for the coin sound and connect to SFX channel
   const coinSound = useRef(new Tone.Player().connect(sfxChannel.current));
   coinSound.current.load(coin); // Load the coin sound
-
+  // Function to play brick break sound - scheduling slightly in the future to avoid "Start time must be strictly greater than previous start time" error
   const playCoinSound = () => {
-    // coinSound.current.stop(); // Stop the sound if it's already playing
-    coinSound.current.start(); // Start playing the sound
+    coinSound.current.start(Tone.now() + 0.01);
   };
 
   // Function to handle changes in SFX volume
