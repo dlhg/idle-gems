@@ -531,7 +531,7 @@ function GameCanvas() {
           height={canvasHeight}
         />
       </div>
-      <FooterActionButtons />
+      <FooterActionButtons buyBall={buyBall} />
       {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
 
