@@ -7,6 +7,24 @@
   }
 }
 
+@keyframes animatedBackground {
+  0% {
+    background-position: 0 0; /* Start at the top-left corner */
+  }
+  25% {
+    background-position: 50% 0; /* Move to the top-right corner */
+  }
+  50% {
+    background-position: 0 50%; /* Move to the bottom-left corner */
+  }
+  75% {
+    background-position: 50% 50%; /* Move to the bottom-right corner */
+  }
+  100% {
+    background-position: 0 0; /* Repeat the cycle */
+  }
+}
+
 #root {
   overflow: hidden; /* Hide scrollbars */
 }
@@ -17,15 +35,16 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-image: url("https://wallpapercave.com/wp/wp9868377.jpg");
+  background-image: url("https://media1.giphy.com/media/UYBDCJjwOd9Re/giphy.gif?cid=ecf05e47sti6288v68w88u0ivrh006ex1cyagm0k6mp0oqpt&ep=v1_gifs_related&rid=giphy.gif&ct=g");
   /* background-color: #f5f5dc; */
 
-  background-size: 100%;
+  background-size: fit;
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
   color: white;
   font-size: 2rem;
+  animation: animatedBackground 200s linear infinite;
 }
 
 .app--container {
@@ -35,6 +54,7 @@ body {
 }
 
 .canvas--wrapper {
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
