@@ -9,6 +9,13 @@ if ball is red, fade opacity to 0 over 0.75s
 
 */
 
+/*
+hover to damage
+player can unlock ability to do damage every second to brick by hovering over it
+
+
+*/
+
 import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
@@ -56,6 +63,8 @@ function GameCanvas() {
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.8);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 500);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
+  const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
+    useState(true);
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
@@ -180,7 +189,10 @@ function GameCanvas() {
         `numOfBricksFarEnoughAway = ${numOfBricksFarEnoughAway}, total bricks = ${bricks.length}`
       );
 
-      if (numOfBricksFarEnoughAway === bricks.length) {
+      if (
+        numOfBricksFarEnoughAway === bricks.length &&
+        canPlayerTeleportBallsOnClick
+      ) {
         // in future - checked if player has unlocked this ability will be a state boolean prob
         // relocate balls
         setBalls(
