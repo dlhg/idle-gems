@@ -22,10 +22,11 @@ body {
 .canvas--wrapper {
   display: flex;
   flex-direction: column;
-
   align-items: center;
   height: 70vh;
   width: 100vw;
+  position: absolute;
+  top: 10vh; /* Same as the navbar's height */
 }
 
 .buttons--container {
@@ -47,12 +48,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(73, 73, 73);
 }
 
 .settings--icon {
   transition: transform 100ms ease-in-out;
-  background-color: black;
+  background-color: rgb(73, 73, 73);
   font-size: 0px;
 
   margin-right: 0.5rem;
@@ -72,7 +73,7 @@ body {
 }
 
 .footer--action--buttons {
-  background-color: green;
+  background-color: rgb(73, 73, 73);
 
   display: flex;
   justify-content: space-evenly;
@@ -80,11 +81,10 @@ body {
   width: 100%;
   position: fixed;
   bottom: 0;
-
-  background-color: #f2f2f2; /* You can change this as per your design */
 }
 
 .action--button {
+  margin: 1rem;
   background-color: darkgray;
   flex-grow: 1;
   user-select: none;
