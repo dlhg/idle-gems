@@ -26,10 +26,10 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-image: url("./assets/images/backgrounds/repeatingbricks.png");
+  background-image: url("./assets/images/backgrounds/twinklingspaceanimated.gif");
   /* background-color: #f5f5dc; */
 
-  background-size: 5%;
+  background-size: 10%;
   background-position: center;
   background-repeat: repeat;
   background-attachment: fixed; /* Makes the background image fixed during scroll */
