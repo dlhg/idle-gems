@@ -35,7 +35,7 @@ body {
   background-attachment: fixed; /* Makes the background image fixed during scroll */
   color: white;
   font-size: 2rem;
-  animation: animatedBackground 150s ease-in-out infinite;
+  animation: animatedBackground 150s ease-in infinite;
 }
 
 .app--container {
