@@ -31,6 +31,7 @@ function GameCanvas() {
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(500);
 
   const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.25);
@@ -189,7 +190,7 @@ function GameCanvas() {
         if (bricks.length <= 80) {
           spawnBrick();
         }
-      }, 1); // Spawn a brick every 1000ms if the count is <= 30
+      }, brickSpawnRate); // Spawn a brick every 500ms if the count is <= 30
     }
 
     return () => {
@@ -197,7 +198,8 @@ function GameCanvas() {
         clearInterval(intervalId);
       }
     };
-  }, [isSpawningBricks, bricks]);
+  }, [isSpawningBricks, bricks, brickSpawnRate]);
+
   const toggleBrickSpawning = () => {
     setIsSpawningBricks(!isSpawningBricks);
   };
