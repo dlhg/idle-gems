@@ -243,7 +243,7 @@ function GameCanvas() {
     // Ensure all buffers are loaded before setting up the game
     Tone.loaded().then(() => {
       // Now all audio is loaded
-      // Setup your game here
+      // Setup game here
     });
   }, []);
 
