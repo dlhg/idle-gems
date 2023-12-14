@@ -1,12 +1,12 @@
 // src/App.js
 import "./App.css";
 import React from "react";
-import GameCanvas from "./components/GameCanvas";
+import Game from "./components/Game";
 
 function App() {
   return (
     <div className="app--container">
-      <GameCanvas />
+      <Game />
     </div>
   );
 }
