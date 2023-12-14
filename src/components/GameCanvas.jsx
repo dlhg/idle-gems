@@ -44,6 +44,7 @@ function GameCanvas() {
   const [playerLevel, setPlayerLevel] = useState(1);
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
+  const [brickInitialHealth, setBrickInitialHealth] = useState(5);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const ballsRef = useRef(balls);
   const [ballSpeed, setBallSpeed] = useState(0.5);
@@ -498,7 +499,7 @@ function GameCanvas() {
         id: brickIdRef.current,
         x,
         y,
-        health: 10,
+        health: brickInitialHealth,
       };
 
       for (const brick of bricks) {
