@@ -11,17 +11,8 @@
   0% {
     background-position: 0 0; /* Start at the top-left corner */
   }
-  25% {
-    background-position: 50% 0; /* Move to the top-right corner */
-  }
-  50% {
-    background-position: 0 50%; /* Move to the bottom-left corner */
-  }
-  75% {
-    background-position: 50% 50%; /* Move to the bottom-right corner */
-  }
   100% {
-    background-position: 0 0; /* Repeat the cycle */
+    background-position: 100% 0; /* Scroll to the left */
   }
 }
 
@@ -44,7 +35,7 @@ body {
   background-attachment: fixed; /* Makes the background image fixed during scroll */
   color: white;
   font-size: 2rem;
-  animation: animatedBackground 200s linear infinite;
+  animation: animatedBackground 144s linear infinite;
 }
 
 .app--container {
