@@ -37,7 +37,7 @@ function GameCanvas() {
   const [brickSpawnRate, setBrickSpawnRate] = useState(500);
 
   const [gems, setGems] = useState(100);
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.95);
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.995);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.5);
   const ballRadius = 10;
   const brickRadius = window.innerWidth / 100;
@@ -501,7 +501,7 @@ function GameCanvas() {
           height={canvasHeight}
         />
 
-        <div className="buttons--container">
+        {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
 
           <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
@@ -555,7 +555,7 @@ function GameCanvas() {
             value={musicVolume}
             onChange={handleMusicVolumeChange}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

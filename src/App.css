@@ -1,4 +1,5 @@
 #root {
+  overflow: hidden; /* Hide scrollbars */
 }
 
 html,
@@ -21,9 +22,9 @@ body {
 .canvas--wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+
   align-items: center;
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
 }
 
@@ -43,6 +44,7 @@ body {
 }
 
 .navbar {
+  height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: stretch;
