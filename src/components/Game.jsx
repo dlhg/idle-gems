@@ -66,7 +66,7 @@ function GameCanvas() {
 
   const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
-  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.8);
+  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 500);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
@@ -130,33 +130,33 @@ function GameCanvas() {
   };
   // effects
 
-  useEffect(() => {
-    const updateSize = () => {
-      setCanvasWidth(window.innerWidth);
-      setCanvasHeight(window.innerHeight * 0.7); // Update this based on your layout logic
-    };
+  // useEffect(() => {
+  //   const updateSize = () => {
+  //     setCanvasWidth(window.innerWidth);
+  //     setCanvasHeight(window.innerHeight * 0.7); // Update this based on your layout logic
+  //   };
 
-    // Set up a ResizeObserver to listen for changes in size of the canvas element
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        setCanvasWidth(entry.contentRect.width);
-        setCanvasHeight(entry.contentRect.height);
-      }
-    });
+  //   // Set up a ResizeObserver to listen for changes in size of the canvas element
+  //   const resizeObserver = new ResizeObserver((entries) => {
+  //     for (let entry of entries) {
+  //       setCanvasWidth(entry.contentRect.width);
+  //       setCanvasHeight(entry.contentRect.height);
+  //     }
+  //   });
 
-    // Start observing the canvas element
-    if (canvasRef.current) {
-      resizeObserver.observe(canvasRef.current);
-    }
+  //   // Start observing the canvas element
+  //   if (canvasRef.current) {
+  //     resizeObserver.observe(canvasRef.current);
+  //   }
 
-    // Make sure to resize once initially in case the initial size is not correct
-    updateSize();
+  //   // Make sure to resize once initially in case the initial size is not correct
+  //   updateSize();
 
-    // Clean up observer when the component unmounts
-    return () => {
-      resizeObserver.disconnect();
-    };
-  }, []);
+  //   // Clean up observer when the component unmounts
+  //   return () => {
+  //     resizeObserver.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
