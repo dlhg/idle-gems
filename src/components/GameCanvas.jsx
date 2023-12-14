@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
+import Navbar from "./Navbar";
+
 //sfx
 import popsound from "../assets/sfx/thud.mp3";
 import poppedsound from "../assets/sfx/popped.mp3";
@@ -26,6 +28,7 @@ function GameCanvas() {
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
 
+  const [playerLevel, setPlayerLevel] = useState(1);
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
@@ -488,69 +491,72 @@ function GameCanvas() {
   }
 
   return (
-    <div className="canvas--wrapper">
-      <canvas
-        className="game--canvas"
-        ref={canvasRef}
-        width={canvasWidth}
-        height={canvasHeight}
-      />
+    <div>
+      <Navbar gems={gems} playerLevel={playerLevel} />
+      <div className="canvas--wrapper">
+        <canvas
+          className="game--canvas"
+          ref={canvasRef}
+          width={canvasWidth}
+          height={canvasHeight}
+        />
 
-      <div className="buttons--container">
-        <button onClick={buyBall}>Buy Ball (20 gems)</button>
+        <div className="buttons--container">
+          <button onClick={buyBall}>Buy Ball (20 gems)</button>
 
-        <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
+          <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
 
-        <button onClick={spawnBrick}>Spawn Brick</button>
-        <button onClick={clearBlueBalls}>Clear Balls</button>
-        <button onClick={clearRedBricks}>Clear Bricks</button>
-        <button onClick={toggleBrickSpawning}>
-          {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
-        </button>
-        <button>Buy Big Ball (100 gems - todo)</button>
-        <button>+Damage (todo)</button>
-        <button>+Ball Size (todo)</button>
-        <button>+Number of bricks on screen (todo)</button>
-        <button>+Brick spawn rate (todo)</button>
-        <button>+Max balls allowed to be owned by player (todo)</button>
-      </div>
-      <span>Gems : {gems}</span>
+          <button onClick={spawnBrick}>Spawn Brick</button>
+          <button onClick={clearBlueBalls}>Clear Balls</button>
+          <button onClick={clearRedBricks}>Clear Bricks</button>
+          <button onClick={toggleBrickSpawning}>
+            {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
+          </button>
+          <button>Buy Big Ball (100 gems - todo)</button>
+          <button>+Damage (todo)</button>
+          <button>+Ball Size (todo)</button>
+          <button>+Number of bricks on screen (todo)</button>
+          <button>+Brick spawn rate (todo)</button>
+          <button>+Max balls allowed to be owned by player (todo)</button>
+        </div>
+        <span>Gems : {gems}</span>
 
-      <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
-      <input
-        type="range"
-        id="ballSpeed"
-        name="ballSpeed"
-        step="0.1"
-        min="0"
-        max="20"
-        value={ballSpeed}
-        onChange={handleSpeedChange}
-      />
-
-      <div className="volume-controls">
-        <label htmlFor="sfxVolume">SFX Volume:</label>
+        <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
         <input
           type="range"
-          id="sfxVolume"
-          name="sfxVolume"
+          id="ballSpeed"
+          name="ballSpeed"
+          step="0.1"
           min="0"
-          max="1"
-          step="0.01"
-          value={sfxVolume}
-          onChange={handleSfxVolumeChange}
+          max="20"
+          value={ballSpeed}
+          onChange={handleSpeedChange}
         />
-        <label htmlFor="musicVolume">Music Volume:</label>
-        <input
-          type="range"
-          id="musicVolume"
-          name="musicVolume"
-          min="0"
-          max="1"
-          step="0.01"
-          value={musicVolume}
-          onChange={handleMusicVolumeChange}
-        />
+
+        <div className="volume-controls">
+          <label htmlFor="sfxVolume">SFX Volume:</label>
+          <input
+            type="range"
+            id="sfxVolume"
+            name="sfxVolume"
+            min="0"
+            max="1"
+            step="0.01"
+            value={sfxVolume}
+            onChange={handleSfxVolumeChange}
+          />
+          <label htmlFor="musicVolume">Music Volume:</label>
+          <input
+            type="range"
+            id="musicVolume"
+            name="musicVolume"
+            min="0"
+            max="1"
+            step="0.01"
+            value={musicVolume}
+            onChange={handleMusicVolumeChange}
+          />
+        </div>
       </div>
     </div>
   );
