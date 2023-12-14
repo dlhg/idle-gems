@@ -26,8 +26,6 @@ function GameCanvas() {
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
 
-
-
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
@@ -35,7 +33,7 @@ function GameCanvas() {
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
 
   const [gems, setGems] = useState(100);
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.5);
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth * 0.25);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.5);
   const ballRadius = 10;
   const brickRadius = window.innerWidth / 100;
@@ -79,7 +77,7 @@ function GameCanvas() {
   coinSound.current.load(coin); // Load the coin sound
 
   const playCoinSound = () => {
-    coinSound.current.stop(); // Stop the sound if it's already playing
+    // coinSound.current.stop(); // Stop the sound if it's already playing
     coinSound.current.start(); // Start playing the sound
   };
 
@@ -110,7 +108,7 @@ function GameCanvas() {
 
       let brickDestroyed = false;
 
-      const newBricks = bricksRef.current.map(brick => {
+      const newBricks = bricksRef.current.map((brick) => {
         const dx = x - brick.x;
         const dy = y - brick.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
@@ -127,37 +125,36 @@ function GameCanvas() {
         return brick;
       });
 
-      setBricks(newBricks.filter(brick => brick.health > 0));
+      setBricks(newBricks.filter((brick) => brick.health > 0));
 
       if (brickDestroyed) {
         playCoinSound();
-        setGems(prevGems => prevGems + 1);
+        setGems((prevGems) => prevGems + 1);
       }
     };
 
     const canvas = canvasRef.current;
-    canvas.addEventListener('click', handleCanvasClick);
+    canvas.addEventListener("click", handleCanvasClick);
 
     return () => {
-      canvas.removeEventListener('click', handleCanvasClick);
+      canvas.removeEventListener("click", handleCanvasClick);
     };
   }, []);
 
   const handleCanvasClick = (event) => {
-
     const rect = canvasRef.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
     let brickDestroyed = false; // Flag to check if any brick is destroyed
 
-    const newBricks = bricks.map(brick => {
+    const newBricks = bricks.map((brick) => {
       const dx = x - brick.x;
       const dy = y - brick.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
       if (distance < brickRadius) {
-        playPopSound()
+        playPopSound();
         const newHealth = brick.health - 1;
         if (newHealth <= 0) {
           brickDestroyed = true; // Set the flag if the brick is destroyed
@@ -168,11 +165,11 @@ function GameCanvas() {
       return brick;
     });
 
-    setBricks(newBricks.filter(brick => brick.health > 0)); // Remove bricks with zero health
+    setBricks(newBricks.filter((brick) => brick.health > 0)); // Remove bricks with zero health
 
     if (brickDestroyed) {
       playCoinSound(); // Play coin sound if a brick is destroyed
-      setGems(prevGems => prevGems + 1); // Increment gems by 1
+      setGems((prevGems) => prevGems + 1); // Increment gems by 1
     }
   };
 
@@ -399,9 +396,10 @@ function GameCanvas() {
   const spawnBrick = () => {
     let newBrick;
     let overlap;
+    let attempts = 0; // Counter for the number of attempts
+
     do {
       overlap = false;
-      // Calculate the position such that the brick is always at least 4x the brick radius away from the border
       const x =
         Math.random() * (canvasWidth - 8 * brickRadius) + 4 * brickRadius;
       const y =
@@ -414,7 +412,6 @@ function GameCanvas() {
         health: 10,
       };
 
-      // Check for overlap with existing bricks
       for (const brick of bricks) {
         const dx = brick.x - newBrick.x;
         const dy = brick.y - newBrick.y;
@@ -425,7 +422,6 @@ function GameCanvas() {
         }
       }
 
-      // Check for overlap with existing balls
       for (const ball of balls) {
         const dx = ball.x - newBrick.x;
         const dy = ball.y - newBrick.y;
@@ -434,6 +430,15 @@ function GameCanvas() {
           overlap = true;
           break;
         }
+      }
+
+      attempts++;
+
+      if (attempts >= 30) {
+        console.log(
+          "Unable to find a suitable location for new brick after 30 attempts"
+        );
+        return; // Exit the function if 30 attempts have been made
       }
     } while (overlap);
 
