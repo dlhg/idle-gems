@@ -8,7 +8,7 @@ const FooterActionButtons = ({ buyBall }) => {
       <button className="action--button">Button 3</button>
       <button className="action--button">Button 4</button>
       <button className="action--button" onClick={buyBall}>
-        Buy Ball{" "}
+        Buy Ball(20 gems)
       </button>
     </div>
   );
