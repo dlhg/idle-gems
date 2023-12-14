@@ -103,6 +103,34 @@ function GameCanvas() {
   // effects
 
   useEffect(() => {
+    const updateSize = () => {
+      setCanvasWidth(window.innerWidth);
+      setCanvasHeight(window.innerHeight * 0.8); // Update this based on your layout logic
+    };
+
+    // Set up a ResizeObserver to listen for changes in size of the canvas element
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        setCanvasWidth(entry.contentRect.width);
+        setCanvasHeight(entry.contentRect.height);
+      }
+    });
+
+    // Start observing the canvas element
+    if (canvasRef.current) {
+      resizeObserver.observe(canvasRef.current);
+    }
+
+    // Make sure to resize once initially in case the initial size is not correct
+    updateSize();
+
+    // Clean up observer when the component unmounts
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
   }, [bricks]);
 
