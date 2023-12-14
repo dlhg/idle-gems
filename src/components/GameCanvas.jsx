@@ -519,7 +519,6 @@ function GameCanvas() {
           <button>+Brick spawn rate (todo)</button>
           <button>+Max balls allowed to be owned by player (todo)</button>
         </div>
-        <span>Gems : {gems}</span>
 
         <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
         <input

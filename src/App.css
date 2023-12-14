@@ -28,7 +28,6 @@ body {
 }
 
 .game--canvas {
-  margin-top: 2rem;
   border: solid gray 5px;
 }
 
@@ -46,16 +45,23 @@ body {
 .navbar {
   display: flex;
   justify-content: space-between;
+  align-items: stretch;
   background-color: rgb(0, 0, 0);
 }
 
 .settings--icon {
   transition: transform 100ms ease-in-out;
   background-color: black;
+  font-size: 0px;
+
+  margin-right: 0.5rem;
 }
 .settings--icon img {
   max-height: 3rem;
 }
 .settings--icon.clicked {
   transform: scale(0.9);
+}
+.settings--icon:focus {
+  outline: none;
 }
