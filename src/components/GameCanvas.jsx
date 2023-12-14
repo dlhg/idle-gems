@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import FooterActionButtons from "./FooterActionButtons";
 
 //sfx
-import popsound from "../assets/sfx/thud.mp3";
+import popsound from "../assets/sfx/shortthud.mp3";
 import poppedsound from "../assets/sfx/popped.mp3";
 import beep from "../assets/sfx/beep.mp3";
 import coin from "../assets/sfx/beep.mp3";
