@@ -35,7 +35,7 @@ body {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-image: url("https://media1.giphy.com/media/UYBDCJjwOd9Re/giphy.gif?cid=ecf05e47sti6288v68w88u0ivrh006ex1cyagm0k6mp0oqpt&ep=v1_gifs_related&rid=giphy.gif&ct=g");
+  background-image: url("./assets/images/backgrounds/twinklingspaceanimated.gif");
   /* background-color: #f5f5dc; */
 
   background-size: fit;
