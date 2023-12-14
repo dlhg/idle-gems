@@ -191,6 +191,7 @@ function GameCanvas() {
           numOfBricksFarEnoughAway === bricks.length &&
           canPlayerTeleportBallsOnClick
         ) {
+          console.log(`trying to teleport balls`);
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
@@ -219,7 +220,7 @@ function GameCanvas() {
       }
     },
     [
-      // bricks,
+      bricks,
       canPlayerTeleportBallsOnClick,
       // brickRadius,
       // ballRadius,
