@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
+//component imports
 import Navbar from "./Navbar";
+import FooterActionButtons from "./FooterActionButtons";
 
 //sfx
 import popsound from "../assets/sfx/thud.mp3";
@@ -500,8 +502,9 @@ function GameCanvas() {
           width={canvasWidth}
           height={canvasHeight}
         />
-
-        {/* <div className="buttons--container">
+      </div>
+      <FooterActionButtons />
+      {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
 
           <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
@@ -556,7 +559,6 @@ function GameCanvas() {
             onChange={handleMusicVolumeChange}
           />
         </div> */}
-      </div>
     </div>
   );
 }

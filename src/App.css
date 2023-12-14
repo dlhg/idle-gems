@@ -24,12 +24,8 @@ body {
   flex-direction: column;
 
   align-items: center;
-  height: 90vh;
+  height: 70vh;
   width: 100vw;
-}
-
-.game--canvas {
-  border: solid gray 5px;
 }
 
 .buttons--container {
@@ -44,6 +40,9 @@ body {
 }
 
 .navbar {
+  position: fixed;
+  top: 0;
+  width: 100vw;
   height: 10vh;
   display: flex;
   justify-content: space-between;
@@ -66,4 +65,27 @@ body {
 }
 .settings--icon:focus {
   outline: none;
+}
+
+.game--canvas {
+  border: solid gray 5px;
+}
+
+.footer--action--buttons {
+  background-color: green;
+
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+
+  background-color: #f2f2f2; /* You can change this as per your design */
+}
+
+.action--button {
+  background-color: darkgray;
+  flex-grow: 1;
+  user-select: none;
 }
