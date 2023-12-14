@@ -22,7 +22,7 @@ perk enhancement:
 
 */
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import * as Tone from "tone";
 
 //component imports
@@ -166,69 +166,68 @@ function GameCanvas() {
     ballsRef.current = balls;
   }, [balls]);
 
-  const handleCanvasClick = (event) => {
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
+  const handleCanvasClick = useCallback(
+    (event) => {
+      const rect = canvasRef.current.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
 
-    let brickDestroyed = false;
-    let numOfBricksFarEnoughAway = 0;
+      let brickDestroyed = false;
+      let numOfBricksFarEnoughAway = 0;
 
-    const newBricks = bricksRef.current.map((brick) => {
-      const dx = x - brick.x;
-      const dy = y - brick.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      console.log(distance);
+      const newBricks = bricksRef.current.map((brick) => {
+        const dx = x - brick.x;
+        const dy = y - brick.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (distance > brickRadius + ballRadius) {
-        console.log(
-          `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
-        );
-        console.log(`brick rad = ${brickRadius} and ball rad ${ballRadius}`);
-        console.log(`clicked at X:${x} and Y:${y}`);
-        console.log(
-          `distance between this click and brick ID ${brick.id} is ${distance}`
-        );
-        numOfBricksFarEnoughAway++;
-      }
-      console.log(
-        `numOfBricksFarEnoughAway = ${numOfBricksFarEnoughAway}, total bricks = ${bricks.length}`
-      );
-
-      if (
-        numOfBricksFarEnoughAway === bricks.length &&
-        canPlayerTeleportBallsOnClick
-      ) {
-        // in future - checked if player has unlocked this ability will be a state boolean prob
-        // relocate balls
-        setBalls(
-          ballsRef.current.map((ball) => ({
-            ...ball,
-            x: x,
-            y: y,
-          }))
-        );
-      }
-
-      if (distance < brickRadius) {
-        playPopSound();
-        const newHealth = brick.health - 1;
-        if (newHealth <= 0) {
-          brickDestroyed = true;
+        if (distance > brickRadius + ballRadius) {
+          console.log(
+            `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
+          );
+          numOfBricksFarEnoughAway++;
         }
 
-        return { ...brick, health: newHealth };
+        if (
+          numOfBricksFarEnoughAway === bricks.length &&
+          canPlayerTeleportBallsOnClick
+        ) {
+          setBalls(
+            ballsRef.current.map((ball) => ({
+              ...ball,
+              x: x,
+              y: y,
+            }))
+          );
+        }
+
+        if (distance < brickRadius) {
+          playPopSound();
+          const newHealth = brick.health - 1;
+          brickDestroyed = newHealth <= 0;
+
+          return { ...brick, health: newHealth };
+        }
+
+        return brick;
+      });
+
+      setBricks(newBricks.filter((brick) => brick.health > 0));
+
+      if (brickDestroyed) {
+        playCoinSound();
+        setGems((prevGems) => prevGems + 1);
       }
-      return brick;
-    });
+    },
+    [
+      // bricks,
+      canPlayerTeleportBallsOnClick,
+      // brickRadius,
+      // ballRadius,
+      // playPopSound,
+      // playCoinSound,
+    ]
+  );
 
-    setBricks(newBricks.filter((brick) => brick.health > 0));
-
-    if (brickDestroyed) {
-      playCoinSound();
-      setGems((prevGems) => prevGems + 1);
-    }
-  };
   useEffect(() => {
     console.log("clicked and brick not hit");
     const canvas = canvasRef.current;
