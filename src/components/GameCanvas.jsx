@@ -1,3 +1,14 @@
+/*
+gem explosion animation
+spawn 50-100 balls at center point of recently destroyed path and set them in motion in random directions
+balls should be red, yellow, or white
+if ball is white, fade opacity to 0 over 0.25s
+if ball is yellow, fade opacity to 0 over 0.5s
+if ball is red, fade opacity to 0 over 0.75s
+
+
+*/
+
 import React, { useState, useRef, useEffect } from "react";
 import * as Tone from "tone";
 
@@ -39,11 +50,11 @@ function GameCanvas() {
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(1);
 
-  const [gems, setGems] = useState(100);
+  const [gems, setGems] = useState(1000);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.8);
-  const ballRadius = 10;
-  const brickRadius = window.innerWidth / 100;
+  const [ballRadius, setBallRadius] = useState(window.innerWidth / 1000);
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
