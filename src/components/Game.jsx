@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import FooterActionButtons from "./FooterActionButtons";
 
 //sfx
-import popsound from "../assets/sfx/shortthud.mp3";
+import shortthud from "../assets/sfx/shortthud.mp3";
 import coin from "../assets/sfx/beep.mp3";
 
 import space from "../assets/images/backgrounds/transparent.png";
@@ -52,13 +52,13 @@ function GameCanvas() {
 
   //sfx player functions
 
-  // Initialize Tone.Player for the popSound (impact sound - i should prob rename this) and connect to SFX channel
-  const popSound = useRef(new Tone.Player().connect(sfxChannel.current));
-  popSound.current.load(popsound);
+  // Initialize Tone.Player for the shortThud (impact sound - i should prob rename this) and connect to SFX channel
+  const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
+  shortThud.current.load(shortthud);
   // Function to play pop sound
   const playPopSound = () => {
-    popSound.current.stop(Tone.now());
-    popSound.current.start(Tone.now());
+    shortThud.current.stop(Tone.now());
+    shortThud.current.start(Tone.now());
   };
 
   // Initialize Tone.Player for the coin sound and connect to SFX channel
