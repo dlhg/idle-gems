@@ -236,7 +236,7 @@ function GameCanvas() {
   );
 
   useEffect(() => {
-    console.log("clicked and brick not hit");
+    console.log("value of handleCanvasClick changed?");
     const canvas = canvasRef.current;
     canvas.addEventListener("click", handleCanvasClick);
 
