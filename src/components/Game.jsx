@@ -1,27 +1,3 @@
-/*
-gem explosion animation
-spawn 50-100 balls at center point of recently destroyed path and set them in motion in random directions
-balls should be red, yellow, or white
-if ball is white, fade opacity to 0 over 0.25s
-if ball is yellow, fade opacity to 0 over 0.5s
-if ball is red, fade opacity to 0 over 0.75s
-
-
-*/
-
-/*
-damage over time
-unlockable perk - when player clicks brick to damage it, it starts doing damage over time
-perk enhancement: 
-  - player can level up this perk so that it lasts for longer
-  - player can level up this perk so that they can use it more often (cooldown reduction)
-  - player can level up this perk so that it does more damage
-  - player can level up this perk so that once the damage destroys a brick, the effect continues on the nearest brick
-  - player can level up how many bricks the damage can spread to
-
-
-*/
-
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import * as Tone from "tone";
 
@@ -74,24 +50,7 @@ function GameCanvas() {
 
   const backgroundImage = new Image();
   backgroundImage.src = space;
-  backgroundImage.onload = () => {
-    // The background image is loaded, you can now proceed.
-    // ...
-  };
-
-  //   useEffect(() => {
-  //     // Function to update dimensions
-  //     const updateDimensions = () => {
-  //       setCanvasWidth(window.innerWidth * 0.5);
-  //       setCanvasHeight(window.innerHeight * 0.5);
-  //     };
-
-  //     // Add event listener for window resize
-  //     window.addEventListener("resize", updateDimensions);
-
-  //     // Clean up event listener
-  //     return () => window.removeEventListener("resize", updateDimensions);
-  //   }, []);
+  // backgroundImage.onload = () => {};
 
   // Use useEffect to control the spawning process
 
@@ -115,51 +74,7 @@ function GameCanvas() {
     coinSound.current.start(Tone.now());
   };
 
-  // Function to handle changes in SFX volume
-  const handleSfxVolumeChange = (event) => {
-    const volume = Number(event.target.value);
-    setSfxVolume(volume);
-    sfxChannel.current.gain.value = volume;
-  };
-
-  // Function to handle changes in music volume
-  const handleMusicVolumeChange = (event) => {
-    const volume = Number(event.target.value);
-    setMusicVolume(volume);
-    musicChannel.current.gain.value = volume;
-  };
-  // effects
-
-  // useEffect(() => {
-  //   const updateSize = () => {
-  //     setCanvasWidth(window.innerWidth);
-  //     setCanvasHeight(window.innerHeight * 0.7); // Update this based on your layout logic
-  //     setBallRadius(window.innerWidth / 500);
-  //     setBrickRadius(window.innerWidth / 100);
-
-  //   };
-
-  //   // Set up a ResizeObserver to listen for changes in size of the canvas element
-  //   const resizeObserver = new ResizeObserver((entries) => {
-  //     for (let entry of entries) {
-  //       setCanvasWidth(entry.contentRect.width);
-  //       setCanvasHeight(entry.contentRect.height);
-  //     }
-  //   });
-
-  //   // Start observing the canvas element
-  //   if (canvasRef.current) {
-  //     resizeObserver.observe(canvasRef.current);
-  //   }
-
-  //   // Make sure to resize once initially in case the initial size is not correct
-  //   updateSize();
-
-  //   // Clean up observer when the component unmounts
-  //   return () => {
-  //     resizeObserver.disconnect();
-  //   };
-  // }, []);
+  // EFFECTS
 
   useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
@@ -271,13 +186,12 @@ function GameCanvas() {
     };
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
-  const toggleBrickSpawning = () => {
-    setIsSpawningBricks(!isSpawningBricks);
-  };
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
+
+    // FUNCTIONS
 
     const drawBall = (ball) => {
       const gradient = ctx.createRadialGradient(
@@ -440,6 +354,8 @@ function GameCanvas() {
     };
   }, [balls, bricks]);
 
+  // FUNCTIONS
+
   const buyBall = () => {
     if (gems < 20) {
       return;
@@ -557,6 +473,22 @@ function GameCanvas() {
       currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
     );
   }
+
+  const toggleBrickSpawning = () => {
+    setIsSpawningBricks(!isSpawningBricks);
+  };
+
+  const handleMusicVolumeChange = (event) => {
+    const volume = Number(event.target.value);
+    setMusicVolume(volume);
+    musicChannel.current.gain.value = volume;
+  };
+
+  const handleSFXVolumeChange = (event) => {
+    const volume = Number(event.target.value);
+    setSfxVolume(volume);
+    sfxChannel.current.gain.value = volume;
+  };
 
   return (
     <>
