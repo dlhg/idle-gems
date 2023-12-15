@@ -19,20 +19,18 @@ const Navbar = ({ gems, playerLevel }) => {
 
   return (
     <div className="navbar">
-      <div className="player-info">
-        <span>Gems:{gems}</span>
+      <span>Gems:{gems}</span>
 
-        <span> Level: {playerLevel}</span>
-      </div>
-      <div className="settings--icon--container">
-        <button
-          className={`settings--icon ${isSettingsIconClicked ? "clicked" : ""}`}
-          onClick={handleSettingsIconClick}
-        >
-          <img src={SettingsIcon}></img>
-        </button>
-      </div>
+      <span> Level: {playerLevel}</span>
     </div>
+    // <div className="settings--icon--container">
+    //   <button
+    //     className={`settings--icon ${isSettingsIconClicked ? "clicked" : ""}`}
+    //     onClick={handleSettingsIconClick}
+    //   >
+    //     <img src={SettingsIcon}></img>
+    //   </button>
+    // </div>
   );
 };
 

@@ -2,7 +2,7 @@ import React from "react";
 
 const FooterActionButtons = ({ buyBall }) => {
   return (
-    <div className="footer--action--buttons">
+    <div className="footer">
       <button className="action--button">Balls</button>
       <button className="action--button">Skill Tree</button>
       <button className="action--button">Boosts</button>
