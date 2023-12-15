@@ -550,8 +550,8 @@ function GameCanvas() {
     if (gems < 1 || balls.length < 1) {
       return;
     }
-    setGems((prev) => prev - 1);
-    const newSpeed = ballSpeed + 0.01;
+    setGems((prev) => prev - 20);
+    const newSpeed = ballSpeed + 0.1;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
@@ -560,7 +560,7 @@ function GameCanvas() {
 
   return (
     <>
-      <Navbar gems={gems} playerLevel={playerLevel} />
+      <Navbar gems={gems} playerLevel={playerLevel} ballSpeed={ballSpeed} />
       <div className="canvas--wrapper">
         <canvas
           className="game--canvas"
@@ -569,7 +569,10 @@ function GameCanvas() {
           height={canvasHeight}
         />
       </div>
-      <FooterActionButtons buyBall={buyBall} />
+      <FooterActionButtons
+        buyBall={buyBall}
+        buySpeedUpgrade={buySpeedUpgrade}
+      />
       {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
 
