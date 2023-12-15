@@ -16,26 +16,16 @@ import space from "../assets/images/backgrounds/transparent.png";
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexture.jpg";
 
 function GameCanvas() {
+  //STATE
   const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
-  // Using useRef to persist Gain nodes across renders
-  const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
-  const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
-
-  const canvasRef = useRef(null);
-  const ballIdRef = useRef(0);
-  const brickIdRef = useRef(0);
-
   const [playerLevel, setPlayerLevel] = useState(1);
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
   const [brickInitialHealth, setBrickInitialHealth] = useState(5);
-  const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
-  const ballsRef = useRef(balls);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(200);
-
   const [gems, setGems] = useState(10000);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
@@ -44,15 +34,22 @@ function GameCanvas() {
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
 
+  //REFS
+  // Using useRef to persist Gain nodes across renders
+  const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
+  const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
+  const canvasRef = useRef(null);
+  const ballIdRef = useRef(0);
+  const brickIdRef = useRef(0);
+  const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
+  const ballsRef = useRef(balls);
+
   const backgroundImage = new Image();
   backgroundImage.src = space;
   // backgroundImage.onload = () => {};
 
-  // Use useEffect to control the spawning process
-
-  //sfx player functions
-
-  // Initialize Tone.Player for the shortThud (impact sound - i should prob rename this) and connect to SFX channel
+  //TONE PLAYERS AND CHANNEL CONNECTIONS
+  // Initialize Tone.Player for the shortThud and connect to SFX channel
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
   shortThud.current.load(shortthud);
   // Function to play pop sound
@@ -60,7 +57,6 @@ function GameCanvas() {
     shortThud.current.stop(Tone.now());
     shortThud.current.start(Tone.now());
   };
-
   // Initialize Tone.Player for the coin sound and connect to SFX channel
   const coinSound = useRef(new Tone.Player().connect(sfxChannel.current));
   coinSound.current.load(coin); // Load the coin sound
@@ -71,7 +67,6 @@ function GameCanvas() {
   };
 
   // EFFECTS
-
   useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
   }, [bricks]);
@@ -188,7 +183,6 @@ function GameCanvas() {
     let animationFrameId;
 
     // FUNCTIONS
-
     const drawBall = (ball) => {
       const gradient = ctx.createRadialGradient(
         ball.x,
