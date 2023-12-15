@@ -21,7 +21,7 @@ const Navbar = ({ gems, playerLevel }) => {
     <div className="navbar">
       <span>Gems:{gems}</span>
 
-      <span> Level: {playerLevel}</span>
+      {/* <span> Level: {playerLevel}</span> */}
     </div>
     // <div className="settings--icon--container">
     //   <button
