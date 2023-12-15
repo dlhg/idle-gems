@@ -134,6 +134,9 @@ function GameCanvas() {
   //   const updateSize = () => {
   //     setCanvasWidth(window.innerWidth);
   //     setCanvasHeight(window.innerHeight * 0.7); // Update this based on your layout logic
+  //     setBallRadius(window.innerWidth / 500);
+  //     setBrickRadius(window.innerWidth / 100);
+
   //   };
 
   //   // Set up a ResizeObserver to listen for changes in size of the canvas element
@@ -169,8 +172,11 @@ function GameCanvas() {
   const handleCanvasClick = useCallback(
     (event) => {
       const rect = canvasRef.current.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+      const scaleX = canvasRef.current.width / rect.width; // scaling factor for X
+      const scaleY = canvasRef.current.height / rect.height; // scaling factor for Y
+
+      const x = (event.clientX - rect.left) * scaleX; // Adjusted X coordinate
+      const y = (event.clientY - rect.top) * scaleY; // Adjusted Y coordinate
 
       let brickDestroyed = false;
       let numOfBricksFarEnoughAway = 0;
@@ -319,7 +325,7 @@ function GameCanvas() {
       ctx.restore();
 
       // Drawing HP text over the image
-      ctx.font = "bold 25px Arial";
+      ctx.font = "bold 15px Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
