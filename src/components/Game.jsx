@@ -553,7 +553,7 @@ function GameCanvas() {
   }
 
   return (
-    <div>
+    <>
       <Navbar gems={gems} playerLevel={playerLevel} />
       <div className="canvas--wrapper">
         <canvas
@@ -619,7 +619,7 @@ function GameCanvas() {
             onChange={handleMusicVolumeChange}
           />
         </div> */}
-    </div>
+    </>
   );
 }
 

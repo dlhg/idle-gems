@@ -1,0 +1,116 @@
+@keyframes rotate360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes animatedBackground {
+  0% {
+    background-position: 0 0; /* Start at the top-left corner */
+  }
+  100% {
+    background-position: 0% 100%; /* Scroll up */
+  }
+}
+
+#root {
+  overflow: hidden; /* Hide scrollbars */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("./assets/images/backgrounds/twinklingspaceanimated.gif");
+  /* background-color: #f5f5dc; */
+
+  background-size: 15%;
+  background-position: center;
+  background-repeat: repeat;
+  background-attachment: fixed; /* Makes the background image fixed during scroll */
+  color: white;
+  font-size: 2rem;
+  /* animation: animatedBackground 150s ease-in infinite; */
+}
+
+.app--container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.canvas--wrapper {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100vw;
+}
+
+.buttons--container {
+  margin: 20px;
+  font-size: 0.5rem;
+}
+
+.buttons--container button {
+  background-color: rgb(20, 20, 93);
+  color: white;
+  margin: 0.1rem;
+}
+
+.navbar {
+  flex: 1 1 10%;
+  top: 0;
+  width: 100vw;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: rgb(73, 73, 73);
+}
+
+.settings--icon {
+  transition: transform 100ms ease-in-out;
+  background-color: rgb(73, 73, 73);
+  font-size: 0px;
+  user-select: none;
+  margin-right: 0.5rem;
+}
+.settings--icon img {
+  max-height: 1rem;
+}
+.settings--icon.clicked {
+  transform: scale(0.9);
+  transform: rotate(360deg);
+}
+.settings--icon:focus {
+  outline: none;
+}
+
+.game--canvas {
+  border: solid gray 5px;
+  flex: 1 1 80%;
+}
+
+.footer--action--buttons {
+  background-color: rgb(73, 73, 73);
+  flex: 1 1 10%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.action--button {
+  background-color: darkgray;
+
+  user-select: none;
+}
