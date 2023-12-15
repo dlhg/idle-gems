@@ -16,8 +16,7 @@ import space from "../assets/images/backgrounds/transparent.png";
 
 // brick textures
 
-import vortex from "../assets/images/textures/bricks/vortex.jpeg";
-import neon from "../assets/images/textures/bricks/neon.jpg";
+import bluegemtexture from "../assets/images/textures/bricks/bluegemtexture.jpg";
 
 function GameCanvas() {
   const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
@@ -212,7 +211,7 @@ function GameCanvas() {
     };
 
     const brickImage = new Image();
-    brickImage.src = neon;
+    brickImage.src = bluegemtexture;
 
     const drawBrick = (brick) => {
       // Save the current context state (style settings, transformations, etc.)
