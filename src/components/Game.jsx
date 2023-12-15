@@ -67,7 +67,7 @@ function GameCanvas() {
   const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
-  const [ballRadius, setBallRadius] = useState(window.innerWidth / 500);
+  const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
