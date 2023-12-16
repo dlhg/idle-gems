@@ -236,7 +236,7 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      ctx.font = "bold 15px Arial";
+      ctx.font = "bold 1vw Arial";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
