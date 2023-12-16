@@ -9,8 +9,6 @@ import FooterActionButtons from "./FooterActionButtons";
 import shortthud from "../assets/sfx/shortthud.mp3";
 import coin from "../assets/sfx/beep.mp3";
 
-import space from "../assets/images/backgrounds/transparent.png";
-
 // brick textures
 
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexture.jpg";
