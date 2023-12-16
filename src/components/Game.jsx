@@ -20,11 +20,11 @@ function GameCanvas() {
   const [playerLevel, setPlayerLevel] = useState(1);
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
-  const [brickInitialHealth, setBrickInitialHealth] = useState(5);
+  const [brickInitialHealth, setBrickInitialHealth] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(200);
-  const [gems, setGems] = useState(10000);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(100);
+  const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
