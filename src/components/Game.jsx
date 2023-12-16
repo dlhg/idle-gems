@@ -134,7 +134,7 @@ function GameCanvas() {
   );
 
   useEffect(() => {
-    console.log("value of handleCanvasClick changed?");
+    // console.log("value of handleCanvasClick changed?");
     const canvas = canvasRef.current;
     canvas.addEventListener("click", handleCanvasClick);
 
@@ -267,11 +267,11 @@ function GameCanvas() {
 
         if (distance < ballRadius + brickRadius) {
           if (bricks[index].health < 0) {
-            console.log(
-              `collision registered on brick ${JSON.stringify(
-                bricks[index].id
-              )} with HP below 0, returning out of function`
-            );
+            // console.log(
+            //   `collision registered on brick ${JSON.stringify(
+            //     bricks[index].id
+            //   )} with HP below 0, returning out of function`
+            // );
             return;
           }
 
@@ -299,9 +299,9 @@ function GameCanvas() {
         playCoinSound(); // Play coin sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + 1);
-        console.log(
-          `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
-        );
+        // console.log(
+        //   `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
+        // );
       }
     };
 
@@ -407,9 +407,9 @@ function GameCanvas() {
       attempts++;
 
       if (attempts >= 30) {
-        console.log(
-          "Unable to find a suitable location for new brick after 30 attempts"
-        );
+        // console.log(
+        //   "Unable to find a suitable location for new brick after 30 attempts"
+        // );
         return; // Exit the function if 30 attempts have been made
       }
     } while (overlap);
