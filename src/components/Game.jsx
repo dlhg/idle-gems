@@ -31,6 +31,10 @@ function Game() {
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
+  const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
+    useState(75);
+  const [gemsReceivedForKillBrickByBall, setGemsReceivedForKillBrickByBall] =
+    useState(50);
 
   //REFS
   // Using useRef to persist Gain nodes across renders
@@ -123,7 +127,7 @@ function Game() {
 
       if (brickDestroyed) {
         playCoinSound();
-        setGems((prevGems) => prevGems + 50);
+        setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
     [canPlayerTeleportBallsOnClick]
@@ -295,7 +299,7 @@ function Game() {
       if (brickDestroyed) {
         playCoinSound(); // Play coin sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
-        setGems((prev) => prev + 50);
+        setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
         //   `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
         // );
