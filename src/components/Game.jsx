@@ -62,6 +62,14 @@ function GameCanvas() {
 
   // EFFECTS
   useEffect(() => {
+    // Ensure all buffers are loaded before setting up the game
+    Tone.loaded().then(() => {
+      // Now all audio is loaded
+      // Setup game here
+    });
+  }, []);
+
+  useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
   }, [bricks]);
 
@@ -144,14 +152,6 @@ function GameCanvas() {
       canvas.removeEventListener("click", handleCanvasClick);
     };
   }, [handleCanvasClick]);
-
-  useEffect(() => {
-    // Ensure all buffers are loaded before setting up the game
-    Tone.loaded().then(() => {
-      // Now all audio is loaded
-      // Setup game here
-    });
-  }, []);
 
   useEffect(() => {
     let intervalId;
