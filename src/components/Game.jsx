@@ -14,29 +14,46 @@ import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall
 
 function Game() {
   //STATE
+
+  //Tone JS channel volume
   const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
-  const [playerLevel, setPlayerLevel] = useState(1);
+
+  //balls
   const [balls, setBalls] = useState([]);
-  const [bricks, setBricks] = useState([]);
-  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
+  const [ballDamage, setBallDamage] = useState(1);
   const [ballSpeed, setBallSpeed] = useState(0.5);
+  const [bricks, setBricks] = useState([]);
+  const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
+  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
+  //bricks
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(60);
-  const [gems, setGems] = useState(100);
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
-  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
-  const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
+
+  //perks/unlocks
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
+
+  //brick kill rewards
   const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
     useState(75);
   const [gemsReceivedForKillBrickByBall, setGemsReceivedForKillBrickByBall] =
     useState(50);
 
+  //currency
+  const [gems, setGems] = useState(100);
+
+  //canvas size
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
+  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
+
+  //unused
+  const [playerLevel, setPlayerLevel] = useState(1);
+
   //REFS
+
   // Using useRef to persist Gain nodes across renders
   const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
@@ -348,7 +365,7 @@ function Game() {
         y,
         speed: ballSpeed,
         direction: Math.random() * 2 * Math.PI,
-        damage: 1,
+        damage: ballDamage,
       };
 
       for (const ball of balls) {
