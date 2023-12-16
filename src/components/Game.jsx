@@ -30,10 +30,10 @@ function Game() {
   //bricks
   const [bricks, setBricks] = useState([]);
   const [brickInitialHealth, setBrickInitialHealth] = useState(100);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 80);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
-  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(60);
+  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
 
   //perks/unlocks
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
