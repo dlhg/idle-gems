@@ -42,10 +42,6 @@ function GameCanvas() {
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const ballsRef = useRef(balls);
 
-  // const backgroundImage = new Image();
-  // backgroundImage.src = space;
-  // backgroundImage.onload = () => {};
-
   //TONE PLAYERS AND CHANNEL CONNECTIONS
   // Initialize Tone.Player for the shortThud and connect to SFX channel
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
