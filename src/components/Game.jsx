@@ -23,11 +23,12 @@ function Game() {
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
-  const [gems, setGems] = useState(1000);
+  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(60);
+  const [gems, setGems] = useState(100);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 40);
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
 
@@ -122,7 +123,7 @@ function Game() {
 
       if (brickDestroyed) {
         playCoinSound();
-        setGems((prevGems) => prevGems + 1);
+        setGems((prevGems) => prevGems + 50);
       }
     },
     [canPlayerTeleportBallsOnClick]
@@ -138,13 +139,13 @@ function Game() {
     };
   }, [handleCanvasClick]);
 
-  //effect that spawns bricks if there are less than 50
+  //effect that spawns bricks if there are less than maxBricksOnScreen
   useEffect(() => {
     let intervalId;
 
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
-        if (bricks.length <= 50) {
+        if (bricks.length <= maxBricksOnScreen) {
           spawnBrick();
         }
       }, brickSpawnRate);
@@ -294,7 +295,7 @@ function Game() {
       if (brickDestroyed) {
         playCoinSound(); // Play coin sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
-        setGems((prev) => prev + 1);
+        setGems((prev) => prev + 50);
         // console.log(
         //   `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
         // );
