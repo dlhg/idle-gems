@@ -9,11 +9,10 @@ import FooterActionButtons from "./FooterActionButtons";
 import shortthud from "../assets/sfx/shortthud.mp3";
 import coin from "../assets/sfx/beep.mp3";
 
-// brick textures
-
+// brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
 
-function GameCanvas() {
+function Game() {
   //STATE
   const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
@@ -126,11 +125,7 @@ function GameCanvas() {
         setGems((prevGems) => prevGems + 1);
       }
     },
-    [
-      // Removed bricks from the dependency array
-      canPlayerTeleportBallsOnClick,
-      // Keep other dependencies that are stable and relevant
-    ]
+    [canPlayerTeleportBallsOnClick]
   );
 
   useEffect(() => {
@@ -538,4 +533,4 @@ function GameCanvas() {
   );
 }
 
-export default GameCanvas;
+export default Game;
