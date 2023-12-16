@@ -88,17 +88,17 @@ function GameCanvas() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance > brickRadius + ballRadius) {
-          console.log(
-            `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
-          );
+          // console.log(
+          //   `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
+          // );
           numOfBricksFarEnoughAway++;
         }
 
         if (
-          numOfBricksFarEnoughAway === bricks.length &&
+          numOfBricksFarEnoughAway === bricksRef.current.length &&
           canPlayerTeleportBallsOnClick
         ) {
-          console.log(`trying to teleport balls`);
+          // console.log(`trying to teleport balls`);
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
@@ -127,12 +127,9 @@ function GameCanvas() {
       }
     },
     [
-      bricks,
+      // Removed bricks from the dependency array
       canPlayerTeleportBallsOnClick,
-      // brickRadius,
-      // ballRadius,
-      // playPopSound,
-      // playCoinSound,
+      // Keep other dependencies that are stable and relevant
     ]
   );
 
