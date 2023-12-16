@@ -26,6 +26,7 @@ function Game() {
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
   const [ballPrice, setBallPrice] = useState(100);
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
+  const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
 
   //bricks
   const [bricks, setBricks] = useState([]);
@@ -458,7 +459,7 @@ function Game() {
     );
   };
 
-  function buySpeedUpgrade() {
+  function buyBallSpeedUpgrade() {
     if (gems < ballSpeedUpgradePrice || balls.length < 1) {
       return;
     }
@@ -467,6 +468,19 @@ function Game() {
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
+    );
+  }
+
+  function buyBallRadiusUpgrade() {
+    console.log("jazz");
+    if (gems < ballRadiusUpgradePrice) {
+      return;
+    }
+    setGems((prev) => prev - ballRadiusUpgradePrice);
+    const newRadius = ballRadius + 1;
+    setBallRadius(newRadius);
+    setBalls((currentBalls) =>
+      currentBalls.map((ball) => ({ ...ball, radius: newRadius }))
     );
   }
 
@@ -500,8 +514,10 @@ function Game() {
       <FooterActionButtons
         buyBall={buyBall}
         ballPrice={ballPrice}
-        buySpeedUpgrade={buySpeedUpgrade}
+        buyBallSpeedUpgrade={buyBallSpeedUpgrade}
         ballSpeedUpgradePrice={ballSpeedUpgradePrice}
+        buyBallRadiusUpgrade={buyBallRadiusUpgrade}
+        ballRadiusUpgradePrice={ballRadiusUpgradePrice}
       />
       {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
