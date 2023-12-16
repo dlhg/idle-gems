@@ -152,7 +152,7 @@ function Game() {
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
-    [canPlayerTeleportBallsOnClick, clickDamage]
+    [canPlayerTeleportBallsOnClick, clickDamage, ballRadius]
   );
 
   useEffect(() => {
