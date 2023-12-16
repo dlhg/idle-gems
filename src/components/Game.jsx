@@ -19,15 +19,15 @@ function Game() {
   const [playerLevel, setPlayerLevel] = useState(1);
   const [balls, setBalls] = useState([]);
   const [bricks, setBricks] = useState([]);
-  const [brickInitialHealth, setBrickInitialHealth] = useState(10);
+  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
-  const [gems, setGems] = useState(10000);
+  const [gems, setGems] = useState(1000);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 100);
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 40);
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
 
@@ -138,12 +138,13 @@ function Game() {
     };
   }, [handleCanvasClick]);
 
+  //effect that spawns bricks if there are less than 50
   useEffect(() => {
     let intervalId;
 
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
-        if (bricks.length <= 200) {
+        if (bricks.length <= 50) {
           spawnBrick();
         }
       }, brickSpawnRate);
@@ -402,9 +403,9 @@ function Game() {
       attempts++;
 
       if (attempts >= 30) {
-        // console.log(
-        //   "Unable to find a suitable location for new brick after 30 attempts"
-        // );
+        console.log(
+          "Unable to find a suitable location for new brick after 30 attempts"
+        );
         return; // Exit the function if 30 attempts have been made
       }
     } while (overlap);
