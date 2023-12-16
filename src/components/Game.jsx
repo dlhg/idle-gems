@@ -24,6 +24,8 @@ function Game() {
   const [ballDamage, setBallDamage] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
+  const [ballPrice, setBallPrice] = useState(100);
+  const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
 
   //bricks
   const [bricks, setBricks] = useState([]);
@@ -36,7 +38,7 @@ function Game() {
   //perks/unlocks
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
-  const [clickDamage, setClickDamage] = useState(1);
+  const [clickDamage, setClickDamage] = useState(20);
 
   //brick kill rewards
   const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
@@ -351,10 +353,10 @@ function Game() {
   // FUNCTIONS
 
   const buyBall = () => {
-    if (gems < 20) {
+    if (gems < ballPrice) {
       return;
     }
-    setGems((prev) => prev - 20);
+    setGems((prev) => prev - ballPrice);
     let newBall;
     let overlap;
     do {
@@ -457,10 +459,10 @@ function Game() {
   };
 
   function buySpeedUpgrade() {
-    if (gems < 20 || balls.length < 1) {
+    if (gems < ballSpeedUpgradePrice || balls.length < 1) {
       return;
     }
-    setGems((prev) => prev - 20);
+    setGems((prev) => prev - ballSpeedUpgradePrice);
     const newSpeed = ballSpeed + 0.1;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
@@ -497,7 +499,9 @@ function Game() {
       </div>
       <FooterActionButtons
         buyBall={buyBall}
+        ballPrice={ballPrice}
         buySpeedUpgrade={buySpeedUpgrade}
+        ballSpeedUpgradePrice={ballSpeedUpgradePrice}
       />
       {/* <div className="buttons--container">
           <button onClick={buyBall}>Buy Ball (20 gems)</button>
