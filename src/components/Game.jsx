@@ -21,7 +21,7 @@ function Game() {
 
   //balls
   const [balls, setBalls] = useState([]);
-  const [ballDamage, setBallDamage] = useState(1);
+  const [ballDamage, setBallDamage] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
 
@@ -36,6 +36,7 @@ function Game() {
   //perks/unlocks
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
     useState(true);
+  const [clickDamage, setClickDamage] = useState(1);
 
   //brick kill rewards
   const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
@@ -132,7 +133,7 @@ function Game() {
 
         if (distance < brickRadius) {
           playPopSound();
-          const newHealth = brick.health - 1;
+          const newHealth = brick.health - clickDamage;
           brickDestroyed = newHealth <= 0;
 
           return { ...brick, health: newHealth };
@@ -148,7 +149,7 @@ function Game() {
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
-    [canPlayerTeleportBallsOnClick]
+    [canPlayerTeleportBallsOnClick, clickDamage]
   );
 
   useEffect(() => {
