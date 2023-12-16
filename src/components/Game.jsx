@@ -26,8 +26,8 @@ function Game() {
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
 
   //bricks
-  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
   const [bricks, setBricks] = useState([]);
+  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 50);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
