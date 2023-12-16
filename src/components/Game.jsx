@@ -11,7 +11,7 @@ import coin from "../assets/sfx/beep.mp3";
 
 // brick textures
 
-import bluegemtexture from "../assets/images/textures/bricks/bluegemtexture.jpg";
+import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
 
 function GameCanvas() {
   //STATE
@@ -24,7 +24,7 @@ function GameCanvas() {
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(100);
-  const [gems, setGems] = useState(100);
+  const [gems, setGems] = useState(10000);
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
   const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
