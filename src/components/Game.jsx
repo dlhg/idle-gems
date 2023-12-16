@@ -69,14 +69,6 @@ function GameCanvas() {
     });
   }, []);
 
-  useEffect(() => {
-    bricksRef.current = bricks; // Update the ref's current value whenever bricks change
-  }, [bricks]);
-
-  useEffect(() => {
-    ballsRef.current = balls;
-  }, [balls]);
-
   const handleCanvasClick = useCallback(
     (event) => {
       const rect = canvasRef.current.getBoundingClientRect();
@@ -172,6 +164,8 @@ function GameCanvas() {
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
   useEffect(() => {
+    bricksRef.current = bricks; // Update the ref's current value whenever bricks change
+    ballsRef.current = balls;
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
