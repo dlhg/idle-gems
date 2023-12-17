@@ -31,7 +31,7 @@ function Game() {
   const [brickInitialHealth, setBrickInitialHealth] = useState(100);
   const [brickRadius, setBrickRadius] = useState(window.innerWidth / 80);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(100);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(200);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
 
   //perks/unlocks
@@ -181,7 +181,7 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
-          spawnBrickAtRandomLocation();
+          spawnBricksInConcentricCircles();
         }
       }, brickSpawnRate);
     }
@@ -451,6 +451,57 @@ function Game() {
     brickIdRef.current += 1;
     setBricks([...bricks, newBrick]);
   };
+
+  function spawnBricksInConcentricCircles() {
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
+    let currentRadius = Math.min(centerX, centerY) - brickRadius; // Maximum radius for the outer circle
+
+    while (currentRadius > brickRadius) {
+      const circumference = 2 * Math.PI * currentRadius;
+      const bricksInCircle = Math.floor(circumference / (2 * brickRadius));
+      const angleStep = (2 * Math.PI) / bricksInCircle;
+
+      for (let i = 0; i < bricksInCircle; i++) {
+        const x = centerX + currentRadius * Math.cos(i * angleStep);
+        const y = centerY + currentRadius * Math.sin(i * angleStep);
+
+        if (!isOverlapWithBricksOrBalls(x, y)) {
+          const newBrick = {
+            id: brickIdRef.current++,
+            x: x,
+            y: y,
+            health: brickInitialHealth,
+          };
+          setBricks((prevBricks) => [...prevBricks, newBrick]);
+        }
+      }
+
+      currentRadius -= 2 * brickRadius; // Move to the next inner circle
+    }
+  }
+
+  function isOverlapWithBricksOrBalls(x, y) {
+    for (const brick of bricks) {
+      if (calculateDistance(x, y, brick.x, brick.y) < 2 * brickRadius) {
+        return true;
+      }
+    }
+
+    for (const ball of balls) {
+      if (calculateDistance(x, y, ball.x, ball.y) < brickRadius + ballRadius) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function calculateDistance(x1, y1, x2, y2) {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
 
   function clearBlueBalls() {
     setBalls([]);
