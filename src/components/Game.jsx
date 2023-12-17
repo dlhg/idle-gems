@@ -534,7 +534,6 @@ function Game() {
   }
 
   function buyBallRadiusUpgrade() {
-    console.log("jazz");
     if (gems < ballRadiusUpgradePrice) {
       return;
     }
