@@ -456,6 +456,7 @@ function Game() {
     const centerX = canvasWidth / 2;
     const centerY = canvasHeight / 2;
     let currentRadius = Math.min(centerX, centerY) - brickRadius; // Maximum radius for the outer circle
+    let currentHealth = brickInitialHealth; // Initialize current health
 
     while (currentRadius > brickRadius) {
       const circumference = 2 * Math.PI * currentRadius;
@@ -471,13 +472,14 @@ function Game() {
             id: brickIdRef.current++,
             x: x,
             y: y,
-            health: brickInitialHealth,
+            health: currentHealth, // Use the current health for this circle
           };
           setBricks((prevBricks) => [...prevBricks, newBrick]);
         }
       }
 
       currentRadius -= 2 * brickRadius; // Move to the next inner circle
+      currentHealth *= 2; // Double the health for the next circle
     }
   }
 
