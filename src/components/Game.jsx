@@ -14,7 +14,7 @@ import teleportSound from "../assets/sfx/teleport.mp3";
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
 
 function Game() {
-  /* STAT E*/
+  /* STATE*/
 
   //balls
   const [balls, setBalls] = useState([]);
