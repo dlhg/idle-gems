@@ -16,7 +16,7 @@ function Game() {
   //STATE
 
   //Tone JS channel volume
-  const [sfxVolume, setSfxVolume] = useState(1); // Volume for SFX channel (0 to 1)
+  const [sfxVolume, setSFXVolume] = useState(1); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
 
   //balls
@@ -496,7 +496,7 @@ function Game() {
 
   const handleSFXVolumeChange = (event) => {
     const volume = Number(event.target.value);
-    setSfxVolume(volume);
+    setSFXVolume(volume);
     sfxChannel.current.gain.value = volume;
   };
 
@@ -519,61 +519,6 @@ function Game() {
         buyBallRadiusUpgrade={buyBallRadiusUpgrade}
         ballRadiusUpgradePrice={ballRadiusUpgradePrice}
       />
-      {/* <div className="buttons--container">
-          <button onClick={buyBall}>Buy Ball (20 gems)</button>
-
-          <button onClick={buySpeedUpgrade}>+Speed (1 gem)</button>
-
-          <button onClick={spawnBrick}>Spawn Brick</button>
-          <button onClick={clearBlueBalls}>Clear Balls</button>
-          <button onClick={clearRedBricks}>Clear Bricks</button>
-          <button onClick={toggleBrickSpawning}>
-            {isSpawningBricks ? "Stop Spawning Bricks" : "AutoSpawn Bricks"}
-          </button>
-          <button>Buy Big Ball (100 gems - todo)</button>
-          <button>+Damage (todo)</button>
-          <button>+Ball Size (todo)</button>
-          <button>+Number of bricks on screen (todo)</button>
-          <button>+Brick spawn rate (todo)</button>
-          <button>+Max balls allowed to be owned by player (todo)</button>
-        </div>
-
-        <label htmlFor="ballSpeed"> Ball Speed: {ballSpeed.toFixed(2)}</label>
-        <input
-          type="range"
-          id="ballSpeed"
-          name="ballSpeed"
-          step="0.1"
-          min="0"
-          max="20"
-          value={ballSpeed}
-          onChange={handleSpeedChange}
-        />
-
-        <div className="volume-controls">
-          <label htmlFor="sfxVolume">SFX Volume:</label>
-          <input
-            type="range"
-            id="sfxVolume"
-            name="sfxVolume"
-            min="0"
-            max="1"
-            step="0.01"
-            value={sfxVolume}
-            onChange={handleSfxVolumeChange}
-          />
-          <label htmlFor="musicVolume">Music Volume:</label>
-          <input
-            type="range"
-            id="musicVolume"
-            name="musicVolume"
-            min="0"
-            max="1"
-            step="0.01"
-            value={musicVolume}
-            onChange={handleMusicVolumeChange}
-          />
-        </div> */}
     </>
   );
 }
