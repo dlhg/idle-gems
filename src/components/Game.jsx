@@ -21,7 +21,11 @@ function Game() {
   const [ballCount, setBallCount] = useState(0);
   const [ballDamage, setBallDamage] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
-  const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
+
+  const [ballRadius, setBallRadius] = useState(
+    Math.sqrt(window.innerWidth * window.innerHeight) / 200
+  );
+
   const [ballPrice, setBallPrice] = useState(100);
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
   const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
@@ -29,7 +33,9 @@ function Game() {
   //bricks
   const [bricks, setBricks] = useState([]);
   const [brickInitialHealth, setBrickInitialHealth] = useState(100);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 70);
+  const [brickRadius, setBrickRadius] = useState(
+    Math.sqrt(window.innerWidth * window.innerHeight) / 50
+  );
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(200);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
@@ -244,7 +250,9 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      ctx.font = "bold 1vw Arial";
+
+      const fontSize = ballRadius * 2.2;
+      ctx.font = `bold ${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
