@@ -14,13 +14,13 @@ const FooterActionButtons = ({
       <button className="action--button">Skill Tree</button>
 
       <button className="action--button" onClick={buyBall}>
-        +Ball({ballPrice} gems)
+        +Ball({ballPrice}g)
       </button>
       <button className="action--button" onClick={buyBallRadiusUpgrade}>
-        +Ball Size ({ballRadiusUpgradePrice})
+        +Size ({ballRadiusUpgradePrice}g)
       </button>
       <button className="action--button" onClick={buyBallSpeedUpgrade}>
-        +Ball Speed ({ballSpeedUpgradePrice} gems)
+        +Speed ({ballSpeedUpgradePrice}g)
       </button>
     </div>
   );
