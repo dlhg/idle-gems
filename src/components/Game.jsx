@@ -14,14 +14,11 @@ import teleportSound from "../assets/sfx/teleport.mp3";
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
 
 function Game() {
-  //STATE
-
-  //Tone JS channel volume
-  const [sfxVolume, setSFXVolume] = useState(1); // Volume for SFX channel (0 to 1)
-  const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
+  /* STAT E*/
 
   //balls
   const [balls, setBalls] = useState([]);
+  const [ballCount, setBallCount] = useState(0);
   const [ballDamage, setBallDamage] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
   const [ballRadius, setBallRadius] = useState(window.innerWidth / 200);
@@ -58,18 +55,23 @@ function Game() {
   //unused
   const [playerLevel, setPlayerLevel] = useState(1);
 
-  //REFS
+  //Tone JS channel volume
+  const [sfxVolume, setSFXVolume] = useState(1); // Volume for SFX channel (0 to 1)
+  const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
 
-  // Using useRef to persist Gain nodes across renders
+  /* REFS */
+
+  // Using useRef to persist TJS gain nodes across renders
   const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
+
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const ballsRef = useRef(balls);
 
-  //TONE PLAYERS AND CHANNEL CONNECTIONS
+  /* TONE PLAYERS AND CHANNEL CONNECTIONS */
 
   //function to play any sound
 
@@ -77,22 +79,19 @@ function Game() {
     fileName.current.stop(Tone.now());
     fileName.current.start(Tone.now());
   }
-
-  // Initialize Tone.Player for the shortThud and connect to SFX channel
+  // For each SFX file used, create ToneJS Player as a ref, connect to sfxChannel, then load a soundfile into the player for that sound
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
   shortThud.current.load(shortthud);
 
-  // Initialize Tone.Player for the brickbreak sound and connect to SFX channel
   const brickbreakSound = useRef(new Tone.Player().connect(sfxChannel.current));
-  brickbreakSound.current.load(brickbreak); // Load the brickbreak sound
+  brickbreakSound.current.load(brickbreak);
 
-  // Initialize Tone.Player for the teleport sound and connect to SFX channel
   const teleportSoundPlayer = useRef(
     new Tone.Player().connect(sfxChannel.current)
   );
-  teleportSoundPlayer.current.load(teleportSound); // Load the teleport sound
+  teleportSoundPlayer.current.load(teleportSound);
 
-  // USECALLBACK
+  /* USECALLBACK */
   const handleCanvasClick = useCallback(
     (event) => {
       const rect = canvasRef.current.getBoundingClientRect();
@@ -119,9 +118,10 @@ function Game() {
 
         if (
           numOfBricksFarEnoughAway === bricksRef.current.length &&
-          canPlayerTeleportBallsOnClick
+          canPlayerTeleportBallsOnClick &&
+          ballCount > 0
         ) {
-          // console.log(`trying to teleport balls`);
+          // teleport balls to click location
           playSound(brickbreakSound);
           setBalls(
             ballsRef.current.map((ball) => ({
@@ -150,7 +150,7 @@ function Game() {
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
-    [canPlayerTeleportBallsOnClick, clickDamage, ballRadius]
+    [canPlayerTeleportBallsOnClick, clickDamage, ballRadius, ballCount]
   );
 
   // EFFECTS
@@ -181,7 +181,7 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
-          spawnBrick();
+          spawnBrickAtRandomLocation();
         }
       }, brickSpawnRate);
     }
@@ -368,6 +368,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - ballPrice);
+    setBallCount((prev) => prev + 1);
     let newBall;
     let overlap;
     do {
@@ -398,7 +399,7 @@ function Game() {
     setBalls([...balls, newBall]);
   };
 
-  const spawnBrick = () => {
+  const spawnBrickAtRandomLocation = () => {
     let newBrick;
     let overlap;
     let attempts = 0; // Counter for the number of attempts
