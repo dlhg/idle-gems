@@ -7,7 +7,7 @@ import FooterActionButtons from "./FooterActionButtons";
 
 //sfx
 import shortthud from "../assets/sfx/shortthud.mp3";
-import coin from "../assets/sfx/beep.mp3";
+import brickbreak from "../assets/sfx/beep.mp3";
 
 // brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
@@ -77,25 +77,16 @@ function Game() {
     shortThud.current.stop(Tone.now());
     shortThud.current.start(Tone.now());
   };
-  // Initialize Tone.Player for the coin sound and connect to SFX channel
-  const coinSound = useRef(new Tone.Player().connect(sfxChannel.current));
-  coinSound.current.load(coin); // Load the coin sound
+  // Initialize Tone.Player for the brickbreak sound and connect to SFX channel
+  const brickbreakSound = useRef(new Tone.Player().connect(sfxChannel.current));
+  brickbreakSound.current.load(brickbreak); // Load the brickbreak sound
   // Function to play brick break sound
-  const playCoinSound = () => {
-    coinSound.current.stop(Tone.now());
-    coinSound.current.start(Tone.now());
+  const playBrickBreakSound = () => {
+    brickbreakSound.current.stop(Tone.now());
+    brickbreakSound.current.start(Tone.now());
   };
 
-  // EFFECTS
-
-  // Tone JS - Ensure all buffers are loaded before setting up the game
-  useEffect(() => {
-    Tone.loaded().then(() => {
-      // Now all audio is loaded
-      // Setup game here
-    });
-  }, []);
-
+  // USECALLBACK
   const handleCanvasClick = useCallback(
     (event) => {
       const rect = canvasRef.current.getBoundingClientRect();
@@ -148,13 +139,24 @@ function Game() {
       setBricks(newBricks.filter((brick) => brick.health > 0));
 
       if (brickDestroyed) {
-        playCoinSound();
+        playBrickBreakSound();
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
     [canPlayerTeleportBallsOnClick, clickDamage, ballRadius]
   );
 
+  // EFFECTS
+
+  // Tone JS - Ensure all buffers are loaded before setting up the game
+  useEffect(() => {
+    Tone.loaded().then(() => {
+      // Now all audio is loaded
+      // Setup game here
+    });
+  }, []);
+
+  // effect that attaches and removed event listeners from canvas on click
   useEffect(() => {
     // console.log("value of handleCanvasClick changed?");
     const canvas = canvasRef.current;
@@ -184,6 +186,7 @@ function Game() {
     };
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
+  // Main game rendering/physics loop - handles collision, movement etc
   useEffect(() => {
     bricksRef.current = bricks; // Update the ref's current value whenever bricks change
     ballsRef.current = balls;
@@ -319,7 +322,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        playCoinSound(); // Play coin sound when a brick is destroyed
+        playBrickBreakSound(); // Play brickbreak sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
