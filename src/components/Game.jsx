@@ -71,34 +71,26 @@ function Game() {
 
   //TONE PLAYERS AND CHANNEL CONNECTIONS
 
+  //function to play any sound
+
+  function playSound(fileName) {
+    fileName.current.stop(Tone.now());
+    fileName.current.start(Tone.now());
+  }
+
   // Initialize Tone.Player for the shortThud and connect to SFX channel
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
   shortThud.current.load(shortthud);
-  // Function to play pop sound
-  const playPopSound = () => {
-    shortThud.current.stop(Tone.now());
-    shortThud.current.start(Tone.now());
-  };
+
   // Initialize Tone.Player for the brickbreak sound and connect to SFX channel
   const brickbreakSound = useRef(new Tone.Player().connect(sfxChannel.current));
   brickbreakSound.current.load(brickbreak); // Load the brickbreak sound
-  // Function to play brick break sound
-  const playBrickBreakSound = () => {
-    brickbreakSound.current.stop(Tone.now());
-    brickbreakSound.current.start(Tone.now());
-  };
 
   // Initialize Tone.Player for the teleport sound and connect to SFX channel
   const teleportSoundPlayer = useRef(
     new Tone.Player().connect(sfxChannel.current)
   );
   teleportSoundPlayer.current.load(teleportSound); // Load the teleport sound
-
-  // Function to play teleport sound
-  const playTeleportSound = () => {
-    teleportSoundPlayer.current.stop(Tone.now());
-    teleportSoundPlayer.current.start(Tone.now());
-  };
 
   // USECALLBACK
   const handleCanvasClick = useCallback(
@@ -130,7 +122,7 @@ function Game() {
           canPlayerTeleportBallsOnClick
         ) {
           // console.log(`trying to teleport balls`);
-          playTeleportSound();
+          playSound(brickbreakSound);
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
@@ -141,7 +133,7 @@ function Game() {
         }
 
         if (distance < brickRadius) {
-          playPopSound();
+          playSound(shortThud);
           const newHealth = brick.health - clickDamage;
           brickDestroyed = newHealth <= 0;
 
@@ -154,7 +146,7 @@ function Game() {
       setBricks(newBricks.filter((brick) => brick.health > 0));
 
       if (brickDestroyed) {
-        playBrickBreakSound();
+        playSound(brickbreakSound);
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
@@ -318,8 +310,8 @@ function Game() {
 
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
-          // Play pop sound
-          playPopSound();
+          // Play ball + brick impact sound
+          playSound(shortThud);
 
           // Check if the brick is destroyed
           if (bricks[index].health <= 0) {
@@ -337,7 +329,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        playBrickBreakSound(); // Play brickbreak sound when a brick is destroyed
+        playSound(brickbreakSound); // Play brickbreak sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
