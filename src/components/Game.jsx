@@ -451,12 +451,14 @@ function Game() {
   };
 
   function spawnBricksInConcentricCircles() {
+    const maxCircles = 3; // Maximum number of concentric circles to be drawn
     const centerX = canvasWidth / 2;
     const centerY = canvasHeight / 2;
     let currentRadius = Math.min(centerX, centerY) - brickRadius; // Maximum radius for the outer circle
     let currentHealth = brickInitialHealth; // Initialize current health
+    let circlesDrawn = 0; // Counter for the number of circles drawn
 
-    while (currentRadius > brickRadius) {
+    while (currentRadius > brickRadius && circlesDrawn < maxCircles) {
       const circumference = 2 * Math.PI * currentRadius;
       const bricksInCircle = Math.floor(circumference / (2 * brickRadius));
       const angleStep = (2 * Math.PI) / bricksInCircle;
@@ -478,6 +480,7 @@ function Game() {
 
       currentRadius -= 4 * brickRadius; // Skip one circle's width (2 * diameter) for open space
       currentHealth *= 2; // Optionally, double the health for the next circle
+      circlesDrawn++; // Increment the circles drawn counter
     }
   }
 
