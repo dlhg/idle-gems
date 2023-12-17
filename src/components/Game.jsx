@@ -29,7 +29,7 @@ function Game() {
   //bricks
   const [bricks, setBricks] = useState([]);
   const [brickInitialHealth, setBrickInitialHealth] = useState(100);
-  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 80);
+  const [brickRadius, setBrickRadius] = useState(window.innerWidth / 70);
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
   const [brickSpawnRate, setBrickSpawnRate] = useState(200);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
@@ -478,8 +478,8 @@ function Game() {
         }
       }
 
-      currentRadius -= 2 * brickRadius; // Move to the next inner circle
-      currentHealth *= 2; // Double the health for the next circle
+      currentRadius -= 4 * brickRadius; // Skip one circle's width (2 * diameter) for open space
+      currentHealth *= 2; // Optionally, double the health for the next circle
     }
   }
 
