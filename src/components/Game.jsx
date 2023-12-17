@@ -86,8 +86,8 @@ function Game() {
   const brickBreak = useRef(new Tone.Player().connect(sfxChannel.current));
   brickBreak.current.load(brickbreak);
 
-  const teleportPlayer = useRef(new Tone.Player().connect(sfxChannel.current));
-  teleportPlayer.current.load(teleport);
+  const telePort = useRef(new Tone.Player().connect(sfxChannel.current));
+  telePort.current.load(teleport);
 
   /* USECALLBACK */
   const handleCanvasClick = useCallback(
@@ -120,7 +120,7 @@ function Game() {
           ballCount > 0
         ) {
           // teleport balls to click location
-          playSound(brickBreak);
+          playSound(telePort);
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
