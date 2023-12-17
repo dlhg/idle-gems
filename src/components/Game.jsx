@@ -8,6 +8,7 @@ import FooterActionButtons from "./FooterActionButtons";
 //sfx
 import shortthud from "../assets/sfx/shortthud.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
+import teleportSound from "../assets/sfx/teleport.mp3";
 
 // brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
@@ -69,6 +70,7 @@ function Game() {
   const ballsRef = useRef(balls);
 
   //TONE PLAYERS AND CHANNEL CONNECTIONS
+
   // Initialize Tone.Player for the shortThud and connect to SFX channel
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
   shortThud.current.load(shortthud);
@@ -84,6 +86,18 @@ function Game() {
   const playBrickBreakSound = () => {
     brickbreakSound.current.stop(Tone.now());
     brickbreakSound.current.start(Tone.now());
+  };
+
+  // Initialize Tone.Player for the teleport sound and connect to SFX channel
+  const teleportSoundPlayer = useRef(
+    new Tone.Player().connect(sfxChannel.current)
+  );
+  teleportSoundPlayer.current.load(teleportSound); // Load the teleport sound
+
+  // Function to play teleport sound
+  const playTeleportSound = () => {
+    teleportSoundPlayer.current.stop(Tone.now());
+    teleportSoundPlayer.current.start(Tone.now());
   };
 
   // USECALLBACK
@@ -116,6 +130,7 @@ function Game() {
           canPlayerTeleportBallsOnClick
         ) {
           // console.log(`trying to teleport balls`);
+          playTeleportSound();
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
