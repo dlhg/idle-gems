@@ -8,7 +8,7 @@ import FooterActionButtons from "./FooterActionButtons";
 //sfx
 import shortthud from "../assets/sfx/shortthud.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
-import teleportSound from "../assets/sfx/teleport.mp3";
+import teleport from "../assets/sfx/teleport.mp3";
 
 // brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
@@ -83,13 +83,11 @@ function Game() {
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
   shortThud.current.load(shortthud);
 
-  const brickbreakSound = useRef(new Tone.Player().connect(sfxChannel.current));
-  brickbreakSound.current.load(brickbreak);
+  const brickBreak = useRef(new Tone.Player().connect(sfxChannel.current));
+  brickBreak.current.load(brickbreak);
 
-  const teleportSoundPlayer = useRef(
-    new Tone.Player().connect(sfxChannel.current)
-  );
-  teleportSoundPlayer.current.load(teleportSound);
+  const teleportPlayer = useRef(new Tone.Player().connect(sfxChannel.current));
+  teleportPlayer.current.load(teleport);
 
   /* USECALLBACK */
   const handleCanvasClick = useCallback(
@@ -122,7 +120,7 @@ function Game() {
           ballCount > 0
         ) {
           // teleport balls to click location
-          playSound(brickbreakSound);
+          playSound(brickBreak);
           setBalls(
             ballsRef.current.map((ball) => ({
               ...ball,
@@ -146,7 +144,7 @@ function Game() {
       setBricks(newBricks.filter((brick) => brick.health > 0));
 
       if (brickDestroyed) {
-        playSound(brickbreakSound);
+        playSound(brickBreak);
         setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
       }
     },
@@ -329,7 +327,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        playSound(brickbreakSound); // Play brickbreak sound when a brick is destroyed
+        playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
