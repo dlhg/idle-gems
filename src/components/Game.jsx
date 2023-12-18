@@ -295,11 +295,15 @@ function Game() {
 
   // Main game rendering/physics loop - handles collision, movement etc
   useEffect(() => {
-    bricksRef.current = bricks; // Update the ref's current value whenever bricks change
+    // Update the ref's current value whenever bricks or balls change
+    bricksRef.current = bricks;
     ballsRef.current = balls;
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
+
+    // Draw ball
     const drawBall = (ball) => {
       const gradient = ctx.createRadialGradient(
         ball.x,
@@ -437,7 +441,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
+        // playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
