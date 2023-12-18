@@ -63,7 +63,7 @@ function Game() {
     Math.sqrt(window.innerWidth * window.innerHeight) / 50
   );
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(200);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(1000);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
 
   //perks/unlocks
@@ -78,7 +78,7 @@ function Game() {
     useState(50);
 
   //currency
-  const [gems, setGems] = useState(100);
+  const [gems, setGems] = useState(100000);
 
   //canvas size
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
@@ -142,6 +142,11 @@ function Game() {
   function playSoundPlayer(player) {
     if (player && player.loaded) {
       // Check if the player exists and is loaded
+      if (player.state === "started") {
+        // If the player is already playing, return without doing anything
+        return;
+      }
+
       player.stop(Tone.now());
       player.start(Tone.now());
     }
