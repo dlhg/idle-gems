@@ -175,7 +175,7 @@ function Game() {
   ];
 
   // tonejs limiter
-  const limiter = new Limiter(-16).toDestination();
+  const limiter = new Limiter(-20).toDestination();
   /* REFS */
 
   // Using useRef to persist TJS gain nodes across renders
