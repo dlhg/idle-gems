@@ -137,7 +137,7 @@ function Game() {
 
   /* TONE PLAYERS AND CHANNEL CONNECTIONS */
 
-  //function to play any sound
+  //functions to play sound - two different ways of doing this - decide on one
 
   function playSoundPlayer(player) {
     if (player && player.loaded) {
