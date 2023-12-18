@@ -139,12 +139,17 @@ function Game() {
 
   //function to play any sound
 
-  function playSound(player) {
+  function playSoundPlayer(player) {
     if (player && player.loaded) {
       // Check if the player exists and is loaded
       player.stop(Tone.now());
       player.start(Tone.now());
     }
+  }
+
+  function playSound(fileName) {
+    fileName.current.stop(Tone.now());
+    fileName.current.start(Tone.now());
   }
   // For each SFX file used, create ToneJS Player as a ref, connect to sfxChannel, then load a soundfile into the player for that sound
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
@@ -409,7 +414,7 @@ function Game() {
           );
           const randomSynthSoundPlayer =
             synthSoundPlayersRef.current[randomIndex];
-          playSound(randomSynthSoundPlayer);
+          playSoundPlayer(randomSynthSoundPlayer);
 
           // Check if the brick is destroyed
           if (bricks[index].health <= 0) {
