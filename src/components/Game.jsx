@@ -127,6 +127,8 @@ function Game() {
   const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
 
+  const synthSoundPlayersRef = useRef([]);
+
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(0);
@@ -137,9 +139,12 @@ function Game() {
 
   //function to play any sound
 
-  function playSound(fileName) {
-    fileName.current.stop(Tone.now());
-    fileName.current.start(Tone.now());
+  function playSound(player) {
+    if (player && player.loaded) {
+      // Check if the player exists and is loaded
+      player.stop(Tone.now());
+      player.start(Tone.now());
+    }
   }
   // For each SFX file used, create ToneJS Player as a ref, connect to sfxChannel, then load a soundfile into the player for that sound
   const shortThud = useRef(new Tone.Player().connect(sfxChannel.current));
@@ -222,6 +227,30 @@ function Game() {
       // Now all audio is loaded
       // Setup game here
     });
+  }, []);
+
+  useEffect(() => {
+    // Assign Tone.js Players to the ref
+    synthSoundPlayersRef.current = synthSounds.map((soundFile) => {
+      const player = new Tone.Player(soundFile).connect(sfxChannel.current);
+      player.autostart = false;
+      return player;
+    });
+
+    // Ensure all buffers are loaded before using the sounds
+    Tone.loaded().then(() => {
+      console.log("All synth sounds have been loaded");
+      // You can now safely use synthSoundPlayersRef.current[index].start() to play a sound
+    });
+
+    // Cleanup function to dispose of players when component unmounts
+    return () => {
+      synthSoundPlayersRef.current.forEach((player) => {
+        if (player) {
+          player.dispose();
+        }
+      });
+    };
   }, []);
 
   // effect that attaches and removed event listeners from canvas on click
@@ -374,7 +403,13 @@ function Game() {
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
-          playSound(shortThud);
+          // playSound(shortThud);
+          const randomIndex = Math.floor(
+            Math.random() * synthSoundPlayersRef.current.length
+          );
+          const randomSynthSoundPlayer =
+            synthSoundPlayersRef.current[randomIndex];
+          playSound(randomSynthSoundPlayer);
 
           // Check if the brick is destroyed
           if (bricks[index].health <= 0) {
@@ -627,6 +662,15 @@ function Game() {
     const volume = Number(event.target.value);
     setSFXVolume(volume);
     sfxChannel.current.gain.value = volume;
+  };
+
+  // Create Tone JS players from an array of sound files, connect them to SFX channel, and load sounds into them
+  const createSynthSoundPlayers = (soundFiles, sfxChannel) => {
+    return soundFiles.map((soundFile) => {
+      const player = new Tone.Player().connect(sfxChannel);
+      player.load(soundFile);
+      return player;
+    });
   };
 
   return (
