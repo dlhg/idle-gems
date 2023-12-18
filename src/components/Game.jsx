@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import * as Tone from "tone";
+import { Limiter } from "tone";
 
 //component imports
 import Navbar from "./Navbar";
@@ -173,10 +174,14 @@ function Game() {
     G3_filter3_transposed,
   ];
 
+  // tonejs limiter
+  const limiter = new Limiter(-16).toDestination();
   /* REFS */
 
   // Using useRef to persist TJS gain nodes across renders
-  const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
+
+  const sfxChannel = useRef(new Tone.Gain(sfxVolume).connect(limiter));
+
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
 
   const synthSoundPlayersRef = useRef([]);
