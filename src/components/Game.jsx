@@ -193,6 +193,7 @@ function Game() {
         }
 
         if (distance < brickRadius) {
+          //if player clicks on brick
           playSound(shortThud);
           const newHealth = brick.health - clickDamage;
           brickDestroyed = newHealth <= 0;
