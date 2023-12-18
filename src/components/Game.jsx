@@ -10,6 +10,32 @@ import shortthud from "../assets/sfx/shortthud.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
 import teleport from "../assets/sfx/teleport.mp3";
 
+import A3_filter1 from "../assets/sfx/synthtones/A3_filter1.mp3";
+import A4_filter1 from "../assets/sfx/synthtones/A4_filter1.mp3";
+import A4_filter2 from "../assets/sfx/synthtones/A4_filter2.mp3";
+import A4_filter3 from "../assets/sfx/synthtones/A4_filter3.mp3";
+import B3_filter1 from "../assets/sfx/synthtones/B3_filter1.mp3";
+import B4_filter2 from "../assets/sfx/synthtones/B4_filter2.mp3";
+import B4_filter3 from "../assets/sfx/synthtones/B4_filter3.mp3";
+import C3_filter1 from "../assets/sfx/synthtones/C3_filter1.mp3";
+import C3_filter2 from "../assets/sfx/synthtones/C3_filter2.mp3";
+import C3_filter3 from "../assets/sfx/synthtones/C3_filter3.mp3";
+import C4_filter1 from "../assets/sfx/synthtones/C4_filter1.mp3";
+import C4_filter2 from "../assets/sfx/synthtones/C4_filter2.mp3";
+import D3_filter1 from "../assets/sfx/synthtones/D3_filter1.mp3";
+import D3_filter2 from "../assets/sfx/synthtones/D3_filter2.mp3";
+import D3_filter3 from "../assets/sfx/synthtones/D3_filter3.mp3";
+import D4_filter3 from "../assets/sfx/synthtones/D4_filter3.mp3";
+import E3_filter1 from "../assets/sfx/synthtones/E3_filter1.mp3";
+import E3_filter2 from "../assets/sfx/synthtones/E3_filter2.mp3";
+import E3_filter3 from "../assets/sfx/synthtones/E3_filter3.mp3";
+import F3_filter1 from "../assets/sfx/synthtones/F3_filter1.mp3";
+import F3_filter2 from "../assets/sfx/synthtones/F3_filter2.mp3";
+import F3_filter3 from "../assets/sfx/synthtones/F3_filter3.mp3";
+import G3_filter1 from "../assets/sfx/synthtones/G3_filter1.mp3";
+import G3_filter2 from "../assets/sfx/synthtones/G3_filter2.mp3";
+import G3_filter3 from "../assets/sfx/synthtones/G3_filter3.mp3";
+
 // brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
 
@@ -64,6 +90,36 @@ function Game() {
   //Tone JS channel volume
   const [sfxVolume, setSFXVolume] = useState(1); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
+
+  //Sound groupings for randomized playback
+
+  const synthSounds = [
+    A3_filter1,
+    A4_filter1,
+    A4_filter2,
+    A4_filter3,
+    B3_filter1,
+    B4_filter2,
+    B4_filter3,
+    C3_filter1,
+    C3_filter2,
+    C3_filter3,
+    C4_filter1,
+    C4_filter2,
+    D3_filter1,
+    D3_filter2,
+    D3_filter3,
+    D4_filter3,
+    E3_filter1,
+    E3_filter2,
+    E3_filter3,
+    F3_filter1,
+    F3_filter2,
+    F3_filter3,
+    G3_filter1,
+    G3_filter2,
+    G3_filter3,
+  ];
 
   /* REFS */
 
