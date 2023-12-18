@@ -35,6 +35,31 @@ import F3_filter3 from "../assets/sfx/synthtones/F3_filter3.mp3";
 import G3_filter1 from "../assets/sfx/synthtones/G3_filter1.mp3";
 import G3_filter2 from "../assets/sfx/synthtones/G3_filter2.mp3";
 import G3_filter3 from "../assets/sfx/synthtones/G3_filter3.mp3";
+import A3_filter1_transposed from "../assets/sfx/synthtones/A3_filter1_transposed.mp3";
+import A4_filter1_transposed from "../assets/sfx/synthtones/A4_filter1_transposed.mp3";
+import A4_filter2_transposed from "../assets/sfx/synthtones/A4_filter2_transposed.mp3";
+import A4_filter3_transposed from "../assets/sfx/synthtones/A4_filter3_transposed.mp3";
+import B3_filter1_transposed from "../assets/sfx/synthtones/B3_filter1_transposed.mp3";
+import B4_filter2_transposed from "../assets/sfx/synthtones/B4_filter2_transposed.mp3";
+import B4_filter3_transposed from "../assets/sfx/synthtones/B4_filter3_transposed.mp3";
+import C3_filter1_transposed from "../assets/sfx/synthtones/C3_filter1_transposed.mp3";
+import C3_filter2_transposed from "../assets/sfx/synthtones/C3_filter2_transposed.mp3";
+import C3_filter3_transposed from "../assets/sfx/synthtones/C3_filter3_transposed.mp3";
+import C4_filter1_transposed from "../assets/sfx/synthtones/C4_filter1_transposed.mp3";
+import C4_filter2_transposed from "../assets/sfx/synthtones/C4_filter2_transposed.mp3";
+import D3_filter1_transposed from "../assets/sfx/synthtones/D3_filter1_transposed.mp3";
+import D3_filter2_transposed from "../assets/sfx/synthtones/D3_filter2_transposed.mp3";
+import D3_filter3_transposed from "../assets/sfx/synthtones/D3_filter3_transposed.mp3";
+import D4_filter3_transposed from "../assets/sfx/synthtones/D4_filter3_transposed.mp3";
+import E3_filter1_transposed from "../assets/sfx/synthtones/E3_filter1_transposed.mp3";
+import E3_filter2_transposed from "../assets/sfx/synthtones/E3_filter2_transposed.mp3";
+import E3_filter3_transposed from "../assets/sfx/synthtones/E3_filter3_transposed.mp3";
+import F3_filter1_transposed from "../assets/sfx/synthtones/F3_filter1_transposed.mp3";
+import F3_filter2_transposed from "../assets/sfx/synthtones/F3_filter2_transposed.mp3";
+import F3_filter3_transposed from "../assets/sfx/synthtones/F3_filter3_transposed.mp3";
+import G3_filter1_transposed from "../assets/sfx/synthtones/G3_filter1_transposed.mp3";
+import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transposed.mp3";
+import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
 
 // brick texture images
 import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
@@ -119,6 +144,33 @@ function Game() {
     G3_filter1,
     G3_filter2,
     G3_filter3,
+
+    // Transposed files
+    A3_filter1_transposed,
+    A4_filter1_transposed,
+    A4_filter2_transposed,
+    A4_filter3_transposed,
+    B3_filter1_transposed,
+    B4_filter2_transposed,
+    B4_filter3_transposed,
+    C3_filter1_transposed,
+    C3_filter2_transposed,
+    C3_filter3_transposed,
+    C4_filter1_transposed,
+    C4_filter2_transposed,
+    D3_filter1_transposed,
+    D3_filter2_transposed,
+    D3_filter3_transposed,
+    D4_filter3_transposed,
+    E3_filter1_transposed,
+    E3_filter2_transposed,
+    E3_filter3_transposed,
+    F3_filter1_transposed,
+    F3_filter2_transposed,
+    F3_filter3_transposed,
+    G3_filter1_transposed,
+    G3_filter2_transposed,
+    G3_filter3_transposed,
   ];
 
   /* REFS */
