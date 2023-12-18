@@ -73,11 +73,9 @@ function Game() {
   const [ballCount, setBallCount] = useState(0);
   const [ballDamage, setBallDamage] = useState(10);
   const [ballSpeed, setBallSpeed] = useState(0.5);
-
   const [ballRadius, setBallRadius] = useState(
     Math.sqrt(window.innerWidth * window.innerHeight) / 200
   );
-
   const [ballPrice, setBallPrice] = useState(100);
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
   const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
@@ -145,8 +143,6 @@ function Game() {
     G3_filter1,
     G3_filter2,
     G3_filter3,
-
-    // Transposed files
     A3_filter1_transposed,
     A4_filter1_transposed,
     A4_filter2_transposed,
