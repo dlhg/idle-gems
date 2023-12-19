@@ -66,7 +66,7 @@ import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transpose
 import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
 
 // brick texture images
-import bluegemtexture from "../assets/images/textures/bricks/bluegemtexturesmall.jpg";
+import bluegemtexture from "../assets/images/textures/bricks/sphere.png";
 
 function Game() {
   /* STATE*/

@@ -3,15 +3,8 @@
     background-position: 0 0;
   }
   100% {
-    background-position: 0 100%;
+    background-position: 0 100;
   }
-}
-
-canvas {
-  width: 100%;
-  height: 100%;
-  background-image: url(./assets//images/backgrounds/twinklingspaceanimated.gif);
-  animation: scrollBackground 10s linear infinite;
 }
 
 * {
@@ -34,10 +27,13 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 2vw;
+  background-image: url(https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWk5djBiY2d0dHgxcDI2b2QxOWZxejJ2MncydXBpcDNwd2c4dmhnZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3kNwQFSN3YPuJ8o5A8/giphy.gif);
+  background-size: 100%;
+  background-position: center;
 }
 
 .navbar {
-  background-color: gray;
+  background-color: #1b427c9c;
   color: white;
   text-align: center;
   height: 10vh;
@@ -56,10 +52,11 @@ body {
 canvas {
   width: 100%;
   height: 100%;
-  background-image: url(./assets//images/backgrounds/twinklingspaceanimated.gif);
-  animation: scrollBackground 60s linear infinite;
+
+  /* animation: scrollBackground 10s linear infinite; */
 }
 .footer {
+  background-color: #1b427c9c;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -67,7 +64,6 @@ canvas {
   width: 100vw;
   position: relative;
   z-index: 1;
-  background-color: gray;
 }
 
 button {
