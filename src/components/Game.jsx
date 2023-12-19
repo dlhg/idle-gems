@@ -66,7 +66,7 @@ import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transpose
 import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
 
 // brick texture images
-import bluegemtexture from "../assets/images/textures/bricks/sphere.png";
+import bluegemtexture from "../assets/images/backgrounds/patt.png";
 
 function Game() {
   /* STATE*/
@@ -105,7 +105,7 @@ function Game() {
     useState(50);
 
   //currency
-  const [gems, setGems] = useState(100);
+  const [gems, setGems] = useState(1000);
 
   //canvas size
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
