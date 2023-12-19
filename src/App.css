@@ -1,9 +1,9 @@
-@keyframes scrollBackground {
+@keyframes scroll {
   0% {
     background-position: 0 0;
   }
   100% {
-    background-position: 0 100%;
+    background-position: 0 800px;
   }
 }
 
@@ -28,10 +28,10 @@ body {
   flex-direction: column;
   font-size: 2vw;
   background-image: url(./assets/images/backgrounds/blueripple_small.gif);
-  background-size: 25%;
+  background-size: 800px;
   background-repeat: repeat;
   background-position: center;
-  /* animation: scrollBackground 30s linear infinite; */
+  animation: scroll 50s linear infinite;
 }
 
 .navbar {
