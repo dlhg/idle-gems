@@ -749,7 +749,13 @@ function Game() {
 
   return (
     <>
-      <Navbar gems={gems} playerLevel={playerLevel} ballSpeed={ballSpeed} />
+      <Navbar
+        gems={gems}
+        playerLevel={playerLevel}
+        ballSpeed={ballSpeed}
+        ballDamage={ballDamage}
+        clickDamage={clickDamage}
+      />
       <div className="canvas--wrapper">
         <canvas
           className="game--canvas"

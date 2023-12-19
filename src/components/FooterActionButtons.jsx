@@ -10,9 +10,6 @@ const FooterActionButtons = ({
 }) => {
   return (
     <div className="footer">
-      <button className="action--button">Balls</button>
-      <button className="action--button">Skill Tree</button>
-
       <button className="action--button" onClick={buyBall}>
         +Ball({ballPrice}g)
       </button>
@@ -22,6 +19,8 @@ const FooterActionButtons = ({
       <button className="action--button" onClick={buyBallSpeedUpgrade}>
         +Speed ({ballSpeedUpgradePrice}g)
       </button>
+      <button>+Ball Damage(g)</button>
+      <button>+Click Damage(g)</button>
     </div>
   );
 };
