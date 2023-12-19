@@ -215,8 +215,13 @@ function Game() {
 
     // Play the sound
     soundPlayer.start();
-  }
 
+    // Dispose of the reverb after the sound has been played
+    soundPlayer.onstop = () => {
+      soundPlayer.disconnect(reverb);
+      reverb.dispose();
+    };
+  }
   function playSound(fileName) {
     fileName.current.stop(Tone.now());
     fileName.current.start(Tone.now());
