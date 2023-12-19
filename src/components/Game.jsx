@@ -210,31 +210,16 @@ function Game() {
     // Set the reverb time
     reverb.decay = randomReverbTime;
 
-    // Create a ping pong delay and connect it to the master output
-    const delay = new Tone.PingPongDelay().toDestination();
-
-    // Generate a random delay time between 50ms and 500ms
-    const randomDelayTime = Math.random() * (0.5 - 0.05) + 0.05;
-
-    // Generate a random feedback value between 0 and 0.5
-    const randomFeedback = Math.random() * 0.5;
-
-    // Set the delay time and feedback
-    delay.delayTime.value = randomDelayTime;
-    delay.feedback.value = randomFeedback;
-
-    // Connect the sound player to the reverb and delay
-    soundPlayer.chain(reverb, delay);
+    // Connect the sound player to the reverb
+    soundPlayer.connect(reverb);
 
     // Play the sound
     soundPlayer.start();
 
-    // Dispose of the reverb and delay after the sound has been played
+    // Dispose of the reverb after the sound has been played
     soundPlayer.onstop = () => {
       soundPlayer.disconnect(reverb);
-      soundPlayer.disconnect(delay);
       reverb.dispose();
-      delay.dispose();
     };
   }
   function playSound(fileName) {
