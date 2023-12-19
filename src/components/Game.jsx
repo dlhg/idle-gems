@@ -6,6 +6,9 @@ import { Limiter } from "tone";
 import Navbar from "./Navbar";
 import FooterActionButtons from "./FooterActionButtons";
 
+//music loop
+import europaLoop from "../assets/bgmusic/europa.mp3";
+
 //sfx
 import shortthud from "../assets/sfx/shortthud.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
@@ -72,7 +75,7 @@ function Game() {
   const [balls, setBalls] = useState([]);
   const [ballCount, setBallCount] = useState(0);
   const [ballDamage, setBallDamage] = useState(10);
-  const [ballSpeed, setBallSpeed] = useState(0.5);
+  const [ballSpeed, setBallSpeed] = useState(0.1);
   const [ballRadius, setBallRadius] = useState(
     Math.sqrt(window.innerWidth * window.innerHeight) / 200
   );
@@ -112,7 +115,7 @@ function Game() {
   const [playerLevel, setPlayerLevel] = useState(1);
 
   //Tone JS channel volume
-  const [sfxVolume, setSFXVolume] = useState(1); // Volume for SFX channel (0 to 1)
+  const [sfxVolume, setSFXVolume] = useState(0.5); // Volume for SFX channel (0 to 1)
   const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
 
   //Sound groupings for randomized playback
