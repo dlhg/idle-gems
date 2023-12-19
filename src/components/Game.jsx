@@ -75,7 +75,7 @@ function Game() {
   const [balls, setBalls] = useState([]);
   const [ballCount, setBallCount] = useState(0);
   const [ballDamage, setBallDamage] = useState(10);
-  const [ballSpeed, setBallSpeed] = useState(0.1);
+  const [ballSpeed, setBallSpeed] = useState(0.5);
   const [ballRadius, setBallRadius] = useState(
     Math.sqrt(window.innerWidth * window.innerHeight) / 200
   );
@@ -90,7 +90,7 @@ function Game() {
     Math.sqrt(window.innerWidth * window.innerHeight) / 50
   );
   const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(1000);
+  const [brickSpawnRate, setBrickSpawnRate] = useState(100);
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
 
   //perks/unlocks
@@ -105,7 +105,7 @@ function Game() {
     useState(50);
 
   //currency
-  const [gems, setGems] = useState(100000);
+  const [gems, setGems] = useState(100);
 
   //canvas size
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
@@ -337,7 +337,8 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
-          spawnBricksInConcentricCircles();
+          // spawnBricksInConcentricCircles();
+          spawnBrickAtRandomLocation();
         }
       }, brickSpawnRate);
     }
@@ -537,6 +538,7 @@ function Game() {
     }
     setGems((prev) => prev - ballPrice);
     setBallCount((prev) => prev + 1);
+    setBallPrice((prev) => prev * 2);
     let newBall;
     let overlap;
     do {
@@ -699,6 +701,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - ballSpeedUpgradePrice);
+    setBallSpeedUpgradePrice((prev) => prev * 2);
     const newSpeed = ballSpeed + 0.1;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
@@ -707,10 +710,11 @@ function Game() {
   }
 
   function buyBallRadiusUpgrade() {
-    if (gems < ballRadiusUpgradePrice) {
+    if (gems < ballRadiusUpgradePrice || ballCount < 1) {
       return;
     }
     setGems((prev) => prev - ballRadiusUpgradePrice);
+    setBallRadiusUpgradePrice((prev) => prev * 2);
     const newRadius = ballRadius + 1;
     setBallRadius(newRadius);
     setBalls((currentBalls) =>
