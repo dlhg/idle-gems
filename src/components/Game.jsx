@@ -195,17 +195,26 @@ function Game() {
 
   //functions to play sound - two different ways of doing this - decide on one
 
-  function playSoundPlayer(player) {
-    if (player && player.loaded) {
-      // Check if the player exists and is loaded
-      if (player.state === "started") {
-        // If the player is already playing, return without doing anything
-        return;
-      }
+  function playSoundPlayer() {
+    const randomIndex = Math.floor(
+      Math.random() * synthSoundPlayersRef.current.length
+    );
+    const soundPlayer = synthSoundPlayersRef.current[randomIndex];
 
-      player.stop(Tone.now());
-      player.start(Tone.now());
-    }
+    // Create a reverb and connect it to the master output
+    const reverb = new Tone.Reverb().toDestination();
+
+    // Generate a random reverb time between 0.1 and 6 seconds
+    const randomReverbTime = Math.random() * (6 - 0.1) + 0.1;
+
+    // Set the reverb time
+    reverb.decay = randomReverbTime;
+
+    // Connect the sound player to the reverb
+    soundPlayer.connect(reverb);
+
+    // Play the sound
+    soundPlayer.start();
   }
 
   function playSound(fileName) {
