@@ -3,7 +3,7 @@
     background-position: 0 0;
   }
   100% {
-    background-position: 0 100;
+    background-position: 0 1;
   }
 }
 
@@ -27,9 +27,10 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 2vw;
-  background-image: url(https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMWk5djBiY2d0dHgxcDI2b2QxOWZxejJ2MncydXBpcDNwd2c4dmhnZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3kNwQFSN3YPuJ8o5A8/giphy.gif);
-  background-size: 100%;
+  background-image: url(./assets/images/backgrounds/twinklingspaceanimated.gif);
+  background-size: 10%;
   background-position: center;
+  animation: scrollBackground 50s linear infinite;
 }
 
 .navbar {
@@ -53,8 +54,6 @@ body {
 canvas {
   width: 100%;
   height: 100%;
-
-  /* animation: scrollBackground 10s linear infinite; */
 }
 .footer {
   background-color: #1b427c9c;
