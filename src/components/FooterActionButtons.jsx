@@ -1,5 +1,3 @@
-import React from "react";
-
 const FooterActionButtons = ({
   buyBall,
   ballPrice,
@@ -14,18 +12,25 @@ const FooterActionButtons = ({
 }) => {
   return (
     <div className="footer">
-      <button onClick={buyBall}>+Ball({ballPrice}g)</button>
+      <button onClick={buyBall}>
+        +Ball
+        <br />({ballPrice}g)
+      </button>
       <button onClick={buyBallRadiusUpgrade}>
-        +Size ({ballRadiusUpgradePrice}g)
+        +Size
+        <br />({ballRadiusUpgradePrice}g)
       </button>
       <button onClick={buyBallSpeedUpgrade}>
-        +Speed ({ballSpeedUpgradePrice}g)
+        +Speed
+        <br />({ballSpeedUpgradePrice}g)
       </button>
       <button onClick={buyBallDamageUpgrade}>
-        +Ball Damage({ballDamageUpgradePrice}g)
+        +Ball Damage
+        <br />({ballDamageUpgradePrice}g)
       </button>
       <button onClick={buyClickDamageUpgrade}>
-        +Click Damage({clickDamageUpgradePrice}g)
+        +Click Damage
+        <br />({clickDamageUpgradePrice}g)
       </button>
     </div>
   );
