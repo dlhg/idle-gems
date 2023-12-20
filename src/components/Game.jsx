@@ -65,6 +65,16 @@ import G3_filter1_transposed from "../assets/sfx/synthtones/G3_filter1_transpose
 import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transposed.mp3";
 import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
 
+import tele1 from "../assets/sfx/teleports/tele1.mp3";
+import tele2 from "../assets/sfx/teleports/tele2.mp3";
+import tele3 from "../assets/sfx/teleports/tele3.mp3";
+import tele4 from "../assets/sfx/teleports/tele4.mp3";
+import tele5 from "../assets/sfx/teleports/tele5.mp3";
+import tele6 from "../assets/sfx/teleports/tele6.mp3";
+import tele7 from "../assets/sfx/teleports/tele7.mp3";
+import tele8 from "../assets/sfx/teleports/tele8.mp3";
+import tele9 from "../assets/sfx/teleports/tele9.mp3";
+
 // brick texture images
 import bluegemtexture from "../assets/images/backgrounds/patt.png";
 
@@ -179,6 +189,18 @@ function Game() {
     G3_filter1_transposed,
     G3_filter2_transposed,
     G3_filter3_transposed,
+  ];
+
+  const teleportSounds = [
+    tele1,
+    tele2,
+    tele3,
+    tele4,
+    tele5,
+    tele6,
+    tele7,
+    tele8,
+    tele9,
   ];
 
   /* REFS */
