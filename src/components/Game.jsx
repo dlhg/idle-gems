@@ -181,13 +181,11 @@ function Game() {
     G3_filter3_transposed,
   ];
 
-  // tonejs limiter
-  const limiter = new Limiter(-20).toDestination();
   /* REFS */
 
   // Using useRef to persist TJS gain nodes across renders
 
-  const sfxChannel = useRef(new Tone.Gain(sfxVolume).connect(limiter));
+  const sfxChannel = useRef(new Tone.Gain(sfxVolume).toDestination());
 
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
 
