@@ -79,11 +79,17 @@ function Game() {
   const [ballRadius, setBallRadius] = useState(
     Math.sqrt(window.innerWidth * window.innerHeight) / 200
   );
+
+  //prices and upgrade amounts
   const [ballPrice, setBallPrice] = useState(100);
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
   const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
   const [ballDamageUpgradePrice, setBallDamageUpgradePrice] = useState(100);
   const [clickDamageUpgradePrice, setClickDamageUpgradePrice] = useState(100);
+  const [ballDamageUpgradeAmount, setBallDamageUpgradeAmount] = useState(10);
+  const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(0.1);
+  const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(1);
+  const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(1);
 
   //bricks
   const [bricks, setBricks] = useState([]);
@@ -704,7 +710,7 @@ function Game() {
     }
     setGems((prev) => prev - ballSpeedUpgradePrice);
     setBallSpeedUpgradePrice((prev) => prev * 2);
-    const newSpeed = ballSpeed + 0.1;
+    const newSpeed = ballSpeed + ballSpeedUpgradeAmount;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, speed: newSpeed }))
@@ -717,7 +723,7 @@ function Game() {
     }
     setGems((prev) => prev - ballRadiusUpgradePrice);
     setBallRadiusUpgradePrice((prev) => prev * 2);
-    const newRadius = ballRadius + 1;
+    const newRadius = ballRadius + ballRadiusUpgradeAmount;
     setBallRadius(newRadius);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, radius: newRadius }))
@@ -730,7 +736,7 @@ function Game() {
     }
     setGems((prev) => prev - ballDamageUpgradePrice);
     setBallDamageUpgradePrice((prev) => prev * 2);
-    const newDamage = ballDamage + 1;
+    const newDamage = ballDamage + ballDamageUpgradeAmount;
     setBallDamage(newDamage);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, damage: newDamage }))
@@ -743,7 +749,7 @@ function Game() {
     }
     setGems((prev) => prev - clickDamageUpgradePrice);
     setClickDamageUpgradePrice((prev) => prev * 2);
-    const newDamage = clickDamage + 1;
+    const newDamage = clickDamage + clickDamageUpgradeAmount;
     setClickDamage(newDamage);
   }
 
