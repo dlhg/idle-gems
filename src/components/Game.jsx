@@ -82,48 +82,168 @@ function Game() {
   /* STATE*/
 
   //balls
-  const [balls, setBalls] = useState([]);
-  const [ballCount, setBallCount] = useState(0);
-  const [ballDamage, setBallDamage] = useState(10);
-  const [ballSpeed, setBallSpeed] = useState(0.5);
-  const [ballRadius, setBallRadius] = useState(
-    Math.sqrt(window.innerWidth * window.innerHeight) / 200
-  );
+  const [balls, setBalls] = useState(() => {
+    const savedBalls = localStorage.getItem("balls");
+    return savedBalls ? JSON.parse(savedBalls) : [];
+  });
+  const [ballCount, setBallCount] = useState(() => {
+    const savedBallCount = localStorage.getItem("ballCount");
+    return savedBallCount ? JSON.parse(savedBallCount) : 0;
+  });
+  const [ballDamage, setBallDamage] = useState(() => {
+    const savedBallDamage = localStorage.getItem("ballDamage");
+    return savedBallDamage ? JSON.parse(savedBallDamage) : 10;
+  });
+  const [ballSpeed, setBallSpeed] = useState(() => {
+    const savedBallSpeed = localStorage.getItem("ballSpeed");
+    return savedBallSpeed ? JSON.parse(savedBallSpeed) : 0.5;
+  });
+  const [ballRadius, setBallRadius] = useState(() => {
+    const savedBallRadius = localStorage.getItem("ballRadius");
+    return savedBallRadius
+      ? JSON.parse(savedBallRadius)
+      : Math.sqrt(window.innerWidth * window.innerHeight) / 200;
+  });
 
   //prices and upgrade amounts
-  const [ballPrice, setBallPrice] = useState(100);
-  const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
-  const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
-  const [ballDamageUpgradePrice, setBallDamageUpgradePrice] = useState(100);
-  const [clickDamageUpgradePrice, setClickDamageUpgradePrice] = useState(100);
-  const [ballDamageUpgradeAmount, setBallDamageUpgradeAmount] = useState(10);
-  const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(0.2);
-  const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(1);
-  const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(10);
-
-  //bricks
-  const [bricks, setBricks] = useState([]);
-  const [brickInitialHealth, setBrickInitialHealth] = useState(100);
-  const [brickRadius, setBrickRadius] = useState(
-    Math.sqrt(window.innerWidth * window.innerHeight) / 50
+  const [ballPrice, setBallPrice] = useState(() => {
+    const savedBallPrice = localStorage.getItem("ballPrice");
+    return savedBallPrice ? JSON.parse(savedBallPrice) : 100;
+  });
+  const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(() => {
+    const savedBallSpeedUpgradePrice = localStorage.getItem(
+      "ballSpeedUpgradePrice"
+    );
+    return savedBallSpeedUpgradePrice
+      ? JSON.parse(savedBallSpeedUpgradePrice)
+      : 100;
+  });
+  const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(() => {
+    const savedBallRadiusUpgradePrice = localStorage.getItem(
+      "ballRadiusUpgradePrice"
+    );
+    return savedBallRadiusUpgradePrice
+      ? JSON.parse(savedBallRadiusUpgradePrice)
+      : 100;
+  });
+  const [ballDamageUpgradePrice, setBallDamageUpgradePrice] = useState(() => {
+    const savedBallDamageUpgradePrice = localStorage.getItem(
+      "ballDamageUpgradePrice"
+    );
+    return savedBallDamageUpgradePrice
+      ? JSON.parse(savedBallDamageUpgradePrice)
+      : 100;
+  });
+  const [clickDamageUpgradePrice, setClickDamageUpgradePrice] = useState(() => {
+    const savedClickDamageUpgradePrice = localStorage.getItem(
+      "clickDamageUpgradePrice"
+    );
+    return savedClickDamageUpgradePrice
+      ? JSON.parse(savedClickDamageUpgradePrice)
+      : 100;
+  });
+  const [ballDamageUpgradeAmount, setBallDamageUpgradeAmount] = useState(() => {
+    const savedBallDamageUpgradeAmount = localStorage.getItem(
+      "ballDamageUpgradeAmount"
+    );
+    return savedBallDamageUpgradeAmount
+      ? JSON.parse(savedBallDamageUpgradeAmount)
+      : 10;
+  });
+  const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(() => {
+    const savedBallSpeedUpgradeAmount = localStorage.getItem(
+      "ballSpeedUpgradeAmount"
+    );
+    return savedBallSpeedUpgradeAmount
+      ? JSON.parse(savedBallSpeedUpgradeAmount)
+      : 0.2;
+  });
+  const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(() => {
+    const savedBallRadiusUpgradeAmount = localStorage.getItem(
+      "ballRadiusUpgradeAmount"
+    );
+    return savedBallRadiusUpgradeAmount
+      ? JSON.parse(savedBallRadiusUpgradeAmount)
+      : 1;
+  });
+  const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(
+    () => {
+      const savedClickDamageUpgradeAmount = localStorage.getItem(
+        "clickDamageUpgradeAmount"
+      );
+      return savedClickDamageUpgradeAmount
+        ? JSON.parse(savedClickDamageUpgradeAmount)
+        : 10;
+    }
   );
-  const [isSpawningBricks, setIsSpawningBricks] = useState(true);
-  const [brickSpawnRate, setBrickSpawnRate] = useState(100);
-  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(150);
+  //bricks
+  const [bricks, setBricks] = useState(() => {
+    const savedBricks = localStorage.getItem("bricks");
+    return savedBricks ? JSON.parse(savedBricks) : [];
+  });
+  const [brickInitialHealth, setBrickInitialHealth] = useState(() => {
+    const savedBrickInitialHealth = localStorage.getItem("brickInitialHealth");
+    return savedBrickInitialHealth ? JSON.parse(savedBrickInitialHealth) : 100;
+  });
+  const [brickRadius, setBrickRadius] = useState(() => {
+    const savedBrickRadius = localStorage.getItem("brickRadius");
+    return savedBrickRadius
+      ? JSON.parse(savedBrickRadius)
+      : Math.sqrt(window.innerWidth * window.innerHeight) / 50;
+  });
+  const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
+    const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
+    return savedIsSpawningBricks ? JSON.parse(savedIsSpawningBricks) : true;
+  });
+  const [brickSpawnRate, setBrickSpawnRate] = useState(() => {
+    const savedBrickSpawnRate = localStorage.getItem("brickSpawnRate");
+    return savedBrickSpawnRate ? JSON.parse(savedBrickSpawnRate) : 100;
+  });
+  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
+    const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
+    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 150;
+  });
 
   //perks/unlocks
   const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
-    useState(true);
-  const [clickDamage, setClickDamage] = useState(20);
+    useState(() => {
+      const savedCanPlayerTeleportBallsOnClick = localStorage.getItem(
+        "canPlayerTeleportBallsOnClick"
+      );
+      return savedCanPlayerTeleportBallsOnClick
+        ? JSON.parse(savedCanPlayerTeleportBallsOnClick)
+        : true;
+    });
+  const [clickDamage, setClickDamage] = useState(() => {
+    const savedClickDamage = localStorage.getItem("clickDamage");
+    return savedClickDamage ? JSON.parse(savedClickDamage) : 20;
+  });
 
   //brick kill rewards
   const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
-    useState(75);
+    useState(() => {
+      const savedGemsReceivedForKillBrickByClick = localStorage.getItem(
+        "gemsReceivedForKillBrickByClick"
+      );
+      return savedGemsReceivedForKillBrickByClick
+        ? JSON.parse(savedGemsReceivedForKillBrickByClick)
+        : 75;
+    });
   const [gemsReceivedForKillBrickByBall, setGemsReceivedForKillBrickByBall] =
-    useState(50);
+    useState(() => {
+      const savedGemsReceivedForKillBrickByBall = localStorage.getItem(
+        "gemsReceivedForKillBrickByBall"
+      );
+      return savedGemsReceivedForKillBrickByBall
+        ? JSON.parse(savedGemsReceivedForKillBrickByBall)
+        : 50;
+    });
 
   //currency
-  const [gems, setGems] = useState(1000);
+  const [gems, setGems] = useState(() => {
+    const savedGems = localStorage.getItem("gems");
+    return savedGems ? JSON.parse(savedGems) : 1000;
+  });
 
   //canvas size
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
@@ -133,8 +253,14 @@ function Game() {
   const [playerLevel, setPlayerLevel] = useState(1);
 
   //Tone JS channel volume
-  const [sfxVolume, setSFXVolume] = useState(0.5); // Volume for SFX channel (0 to 1)
-  const [musicVolume, setMusicVolume] = useState(1); // Volume for music channel (0 to 1)
+  const [sfxVolume, setSFXVolume] = useState(() => {
+    const savedSFXVolume = localStorage.getItem("sfxVolume");
+    return savedSFXVolume ? JSON.parse(savedSFXVolume) : 0.5; // Volume for SFX channel (0 to 1)
+  });
+  const [musicVolume, setMusicVolume] = useState(() => {
+    const savedMusicVolume = localStorage.getItem("musicVolume");
+    return savedMusicVolume ? JSON.parse(savedMusicVolume) : 1; // Volume for music channel (0 to 1)
+  });
 
   //Sound groupings for randomized playback
 
@@ -314,6 +440,114 @@ function Game() {
   );
 
   // EFFECTS
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("Saving game state to local storage");
+      localStorage.setItem("balls", JSON.stringify(balls));
+      localStorage.setItem("ballCount", JSON.stringify(ballCount));
+      localStorage.setItem("ballDamage", JSON.stringify(ballDamage));
+      localStorage.setItem("ballSpeed", JSON.stringify(ballSpeed));
+      localStorage.setItem("ballRadius", JSON.stringify(ballRadius));
+      localStorage.setItem("ballPrice", JSON.stringify(ballPrice));
+      localStorage.setItem(
+        "ballSpeedUpgradePrice",
+        JSON.stringify(ballSpeedUpgradePrice)
+      );
+      localStorage.setItem(
+        "ballRadiusUpgradePrice",
+        JSON.stringify(ballRadiusUpgradePrice)
+      );
+      localStorage.setItem(
+        "ballDamageUpgradePrice",
+        JSON.stringify(ballDamageUpgradePrice)
+      );
+      localStorage.setItem(
+        "clickDamageUpgradePrice",
+        JSON.stringify(clickDamageUpgradePrice)
+      );
+      localStorage.setItem(
+        "ballDamageUpgradeAmount",
+        JSON.stringify(ballDamageUpgradeAmount)
+      );
+      localStorage.setItem(
+        "ballSpeedUpgradeAmount",
+        JSON.stringify(ballSpeedUpgradeAmount)
+      );
+      localStorage.setItem(
+        "ballRadiusUpgradeAmount",
+        JSON.stringify(ballRadiusUpgradeAmount)
+      );
+      localStorage.setItem(
+        "clickDamageUpgradeAmount",
+        JSON.stringify(clickDamageUpgradeAmount)
+      );
+      localStorage.setItem("bricks", JSON.stringify(bricks));
+      localStorage.setItem(
+        "brickInitialHealth",
+        JSON.stringify(brickInitialHealth)
+      );
+      localStorage.setItem("brickRadius", JSON.stringify(brickRadius));
+      localStorage.setItem(
+        "isSpawningBricks",
+        JSON.stringify(isSpawningBricks)
+      );
+      localStorage.setItem("brickSpawnRate", JSON.stringify(brickSpawnRate));
+      localStorage.setItem(
+        "maxBricksOnScreen",
+        JSON.stringify(maxBricksOnScreen)
+      );
+      localStorage.setItem(
+        "canPlayerTeleportBallsOnClick",
+        JSON.stringify(canPlayerTeleportBallsOnClick)
+      );
+      localStorage.setItem("clickDamage", JSON.stringify(clickDamage));
+      localStorage.setItem(
+        "gemsReceivedForKillBrickByClick",
+        JSON.stringify(gemsReceivedForKillBrickByClick)
+      );
+      localStorage.setItem(
+        "gemsReceivedForKillBrickByBall",
+        JSON.stringify(gemsReceivedForKillBrickByBall)
+      );
+      localStorage.setItem("gems", JSON.stringify(gems));
+      localStorage.setItem("playerLevel", JSON.stringify(playerLevel));
+      localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
+      localStorage.setItem("musicVolume", JSON.stringify(musicVolume));
+    }, 10000); // 10000 milliseconds = 10 seconds
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
+  }, [
+    balls,
+    ballCount,
+    ballDamage,
+    ballSpeed,
+    ballRadius,
+    ballPrice,
+    ballSpeedUpgradePrice,
+    ballRadiusUpgradePrice,
+    ballDamageUpgradePrice,
+    clickDamageUpgradePrice,
+    ballDamageUpgradeAmount,
+    ballSpeedUpgradeAmount,
+    ballRadiusUpgradeAmount,
+    clickDamageUpgradeAmount,
+    bricks,
+    brickInitialHealth,
+    brickRadius,
+    isSpawningBricks,
+    brickSpawnRate,
+    maxBricksOnScreen,
+    canPlayerTeleportBallsOnClick,
+    clickDamage,
+    gemsReceivedForKillBrickByClick,
+    gemsReceivedForKillBrickByBall,
+    gems,
+    playerLevel,
+    sfxVolume,
+    musicVolume,
+  ]);
 
   // Tone JS - Ensure all buffers are loaded before setting up the game
   useEffect(() => {
