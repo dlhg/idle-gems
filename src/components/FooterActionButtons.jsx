@@ -7,6 +7,10 @@ const FooterActionButtons = ({
   ballSpeedUpgradePrice,
   buyBallRadiusUpgrade,
   ballRadiusUpgradePrice,
+  buyBallDamageUpgrade,
+  ballDamageUpgradePrice,
+  buyClickDamageUpgrade,
+  clickDamageUpgradePrice,
 }) => {
   return (
     <div className="footer">
@@ -17,8 +21,12 @@ const FooterActionButtons = ({
       <button onClick={buyBallSpeedUpgrade}>
         +Speed ({ballSpeedUpgradePrice}g)
       </button>
-      <button>+Ball Damage(g)</button>
-      <button>+Click Damage(g)</button>
+      <button onClick={buyBallDamageUpgrade}>
+        +Ball Damage({ballDamageUpgradePrice}g)
+      </button>
+      <button onClick={buyClickDamageUpgrade}>
+        +Click Damage({clickDamageUpgradePrice}g)
+      </button>
     </div>
   );
 };

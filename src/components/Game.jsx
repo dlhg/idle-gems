@@ -82,6 +82,8 @@ function Game() {
   const [ballPrice, setBallPrice] = useState(100);
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(100);
   const [ballRadiusUpgradePrice, setBallRadiusUpgradePrice] = useState(100);
+  const [ballDamageUpgradePrice, setBallDamageUpgradePrice] = useState(100);
+  const [clickDamageUpgradePrice, setClickDamageUpgradePrice] = useState(100);
 
   //bricks
   const [bricks, setBricks] = useState([]);
@@ -722,6 +724,29 @@ function Game() {
     );
   }
 
+  function buyBallDamageUpgrade() {
+    if (gems < ballDamageUpgradePrice || ballCount < 1) {
+      return;
+    }
+    setGems((prev) => prev - ballDamageUpgradePrice);
+    setBallDamageUpgradePrice((prev) => prev * 2);
+    const newDamage = ballDamage + 1;
+    setBallDamage(newDamage);
+    setBalls((currentBalls) =>
+      currentBalls.map((ball) => ({ ...ball, damage: newDamage }))
+    );
+  }
+
+  function buyClickDamageUpgrade() {
+    if (gems < clickDamageUpgradePrice) {
+      return;
+    }
+    setGems((prev) => prev - clickDamageUpgradePrice);
+    setClickDamageUpgradePrice((prev) => prev * 2);
+    const newDamage = clickDamage + 1;
+    setClickDamage(newDamage);
+  }
+
   const toggleBrickSpawning = () => {
     setIsSpawningBricks(!isSpawningBricks);
   };
@@ -771,6 +796,10 @@ function Game() {
         ballSpeedUpgradePrice={ballSpeedUpgradePrice}
         buyBallRadiusUpgrade={buyBallRadiusUpgrade}
         ballRadiusUpgradePrice={ballRadiusUpgradePrice}
+        buyBallDamageUpgrade={buyBallDamageUpgrade}
+        ballDamageUpgradePrice={ballDamageUpgradePrice}
+        buyClickDamageUpgrade={buyClickDamageUpgrade}
+        clickDamageUpgradePrice={clickDamageUpgradePrice}
       />
     </>
   );
