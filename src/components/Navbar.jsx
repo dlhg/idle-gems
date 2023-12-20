@@ -34,7 +34,7 @@ const Navbar = ({
       <span>
         Ball Speed
         <br />
-        {ballSpeed.toFixed(2)}
+        {ballSpeed.toFixed(2) * 200}
       </span>
       <span>
         Ball Radius
