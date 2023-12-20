@@ -16,13 +16,14 @@ const FooterActionButtons = ({
         +Ball
         <br />({ballPrice}g)
       </button>
-      <button onClick={buyBallRadiusUpgrade}>
-        +Size
-        <br />({ballRadiusUpgradePrice}g)
-      </button>
+
       <button onClick={buyBallSpeedUpgrade}>
         +Speed
         <br />({ballSpeedUpgradePrice}g)
+      </button>
+      <button onClick={buyBallRadiusUpgrade}>
+        +Size
+        <br />({ballRadiusUpgradePrice}g)
       </button>
       <button onClick={buyBallDamageUpgrade}>
         +Ball Damage
