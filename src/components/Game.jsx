@@ -786,6 +786,7 @@ function Game() {
         ballSpeed={ballSpeed}
         ballDamage={ballDamage}
         clickDamage={clickDamage}
+        ballRadius={ballRadius}
       />
       <div className="canvas--wrapper">
         <canvas

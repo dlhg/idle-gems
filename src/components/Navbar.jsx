@@ -7,7 +7,14 @@ settings
 import React, { useState } from "react";
 import SettingsIcon from "../assets/images/UI/settingsicon.png";
 
-const Navbar = ({ gems, playerLevel, ballSpeed, ballDamage, clickDamage }) => {
+const Navbar = ({
+  gems,
+  playerLevel,
+  ballSpeed,
+  ballRadius,
+  ballDamage,
+  clickDamage,
+}) => {
   const [isSettingsIconClicked, setIsSettingsIconClicked] = useState(false);
 
   const handleSettingsIconClick = () => {
@@ -21,6 +28,7 @@ const Navbar = ({ gems, playerLevel, ballSpeed, ballDamage, clickDamage }) => {
     <div className="navbar">
       <span>Gems:{gems}</span>
       <span>Ball Speed:{ballSpeed.toFixed(2)}</span>
+      <span>Ball Radius:{ballRadius.toFixed(2)}</span>
       <span>Ball Damage:{ballDamage}</span>
       <span>Click Damage:{clickDamage}</span>
 
