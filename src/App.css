@@ -38,7 +38,7 @@ body {
 }
 
 .navbar {
-  background-color: #1b427c9c;
+  background-color: #8888889c;
   color: white;
   text-align: center;
   height: 10vh;
@@ -60,7 +60,7 @@ canvas {
   height: 100%;
 }
 .footer {
-  background-color: #1b427c9c;
+  background-color: #8888889c;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
