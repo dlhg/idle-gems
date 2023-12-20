@@ -245,7 +245,7 @@ function Game() {
   shortThud.current.load(shortthud);
 
   const brickBreak = useRef(new Tone.Player().connect(sfxChannel.current));
-  brickBreak.current.load(brickbreak);
+  brickBreak.current.load(A3_filter1);
 
   const telePort = useRef(new Tone.Player().connect(sfxChannel.current));
   telePort.current.load(tele1);
@@ -531,7 +531,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        // playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
+        playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
         setBricks(bricks.filter((brick) => brick.health > 0));
         setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
