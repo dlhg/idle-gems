@@ -26,17 +26,37 @@ const Navbar = ({
 
   return (
     <div className="navbar">
-      <span>Gems:{gems}</span>
-      <span>Ball Speed:{ballSpeed.toFixed(2)}</span>
-      <span>Ball Radius:{ballRadius.toFixed(2)}</span>
-      <span>Ball Damage:{ballDamage}</span>
-      <span>Click Damage:{clickDamage}</span>
+      <span>
+        Gems
+        <br />
+        {gems}
+      </span>
+      <span>
+        Ball Speed
+        <br />
+        {ballSpeed.toFixed(2)}
+      </span>
+      <span>
+        Ball Radius
+        <br />
+        {ballRadius.toFixed(2)}
+      </span>
+      <span>
+        Ball Damage
+        <br />
+        {ballDamage}
+      </span>
+      <span>
+        Click Damage
+        <br />
+        {clickDamage}
+      </span>
 
-      {/* <span> Level: {playerLevel}</span> */}
+      {/* <span> Level {playerLevel}</span> */}
     </div>
     // <div className="settings--icon--container">
     //   <button
-    //     className={`settings--icon ${isSettingsIconClicked ? "clicked" : ""}`}
+    //     className={`settings--icon ${isSettingsIconClicked ? "clicked"  ""}`}
     //     onClick={handleSettingsIconClick}
     //   >
     //     <img src={SettingsIcon}></img>
