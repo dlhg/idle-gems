@@ -424,7 +424,7 @@ function Game() {
       ctx.lineWidth = 3;
 
       if (brick.health <= 0) {
-        // Display ☠ if health is below 0
+        // Display skull if health is below 0
         ctx.fillText("☠", brick.x, brick.y);
       } else {
         // Text stroke to create an outline
