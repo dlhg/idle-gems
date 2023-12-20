@@ -398,8 +398,8 @@ function Game() {
         ball.y,
         ballRadius // x, y, and radius of the outer circle
       );
-      gradient.addColorStop(0, "lightblue"); // White center
-      gradient.addColorStop(1, "darkblue"); // Blue edge
+      gradient.addColorStop(0, "white"); // White center
+      gradient.addColorStop(1, "grey"); // Blue edge
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
