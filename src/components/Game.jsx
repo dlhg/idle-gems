@@ -87,9 +87,9 @@ function Game() {
   const [ballDamageUpgradePrice, setBallDamageUpgradePrice] = useState(100);
   const [clickDamageUpgradePrice, setClickDamageUpgradePrice] = useState(100);
   const [ballDamageUpgradeAmount, setBallDamageUpgradeAmount] = useState(10);
-  const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(0.1);
+  const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(0.2);
   const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(1);
-  const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(1);
+  const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(10);
 
   //bricks
   const [bricks, setBricks] = useState([]);
