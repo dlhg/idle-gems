@@ -248,7 +248,7 @@ function Game() {
   brickBreak.current.load(brickbreak);
 
   const telePort = useRef(new Tone.Player().connect(sfxChannel.current));
-  telePort.current.load(teleport);
+  telePort.current.load(tele1);
 
   /* USECALLBACK */
   const handleCanvasClick = useCallback(
@@ -794,14 +794,14 @@ function Game() {
     sfxChannel.current.gain.value = volume;
   };
 
-  // Create Tone JS players from an array of sound files, connect them to SFX channel, and load sounds into them
-  const createSynthSoundPlayers = (soundFiles, sfxChannel) => {
-    return soundFiles.map((soundFile) => {
-      const player = new Tone.Player().connect(sfxChannel);
-      player.load(soundFile);
-      return player;
-    });
-  };
+  // // Create Tone JS players from an array of sound files, connect them to SFX channel, and load sounds into them
+  // const createSynthSoundPlayers = (soundFiles, sfxChannel) => {
+  //   return soundFiles.map((soundFile) => {
+  //     const player = new Tone.Player().connect(sfxChannel);
+  //     player.load(soundFile);
+  //     return player;
+  //   });
+  // };
 
   return (
     <>
