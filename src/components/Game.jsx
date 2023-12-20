@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import * as Tone from "tone";
-import { Limiter, Reverb } from "tone";
+import { Limiter } from "tone";
 
 //component imports
 import Navbar from "./Navbar";
@@ -105,7 +105,7 @@ function Game() {
     useState(50);
 
   //currency
-  const [gems, setGems] = useState(1000000000000000);
+  const [gems, setGems] = useState(1000);
 
   //canvas size
   const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
@@ -175,15 +175,11 @@ function Game() {
 
   // tonejs limiter
   const limiter = new Limiter(-20).toDestination();
-  const reverb = new Reverb(4).toDestination();
-
   /* REFS */
 
   // Using useRef to persist TJS gain nodes across renders
 
-  const sfxChannel = useRef(
-    new Tone.Gain(sfxVolume).connect(limiter).connect(reverb).toDestination()
-  );
+  const sfxChannel = useRef(new Tone.Gain(sfxVolume).connect(limiter));
 
   const musicChannel = useRef(new Tone.Gain(musicVolume).toDestination());
 
