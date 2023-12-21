@@ -29,7 +29,7 @@ const Navbar = ({
       <span key={gems} className="glow--on--change">
         Gems
         <br />
-        {gems.toFixed(0)}
+        {gems.toFixed(0)}g
       </span>
       <span>
         Ball Speed
