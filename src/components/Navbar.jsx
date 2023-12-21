@@ -52,6 +52,8 @@ const Navbar = ({
         {clickDamage}
       </span>
       <span>to add: crit multiplier and crit chance</span>
+      {/* critical hit should have different animation
+      critical hit should have different sound (maybe add reverb /decay?) */}
 
       {/* <span> Level {playerLevel}</span> */}
     </div>
