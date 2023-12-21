@@ -786,7 +786,7 @@ function Game() {
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
-          ripple.style.fontSize = "1rem";
+          ripple.style.fontSize = "0.75rem";
           ripple.style.fontWeight = "bold";
           ripple.style.color = "white";
 
