@@ -165,7 +165,7 @@ function Game() {
     );
     return savedBallSpeedUpgradeAmount
       ? JSON.parse(savedBallSpeedUpgradeAmount)
-      : 0.75;
+      : 0.5;
   });
   const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(() => {
     const savedBallRadiusUpgradeAmount = localStorage.getItem(
