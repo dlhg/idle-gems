@@ -198,7 +198,7 @@ function Game() {
     const savedBrickRadius = localStorage.getItem("brickRadius");
     return savedBrickRadius
       ? JSON.parse(savedBrickRadius)
-      : Math.sqrt(window.innerWidth * window.innerHeight) / 50;
+      : Math.sqrt(window.innerWidth * window.innerHeight) / 30;
   });
   const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
     const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
@@ -606,11 +606,11 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
-          if (bricks.length < 60) {
+          if (bricks.length < 40) {
             setBrickSpawnRate((prevRate) => {
               const newRate = prevRate * 0.95;
               console.log(
-                `less than 60 bricks on screen , Brick spawn interval decreased to ${newRate}`
+                `less than 40 bricks on screen , Brick spawn interval decreased to ${newRate}`
               );
               return newRate;
             });
@@ -685,7 +685,7 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      const fontSize = brickRadius * 0.75;
+      const fontSize = brickRadius * 0.5;
       ctx.font = `bold ${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
