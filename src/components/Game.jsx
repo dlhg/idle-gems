@@ -766,14 +766,18 @@ function Game() {
 
           // Set the damage value inside the ripple div
           ripple.textContent = `${
-            brick.health - ball.damage > 0 ? ball.damage : "brick destroyed!"
+            brick.health - ball.damage > 0
+              ? ball.damage
+              : `+${brick.gemsInside}g!`
           }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
-          ripple.style.fontSize = "0.75rem";
+          ripple.style.fontSize =
+            brick.health - ball.damage > 0 ? "0.75rem" : "1.25rem";
           ripple.style.fontWeight = "bold";
-          ripple.style.color = "orange";
+          ripple.style.color =
+            brick.health - ball.damage > 0 ? "orange" : "white";
 
           document.body.appendChild(ripple);
 
