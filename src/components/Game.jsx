@@ -765,7 +765,9 @@ function Game() {
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
           // Set the damage value inside the ripple div
-          ripple.textContent = `${ball.damage}`;
+          ripple.textContent = `${
+            brick.health - ball.damage > 0 ? ball.damage : "brick destroyed!"
+          }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
