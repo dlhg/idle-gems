@@ -106,6 +106,15 @@ function Game() {
   });
 
   //prices and upgrade amounts
+  const [upgradePriceMultiplier, setUpgradePriceMultiplier] = useState(() => {
+    const savedUpgradePriceMultiplier = localStorage.getItem(
+      "upgradePriceMultiplier"
+    );
+    return savedUpgradePriceMultiplier
+      ? JSON.parse(savedUpgradePriceMultiplier)
+      : 1.1;
+  });
+
   const [ballPrice, setBallPrice] = useState(() => {
     const savedBallPrice = localStorage.getItem("ballPrice");
     return savedBallPrice ? JSON.parse(savedBallPrice) : 100;
@@ -441,6 +450,10 @@ function Game() {
       localStorage.setItem("ballDamage", JSON.stringify(ballDamage));
       localStorage.setItem("ballSpeed", JSON.stringify(ballSpeed));
       localStorage.setItem("ballRadius", JSON.stringify(ballRadius));
+      localStorage.setItem(
+        "upgradePriceMultiplier",
+        JSON.stringify(upgradePriceMultiplier)
+      );
       localStorage.setItem("ballPrice", JSON.stringify(ballPrice));
       localStorage.setItem(
         "ballSpeedUpgradePrice",
@@ -829,7 +842,7 @@ function Game() {
     }
     setGems((prev) => prev - ballPrice);
     setBallCount((prev) => prev + 1);
-    setBallPrice((prev) => prev * 2);
+    setBallPrice((prev) => prev * upgradePriceMultiplier);
     let newBall;
     let overlap;
     do {
@@ -993,7 +1006,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - ballSpeedUpgradePrice);
-    setBallSpeedUpgradePrice((prev) => prev * 2);
+    setBallSpeedUpgradePrice((prev) => prev * upgradePriceMultiplier);
     const newSpeed = ballSpeed + ballSpeedUpgradeAmount;
     setBallSpeed(newSpeed);
     setBalls((currentBalls) =>
@@ -1006,7 +1019,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - ballRadiusUpgradePrice);
-    setBallRadiusUpgradePrice((prev) => prev * 2);
+    setBallRadiusUpgradePrice((prev) => prev * upgradePriceMultiplier);
     const newRadius = ballRadius + ballRadiusUpgradeAmount;
     setBallRadius(newRadius);
     setBalls((currentBalls) =>
@@ -1019,7 +1032,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - ballDamageUpgradePrice);
-    setBallDamageUpgradePrice((prev) => prev * 2);
+    setBallDamageUpgradePrice((prev) => prev * upgradePriceMultiplier);
     const newDamage = ballDamage + ballDamageUpgradeAmount;
     setBallDamage(newDamage);
     setBalls((currentBalls) =>
@@ -1032,7 +1045,7 @@ function Game() {
       return;
     }
     setGems((prev) => prev - clickDamageUpgradePrice);
-    setClickDamageUpgradePrice((prev) => prev * 2);
+    setClickDamageUpgradePrice((prev) => prev * upgradePriceMultiplier);
     const newDamage = clickDamage + clickDamageUpgradeAmount;
     setClickDamage(newDamage);
   }
