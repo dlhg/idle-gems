@@ -394,18 +394,25 @@ function Game() {
           ballCount > 0
         ) {
           playSound(telePort);
-          setBalls(
-            ballsRef.current.map((ball) => ({
-              ...ball,
-              x: x,
-              y: y,
-            }))
-          );
+          setBalls(ballsRef.current.map((ball) => ({ ...ball, x, y })));
+          createRipple(x, y, "teleport", "1rem", "blue");
         }
 
         if (distance < brickRadius) {
           playSound(shortThud);
           const newHealth = brick.health - clickDamage;
+          const rippleText =
+            newHealth <= 0 ? `+${brick.gemsInside}g` : clickDamage.toString();
+          const rippleColor = newHealth <= 0 ? "white" : "orange";
+          const rippleFontSize = newHealth <= 0 ? "1.25rem" : "0.75rem";
+          createRipple(
+            brick.x,
+            brick.y,
+            rippleText,
+            rippleFontSize,
+            rippleColor
+          );
+
           brickDestroyed = newHealth <= 0;
           gemsToAdd = brick.gemsInside;
 
@@ -850,6 +857,32 @@ function Game() {
   }, [balls, bricks]);
 
   // FUNCTIONS
+
+  const createRipple = (
+    x,
+    y,
+    textContent,
+    fontSize = "0.75rem",
+    color = "orange"
+  ) => {
+    const ripple = document.createElement("div");
+    ripple.className = "ripple";
+    ripple.style.width = `${2 * ballRadius}px`;
+    ripple.style.height = `${2 * ballRadius}px`;
+    const navbarHeight = window.innerHeight * 0.1;
+    ripple.style.left = `${x - ballRadius}px`;
+    ripple.style.top = `${y - ballRadius + navbarHeight}px`;
+    ripple.textContent = textContent;
+    ripple.style.fontFamily = "Arial";
+    ripple.style.fontSize = fontSize;
+    ripple.style.fontWeight = "bold";
+    ripple.style.color = color;
+    ripple.style.pointerEvents = "none";
+    document.body.appendChild(ripple);
+    setTimeout(() => {
+      document.body.removeChild(ripple);
+    }, 1000);
+  };
 
   const buyBall = () => {
     if (gems < ballPrice) {
