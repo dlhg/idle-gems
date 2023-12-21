@@ -246,8 +246,16 @@ function Game() {
   });
 
   //canvas size
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
-  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
+  const [canvasWidth, setCanvasWidth] = useState(() => {
+    const savedCanvasWidth = localStorage.getItem("canvasWidth");
+    return savedCanvasWidth ? JSON.parse(savedCanvasWidth) : window.innerWidth;
+  });
+  const [canvasHeight, setCanvasHeight] = useState(() => {
+    const savedCanvasHeight = localStorage.getItem("canvasHeight");
+    return savedCanvasHeight
+      ? JSON.parse(savedCanvasHeight)
+      : window.innerHeight * 0.7;
+  });
 
   //unused
   const [playerLevel, setPlayerLevel] = useState(1);
@@ -514,7 +522,9 @@ function Game() {
       localStorage.setItem("playerLevel", JSON.stringify(playerLevel));
       localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
       localStorage.setItem("musicVolume", JSON.stringify(musicVolume));
-    }, 10000); // 10000 milliseconds = 10 seconds
+      localStorage.setItem("canvasWidth", JSON.stringify(canvasWidth));
+      localStorage.setItem("canvasHeight", JSON.stringify(canvasHeight));
+    }, 1000); // 10000 milliseconds = 10 seconds
 
     // Clear interval on component unmount
     return () => clearInterval(interval);
@@ -547,6 +557,8 @@ function Game() {
     playerLevel,
     sfxVolume,
     musicVolume,
+    canvasHeight,
+    canvasWidth,
   ]);
 
   // Tone JS - Ensure all buffers are loaded before setting up the game
