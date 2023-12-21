@@ -349,7 +349,7 @@ function Game() {
 
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
-  const brickIdRef = useRef(0);
+  const brickIdRef = useRef(1);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const ballsRef = useRef(balls);
 
@@ -910,7 +910,7 @@ function Game() {
         id: brickIdRef.current,
         x,
         y,
-        health: brickInitialHealth,
+        health: brickIdRef.current,
       };
 
       for (const brick of bricks) {
