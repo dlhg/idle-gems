@@ -157,7 +157,7 @@ function Game() {
     );
     return savedBallDamageUpgradeAmount
       ? JSON.parse(savedBallDamageUpgradeAmount)
-      : 10;
+      : ballDamage * 1.15;
   });
   const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(() => {
     const savedBallSpeedUpgradeAmount = localStorage.getItem(
@@ -165,7 +165,7 @@ function Game() {
     );
     return savedBallSpeedUpgradeAmount
       ? JSON.parse(savedBallSpeedUpgradeAmount)
-      : 0.2;
+      : 0.75;
   });
   const [ballRadiusUpgradeAmount, setBallRadiusUpgradeAmount] = useState(() => {
     const savedBallRadiusUpgradeAmount = localStorage.getItem(
@@ -173,7 +173,7 @@ function Game() {
     );
     return savedBallRadiusUpgradeAmount
       ? JSON.parse(savedBallRadiusUpgradeAmount)
-      : 1;
+      : 1.5;
   });
   const [clickDamageUpgradeAmount, setClickDamageUpgradeAmount] = useState(
     () => {
@@ -182,7 +182,7 @@ function Game() {
       );
       return savedClickDamageUpgradeAmount
         ? JSON.parse(savedClickDamageUpgradeAmount)
-        : 10;
+        : 50;
     }
   );
   //bricks
