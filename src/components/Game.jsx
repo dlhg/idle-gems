@@ -821,8 +821,13 @@ function Game() {
       // Remove destroyed brick and update state
       if (brickDestroyed) {
         playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
+        const destroyedBrick = bricks.find(
+          (brick) => brick.id === destroyedBrickId
+        );
+        if (destroyedBrick) {
+          setGems((prev) => prev + destroyedBrick.gemsInside);
+        }
         setBricks(bricks.filter((brick) => brick.health > 0));
-        setGems((prev) => prev + gemsReceivedForKillBrickByBall);
         // console.log(
         //   `Brick ID ${destroyedBrickId} destroyed by Ball ID ${ball.id}`
         // );
