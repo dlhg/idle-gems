@@ -384,6 +384,13 @@ function Game() {
       let numOfBricksFarEnoughAway = 0;
       let gemsToAdd = 0;
 
+      // if there are no bricks on screen, teleport balls to click location
+      if (bricksRef.current.length === 0) {
+        playSound(telePort);
+        setBalls(ballsRef.current.map((ball) => ({ ...ball, x, y })));
+        createRipple(x, y, "teleport", "1rem", "blue");
+      }
+      // if there are bricks on screen, check if click is within brick radius. if yes, damage brick. if no, teleport balls to click location.
       const newBricks = bricksRef.current.map((brick) => {
         const dx = x - brick.x;
         const dy = y - brick.y;
