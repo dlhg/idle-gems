@@ -600,6 +600,15 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
+          if (bricks.length < 15) {
+            setBrickSpawnRate((prevRate) => {
+              const newRate = prevRate * 0.95;
+              console.log(
+                `less than 15 bricks on screen , Brick spawn interval decreased to ${newRate}`
+              );
+              return newRate;
+            });
+          }
           // spawnBricksInConcentricCircles();
           spawnBrickAtRandomLocation();
         }
@@ -917,8 +926,11 @@ function Game() {
 
       if (attempts >= 30) {
         console.log(
-          "Unable to find a suitable location for new brick after 30 attempts"
+          `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
+            brickSpawnRate * 1.1
+          }`
         );
+        setBrickSpawnRate((prevRate) => prevRate * 1.1);
         return; // Exit the function if 30 attempts have been made
       }
     } while (overlap);
