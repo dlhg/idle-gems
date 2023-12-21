@@ -396,6 +396,7 @@ function Game() {
 
       let brickDestroyed = false;
       let numOfBricksFarEnoughAway = 0;
+      let gemsToAdd = 0;
 
       const newBricks = bricksRef.current.map((brick) => {
         const dx = x - brick.x;
@@ -403,9 +404,6 @@ function Game() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance > brickRadius + ballRadius) {
-          // console.log(
-          //   `your click location to relocate all balls has been checked against brick ID ${brick.id} and is far enough away from that brick to spawn a ball here`
-          // );
           numOfBricksFarEnoughAway++;
         }
 
@@ -414,7 +412,6 @@ function Game() {
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
-          // teleport balls to click location
           playSound(telePort);
           setBalls(
             ballsRef.current.map((ball) => ({
@@ -426,10 +423,10 @@ function Game() {
         }
 
         if (distance < brickRadius) {
-          //if player clicks on brick
           playSound(shortThud);
           const newHealth = brick.health - clickDamage;
           brickDestroyed = newHealth <= 0;
+          gemsToAdd = brick.gemsInside;
 
           return { ...brick, health: newHealth };
         }
@@ -437,12 +434,12 @@ function Game() {
         return brick;
       });
 
-      setBricks(newBricks.filter((brick) => brick.health > 0));
-
       if (brickDestroyed) {
         playSound(brickBreak);
-        setGems((prevGems) => prevGems + gemsReceivedForKillBrickByClick);
+        setGems((prevGems) => prevGems + gemsToAdd);
       }
+
+      setBricks(newBricks.filter((brick) => brick.health > 0));
     },
     [canPlayerTeleportBallsOnClick, clickDamage, ballRadius, ballCount]
   );
@@ -911,6 +908,7 @@ function Game() {
         x,
         y,
         health: brickIdRef.current,
+        gemsInside: brickIdRef.current,
       };
 
       for (const brick of bricks) {
