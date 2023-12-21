@@ -509,7 +509,7 @@ function Game() {
       localStorage.setItem("musicVolume", JSON.stringify(musicVolume));
       localStorage.setItem("canvasWidth", JSON.stringify(canvasWidth));
       localStorage.setItem("canvasHeight", JSON.stringify(canvasHeight));
-    }, 10000); // 10000 milliseconds = 10 second
+    }, 1000); // 1000 milliseconds = 1 second
 
     // Clear interval on component unmount
     return () => clearInterval(interval);
