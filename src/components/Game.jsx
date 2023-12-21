@@ -606,11 +606,11 @@ function Game() {
     if (isSpawningBricks) {
       intervalId = setInterval(() => {
         if (bricks.length <= maxBricksOnScreen) {
-          if (bricks.length < 40) {
+          if (bricks.length < 60) {
             setBrickSpawnRate((prevRate) => {
               const newRate = prevRate * 0.95;
               console.log(
-                `less than 40 bricks on screen , Brick spawn interval decreased to ${newRate}`
+                `less than 60 bricks on screen , Brick spawn interval decreased to ${newRate}`
               );
               return newRate;
             });
