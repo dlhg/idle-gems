@@ -25,7 +25,7 @@
 .ripple {
   position: absolute;
   border-radius: 50%;
-  animation: ripple 1s ease-out;
+  animation: ripple 2s ease-out;
   background-color: rgba(255, 255, 255, 0.04);
 
   font-size: 1rem;

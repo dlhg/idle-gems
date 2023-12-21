@@ -764,7 +764,7 @@ function Game() {
           // Remove the ripple after the animation is complete
           setTimeout(() => {
             document.body.removeChild(ripple);
-          }, 500);
+          }, 1000);
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
