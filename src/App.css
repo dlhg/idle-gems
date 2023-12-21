@@ -26,6 +26,15 @@
   }
 }
 
+@keyframes textGlow {
+  0% {
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0.75);
+  }
+  100% {
+    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.75);
+  }
+}
+
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -76,6 +85,10 @@ body {
   z-index: 1;
   display: flex;
   justify-content: space-evenly;
+}
+
+.glow--on--change {
+  animation: textGlow 1s linear;
 }
 
 .canvas-component {

@@ -26,27 +26,27 @@ const Navbar = ({
 
   return (
     <div className="navbar">
-      <span>
+      <span key={gems} className="glow--on--change">
         Gems
         <br />
         {gems.toFixed(0)}
       </span>
-      <span>
+      <span key={ballSpeed} className="glow--on--change">
         Ball Speed
         <br />
         {(ballSpeed * 200).toFixed(0)}
       </span>
-      <span>
+      <span key={ballRadius} className="glow--on--change">
         Ball Radius
         <br />
         {ballRadius.toFixed(2)}
       </span>
-      <span>
+      <span key={ballDamage} className="glow--on--change">
         Ball Damage
         <br />
         {ballDamage}
       </span>
-      <span>
+      <span key={clickDamage} className="glow--on--change">
         Click Damage
         <br />
         {clickDamage}
