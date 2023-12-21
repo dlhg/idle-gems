@@ -219,26 +219,6 @@ function Game() {
     return savedClickDamage ? JSON.parse(savedClickDamage) : 20;
   });
 
-  //brick kill rewards
-  const [gemsReceivedForKillBrickByClick, setGemsReceivedForKillBrickByClick] =
-    useState(() => {
-      const savedGemsReceivedForKillBrickByClick = localStorage.getItem(
-        "gemsReceivedForKillBrickByClick"
-      );
-      return savedGemsReceivedForKillBrickByClick
-        ? JSON.parse(savedGemsReceivedForKillBrickByClick)
-        : 75;
-    });
-  const [gemsReceivedForKillBrickByBall, setGemsReceivedForKillBrickByBall] =
-    useState(() => {
-      const savedGemsReceivedForKillBrickByBall = localStorage.getItem(
-        "gemsReceivedForKillBrickByBall"
-      );
-      return savedGemsReceivedForKillBrickByBall
-        ? JSON.parse(savedGemsReceivedForKillBrickByBall)
-        : 50;
-    });
-
   //currency
   const [gems, setGems] = useState(() => {
     const savedGems = localStorage.getItem("gems");
@@ -522,14 +502,7 @@ function Game() {
         JSON.stringify(canPlayerTeleportBallsOnClick)
       );
       localStorage.setItem("clickDamage", JSON.stringify(clickDamage));
-      localStorage.setItem(
-        "gemsReceivedForKillBrickByClick",
-        JSON.stringify(gemsReceivedForKillBrickByClick)
-      );
-      localStorage.setItem(
-        "gemsReceivedForKillBrickByBall",
-        JSON.stringify(gemsReceivedForKillBrickByBall)
-      );
+
       localStorage.setItem("gems", JSON.stringify(gems));
       localStorage.setItem("playerLevel", JSON.stringify(playerLevel));
       localStorage.setItem("sfxVolume", JSON.stringify(sfxVolume));
@@ -563,8 +536,7 @@ function Game() {
     maxBricksOnScreen,
     canPlayerTeleportBallsOnClick,
     clickDamage,
-    gemsReceivedForKillBrickByClick,
-    gemsReceivedForKillBrickByBall,
+
     gems,
     playerLevel,
     sfxVolume,
