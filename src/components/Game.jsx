@@ -784,13 +784,18 @@ function Game() {
           // Set the damage value inside the ripple div
           ripple.textContent = `${ball.damage}`;
 
+          // Customize the font
+          ripple.style.fontFamily = "Arial";
+          ripple.style.fontSize = "1rem";
+          ripple.style.fontWeight = "bold";
+          ripple.style.color = "white";
+
           document.body.appendChild(ripple);
 
           // Remove the ripple after the animation is complete
           setTimeout(() => {
             document.body.removeChild(ripple);
           }, 500);
-
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
