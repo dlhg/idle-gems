@@ -964,11 +964,15 @@ function Game() {
 
       if (attempts >= 30) {
         console.log(
-          `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
-            brickSpawnRate * 1.1
-          }`
+          brickSpawnRate === 3000
+            ? "Unable to find a suitable location for new brick after 30 attempts, however brick spawn interval is already at max (3s)"
+            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
+                brickSpawnRate * 1.1
+              }`
         );
-        setBrickSpawnRate((prevRate) => prevRate * 1.1);
+        setBrickSpawnRate((prevRate) =>
+          prevRate * 1.1 < 3000 ? prevRate * 1.1 : 3000
+        );
         return; // Exit the function if 30 attempts have been made
       }
     } while (overlap);
