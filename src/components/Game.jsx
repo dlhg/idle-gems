@@ -874,7 +874,7 @@ function Game() {
     ripple.style.top = `${y - ballRadius + navbarHeight}px`;
     ripple.textContent = textContent;
     ripple.style.fontFamily = "Arial";
-    ripple.style.fontSize = fontSize;
+    // ripple.style.fontSize = "2rem";
     ripple.style.fontWeight = "bold";
     ripple.style.color = color;
     ripple.style.pointerEvents = "none";
