@@ -405,13 +405,7 @@ function Game() {
             newHealth <= 0 ? `+${brick.gemsInside}g` : clickDamage.toString();
           const rippleColor = newHealth <= 0 ? "white" : "orange";
           const rippleFontSize = newHealth <= 0 ? "1.25rem" : "0.75rem";
-          createRipple(
-            brick.x,
-            brick.y,
-            rippleText,
-            rippleFontSize,
-            rippleColor
-          );
+          createRipple(x, y, rippleText, rippleFontSize, rippleColor);
 
           brickDestroyed = newHealth <= 0;
           gemsToAdd = brick.gemsInside;
