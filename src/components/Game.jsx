@@ -856,7 +856,7 @@ function Game() {
     x,
     y,
     textContent,
-    fontSize = "0.75rem",
+    fontSize = "2rem",
     color = "orange"
   ) => {
     const ripple = document.createElement("div");
@@ -868,7 +868,7 @@ function Game() {
     ripple.style.top = `${y - ballRadius + navbarHeight}px`;
     ripple.textContent = textContent;
     ripple.style.fontFamily = "Arial";
-    // ripple.style.fontSize = "2rem";
+    ripple.style.fontSize = "1.75rem";
     ripple.style.fontWeight = "bold";
     ripple.style.color = color;
     ripple.style.pointerEvents = "none";
