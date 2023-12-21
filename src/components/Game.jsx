@@ -330,7 +330,12 @@ function Game() {
 
   const canvasRef = useRef(null);
   const ballIdRef = useRef(0);
-  const brickIdRef = useRef(1);
+  const brickIdRef = useRef(null);
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem("brickId");
+    brickIdRef.current = storedValue ? JSON.parse(storedValue) : 1;
+  }, []);
   const bricksRef = useRef(bricks); // Create a ref to hold the current bricks state
   const ballsRef = useRef(balls);
 
@@ -459,6 +464,8 @@ function Game() {
   useEffect(() => {
     const interval = setInterval(() => {
       console.log("Saving game state to local storage");
+      localStorage.setItem("brickId", JSON.stringify(brickIdRef.current));
+
       localStorage.setItem("balls", JSON.stringify(balls));
       localStorage.setItem("ballCount", JSON.stringify(ballCount));
       localStorage.setItem("ballDamage", JSON.stringify(ballDamage));
@@ -638,6 +645,7 @@ function Game() {
   // Main game rendering/physics loop - handles collision, movement etc
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
+    console.log("brickIdRef.current", brickIdRef.current);
     bricksRef.current = bricks;
     ballsRef.current = balls;
 
