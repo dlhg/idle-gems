@@ -14,7 +14,7 @@ const FooterActionButtons = ({
     <div className="footer">
       <button onClick={buyBall}>
         +Ball
-        <br />({ballPrice}g)
+        <br />({ballPrice.toFixed(0)}g)
       </button>
 
       <button onClick={buyBallSpeedUpgrade}>
