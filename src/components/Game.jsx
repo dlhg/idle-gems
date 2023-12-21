@@ -788,7 +788,7 @@ function Game() {
           ripple.style.fontFamily = "Arial";
           ripple.style.fontSize = "0.75rem";
           ripple.style.fontWeight = "bold";
-          ripple.style.color = "white";
+          ripple.style.color = "orange";
 
           document.body.appendChild(ripple);
 
