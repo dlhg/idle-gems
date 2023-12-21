@@ -31,22 +31,22 @@ const Navbar = ({
         <br />
         {gems.toFixed(0)}
       </span>
-      <span key={ballSpeed} className="glow--on--change">
+      <span>
         Ball Speed
         <br />
         {(ballSpeed * 200).toFixed(0)}
       </span>
-      <span key={ballRadius} className="glow--on--change">
+      <span>
         Ball Radius
         <br />
         {ballRadius.toFixed(2)}
       </span>
-      <span key={ballDamage} className="glow--on--change">
+      <span>
         Ball Damage
         <br />
         {ballDamage}
       </span>
-      <span key={clickDamage} className="glow--on--change">
+      <span>
         Click Damage
         <br />
         {clickDamage}
