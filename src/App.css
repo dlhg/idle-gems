@@ -73,7 +73,7 @@ body {
   display: flex;
   flex-direction: column;
   font-size: 2vw;
-  background-image: url(./assets/images/backgrounds/twinklingspaceanimated.gif);
+  background-image: url(./assets/images/backgrounds/ripple_gray.gif);
   background-size: 800px;
   background-repeat: repeat;
   background-position: center;
