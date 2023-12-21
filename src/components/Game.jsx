@@ -198,7 +198,7 @@ function Game() {
     const savedBrickRadius = localStorage.getItem("brickRadius");
     return savedBrickRadius
       ? JSON.parse(savedBrickRadius)
-      : Math.sqrt(window.innerWidth * window.innerHeight) / 30;
+      : Math.sqrt(window.innerWidth * window.innerHeight) / 45;
   });
   const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
     const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
@@ -685,7 +685,7 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      const fontSize = brickRadius * 0.5;
+      const fontSize = brickRadius * 0.65;
       ctx.font = `bold ${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
