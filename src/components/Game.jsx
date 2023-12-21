@@ -555,7 +555,6 @@ function Game() {
     maxBricksOnScreen,
     canPlayerTeleportBallsOnClick,
     clickDamage,
-
     gems,
     playerLevel,
     sfxVolume,
