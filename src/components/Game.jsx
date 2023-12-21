@@ -781,6 +781,9 @@ function Game() {
           ripple.style.left = `${rippleX - ballRadius}px`;
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
+          // Set the damage value inside the ripple div
+          ripple.textContent = `${ball.damage}`;
+
           document.body.appendChild(ripple);
 
           // Remove the ripple after the animation is complete
