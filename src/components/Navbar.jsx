@@ -51,6 +51,7 @@ const Navbar = ({
         <br />
         {clickDamage}
       </span>
+      <span>to add: crit multiplier and crit chance</span>
 
       {/* <span> Level {playerLevel}</span> */}
     </div>
