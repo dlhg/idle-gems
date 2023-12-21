@@ -448,7 +448,22 @@ function Game() {
   );
 
   // EFFECTS
+  useEffect(() => {
+    const audio = new Audio(europaLoop);
+    audio.loop = true;
 
+    const playAudio = () => {
+      audio.play();
+      window.removeEventListener("click", playAudio);
+    };
+
+    window.addEventListener("click", playAudio);
+
+    return () => {
+      audio.pause();
+      window.removeEventListener("click", playAudio);
+    };
+  }, []);
   useEffect(() => {
     const interval = setInterval(() => {
       console.log("Saving game state to local storage");
@@ -524,7 +539,7 @@ function Game() {
       localStorage.setItem("musicVolume", JSON.stringify(musicVolume));
       localStorage.setItem("canvasWidth", JSON.stringify(canvasWidth));
       localStorage.setItem("canvasHeight", JSON.stringify(canvasHeight));
-    }, 1000); // 10000 milliseconds = 10 seconds
+    }, 1000); // 1000 milliseconds = 1 second
 
     // Clear interval on component unmount
     return () => clearInterval(interval);
