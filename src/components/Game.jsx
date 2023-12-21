@@ -768,7 +768,7 @@ function Game() {
           ripple.textContent = `${
             brick.health - ball.damage > 0
               ? ball.damage
-              : `+${brick.gemsInside}g!`
+              : `+${brick.gemsInside}g`
           }`;
 
           // Customize the font
