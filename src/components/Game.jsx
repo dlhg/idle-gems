@@ -263,7 +263,7 @@ function Game() {
   //Tone JS channel volume
   const [sfxVolume, setSFXVolume] = useState(() => {
     const savedSFXVolume = localStorage.getItem("sfxVolume");
-    return savedSFXVolume ? JSON.parse(savedSFXVolume) : 0.5; // Volume for SFX channel (0 to 1)
+    return savedSFXVolume ? JSON.parse(savedSFXVolume) : 1; // Volume for SFX channel (0 to 1)
   });
   const [musicVolume, setMusicVolume] = useState(() => {
     const savedMusicVolume = localStorage.getItem("musicVolume");
