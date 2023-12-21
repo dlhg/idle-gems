@@ -765,6 +765,29 @@ function Game() {
             return;
           }
 
+          // Collision detected, create a ripple
+          const ripple = document.createElement("div");
+          ripple.className = "ripple";
+          ripple.style.width = `${2 * ballRadius}px`;
+          ripple.style.height = `${2 * ballRadius}px`;
+
+          // Convert 10vh to pixels
+          const navbarHeight = window.innerHeight * 0.1;
+
+          // Calculate the ripple position at the collision point
+          const rippleX = ball.x + (brick.x - ball.x) * (ballRadius / distance);
+          const rippleY = ball.y + (brick.y - ball.y) * (ballRadius / distance);
+
+          ripple.style.left = `${rippleX - ballRadius}px`;
+          ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
+
+          document.body.appendChild(ripple);
+
+          // Remove the ripple after the animation is complete
+          setTimeout(() => {
+            document.body.removeChild(ripple);
+          }, 500);
+
           // Decrement the brick's HP by the ball's damage
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
