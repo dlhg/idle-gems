@@ -26,15 +26,20 @@
   }
 }
 
-@keyframes textGlow {
+@keyframes textGlowAndPulse {
   0% {
     text-shadow: 0 0 0 rgba(255, 255, 255, 0.75);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.75);
+    transform: scale(1.1);
   }
   100% {
-    text-shadow: 0 0 0.5rem rgba(255, 255, 255, 0.75);
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0.75);
+    transform: scale(1);
   }
 }
-
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -88,7 +93,7 @@ body {
 }
 
 .glow--on--change {
-  animation: textGlow 1s linear;
+  animation: textGlowAndPulse 0.5s linear;
 }
 
 .canvas-component {
