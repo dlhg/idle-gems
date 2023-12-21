@@ -352,6 +352,11 @@ function Game() {
   }
 
   function playSound(fileName) {
+    if (!fileName.current.loaded) {
+      // Check if the player exists and is loaded
+      return;
+    }
+
     fileName.current.stop(Tone.now());
     fileName.current.start(Tone.now());
   }
