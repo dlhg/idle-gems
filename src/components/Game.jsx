@@ -381,7 +381,7 @@ function Game() {
       const y = (event.clientY - rect.top) * scaleY; // Adjusted Y coordinate
 
       let brickDestroyed = false;
-      let numOfBricksFarEnoughAway = 0;
+      let numOfBricksFarEnoughAwayToAllowBallTeleport = 0;
       let gemsToAdd = 0;
 
       // if there are no bricks on screen, teleport balls to click location
@@ -397,11 +397,12 @@ function Game() {
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance > brickRadius + ballRadius) {
-          numOfBricksFarEnoughAway++;
+          numOfBricksFarEnoughAwayToAllowBallTeleport++;
         }
 
         if (
-          numOfBricksFarEnoughAway === bricksRef.current.length &&
+          numOfBricksFarEnoughAwayToAllowBallTeleport ===
+            bricksRef.current.length &&
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
