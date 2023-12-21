@@ -19,19 +19,19 @@ const FooterActionButtons = ({
 
       <button onClick={buyBallSpeedUpgrade}>
         +Speed
-        <br />({ballSpeedUpgradePrice}g)
+        <br />({ballSpeedUpgradePrice.toFixed(0)}g)
       </button>
       <button onClick={buyBallRadiusUpgrade}>
         +Size
-        <br />({ballRadiusUpgradePrice}g)
+        <br />({ballRadiusUpgradePrice.toFixed(0)}g)
       </button>
       <button onClick={buyBallDamageUpgrade}>
         +Ball Damage
-        <br />({ballDamageUpgradePrice}g)
+        <br />({ballDamageUpgradePrice.toFixed(0)}g)
       </button>
       <button onClick={buyClickDamageUpgrade}>
         +Click Damage
-        <br />({clickDamageUpgradePrice}g)
+        <br />({clickDamageUpgradePrice.toFixed(0)}g)
       </button>
     </div>
   );

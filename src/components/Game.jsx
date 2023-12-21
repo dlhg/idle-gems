@@ -112,7 +112,7 @@ function Game() {
     );
     return savedUpgradePriceMultiplier
       ? JSON.parse(savedUpgradePriceMultiplier)
-      : 1.1;
+      : 1.2;
   });
 
   const [ballPrice, setBallPrice] = useState(() => {
