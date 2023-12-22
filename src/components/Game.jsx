@@ -184,7 +184,7 @@ function Game() {
   });
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
     const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
-    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 150;
+    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 50;
   });
 
   //perks/unlocks
@@ -1017,30 +1017,17 @@ function Game() {
     setBallCount((prev) => prev + 1);
     setBallPrice((prev) => prev * upgradePriceMultiplier);
     let newBall;
-    let overlap;
-    do {
-      overlap = false;
-      const x = Math.random() * (canvasWidth - ballRadius * 2) + ballRadius;
-      const y = Math.random() * (canvasHeight - ballRadius * 2) + ballRadius;
-      newBall = {
-        id: ballIdRef.current,
-        x,
-        y,
-        speed: ballSpeed,
-        direction: Math.random() * 2 * Math.PI,
-        damage: ballDamage,
-      };
 
-      for (const ball of balls) {
-        const dx = ball.x - newBall.x;
-        const dy = ball.y - newBall.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < ballRadius * 2) {
-          overlap = true;
-          break;
-        }
-      }
-    } while (overlap);
+    const x = canvasWidth / 2; // Set x coordinate to the middle of the canvas
+    const y = canvasHeight / 2; // Set y coordinate to the middle of the canvas
+    newBall = {
+      id: ballIdRef.current,
+      x,
+      y,
+      speed: ballSpeed,
+      direction: Math.random() * 2 * Math.PI,
+      damage: ballDamage,
+    };
 
     ballIdRef.current += 1;
     setBalls([...balls, newBall]);
