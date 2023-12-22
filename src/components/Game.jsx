@@ -648,7 +648,10 @@ function Game() {
     console.log("brickIdRef.current", brickIdRef.current);
     bricksRef.current = bricks;
     ballsRef.current = balls;
-
+    //if there are no bricks on screen, increase brick radius
+    if (bricks.length === 0) {
+      setBrickSpawnRate(500);
+    }
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
