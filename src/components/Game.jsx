@@ -184,7 +184,7 @@ function Game() {
   });
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
     const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
-    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 50;
+    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 200;
   });
 
   //perks/unlocks
@@ -512,7 +512,7 @@ function Game() {
 
         if (
           numOfBricksFarEnoughAwayToAllowBallTeleport ===
-          bricksRef.current.length &&
+            bricksRef.current.length &&
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
@@ -550,6 +550,7 @@ function Game() {
   );
 
   // EFFECTS
+  //effects with no dependencies
   useEffect(() => {
     const audio = new Audio(europaLoop);
     audio.loop = true;
@@ -718,6 +719,8 @@ function Game() {
     };
   }, [handleCanvasClick]);
 
+  // effects that have dependencies
+
   //effect that spawns bricks if there are less than maxBricksOnScreen
   useEffect(() => {
     let intervalId;
@@ -750,6 +753,7 @@ function Game() {
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
   // MAIN LOOP  for game rendering/physics - handles collision, movement etc
+  const brickFontSize = brickRadius * 0.55;
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
     console.log("brickIdRef.current", brickIdRef.current);
@@ -810,7 +814,7 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      const fontSize = brickRadius * 0.55;
+      const fontSize = brickFontSize;
       ctx.font = `bold ${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
@@ -897,10 +901,11 @@ function Game() {
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
           // Set the damage value inside the ripple div
-          ripple.textContent = `${brick.health - ball.damage > 0
+          ripple.textContent = `${
+            brick.health - ball.damage > 0
               ? ball.damage.toFixed(0)
               : `+${brick.gemsInside}g`
-            }`;
+          }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
@@ -1032,6 +1037,8 @@ function Game() {
     setBalls([...balls, newBall]);
   };
 
+  const spawnBrickAtRandomLocationInFixedGrid = () => {};
+
   const spawnBrickAtRandomLocation = () => {
     let newBrick;
     let overlap;
@@ -1079,8 +1086,9 @@ function Game() {
         console.log(
           brickSpawnRate === 3000
             ? "Unable to find a suitable location for new brick after 30 attempts, however brick spawn interval is already at max (3s)"
-            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${brickSpawnRate * 1.1
-            }`
+            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
+                brickSpawnRate * 1.1
+              }`
         );
         setBrickSpawnRate((prevRate) =>
           prevRate * 1.1 < 3000 ? prevRate * 1.1 : 3000
