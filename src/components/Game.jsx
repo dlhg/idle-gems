@@ -54,7 +54,7 @@ import G3_filter1_transposed from "../assets/sfx/synthtones/G3_filter1_transpose
 import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transposed.mp3";
 import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
 
-import tele1 from "../assets/sfx/teleports/tele1.mp3";
+import tele1 from "../assets/sfx/teleports/tele1_gainboosted.mp3";
 import tele2 from "../assets/sfx/teleports/tele2.mp3";
 import tele3 from "../assets/sfx/teleports/tele3.mp3";
 import tele4 from "../assets/sfx/teleports/tele4.mp3";
