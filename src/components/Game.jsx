@@ -214,7 +214,7 @@ function Game() {
     );
     return savedBallDamageUpgradeAmount
       ? JSON.parse(savedBallDamageUpgradeAmount)
-      : ballDamage * 1.25;
+      : ballDamage * 1.33;
   });
   const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(() => {
     const savedBallSpeedUpgradeAmount = localStorage.getItem(
