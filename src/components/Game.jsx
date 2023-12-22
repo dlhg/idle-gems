@@ -160,7 +160,7 @@ function Game() {
     );
     return savedBallDamageUpgradeAmount
       ? JSON.parse(savedBallDamageUpgradeAmount)
-      : ballDamage * 1.15;
+      : ballDamage * 1.25;
   });
   const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(() => {
     const savedBallSpeedUpgradeAmount = localStorage.getItem(
@@ -185,7 +185,7 @@ function Game() {
       );
       return savedClickDamageUpgradeAmount
         ? JSON.parse(savedClickDamageUpgradeAmount)
-        : 50;
+        : clickDamage * 1.25;
     }
   );
   //bricks
