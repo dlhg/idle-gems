@@ -1,5 +1,5 @@
 //SFX imports
-import shortthud from "../assets/sfx/shortthud.mp3";
+import shortthud from "../assets/sfx/shortthud_gainboosted.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
 import teleport from "../assets/sfx/teleport.mp3";
 
