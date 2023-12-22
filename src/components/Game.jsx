@@ -723,16 +723,17 @@ function Game() {
         ctx.fillText("☠", brick.x, brick.y);
       } else {
         // Text stroke to create an outline
-        ctx.strokeText(brick.health, brick.x, brick.y);
+        const healthText = brick.health.toFixed(0);
+        ctx.strokeText(healthText, brick.x, brick.y);
         // Fill the text after stroking so it appears on top
-        ctx.fillText(brick.health, brick.x, brick.y);
+        ctx.fillText(healthText, brick.x, brick.y);
 
         // Text shadow
         ctx.shadowOffsetX = 2;
         ctx.shadowOffsetY = 2;
         ctx.shadowBlur = 3;
         ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-        ctx.fillText(brick.health, brick.x, brick.y);
+        ctx.fillText(healthText, brick.x, brick.y);
       }
     };
 
