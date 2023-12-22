@@ -1178,6 +1178,7 @@ function Game() {
         />
       </div>
       <FooterActionButtons
+        gems={gems}
         buyBall={buyBall}
         ballPrice={ballPrice}
         buyBallSpeedUpgrade={buyBallSpeedUpgrade}
