@@ -512,7 +512,7 @@ function Game() {
 
         if (
           numOfBricksFarEnoughAwayToAllowBallTeleport ===
-            bricksRef.current.length &&
+          bricksRef.current.length &&
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
@@ -749,7 +749,7 @@ function Game() {
     };
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
-  // Main game rendering/physics loop - handles collision, movement etc
+  // MAIN LOOP  for game rendering/physics - handles collision, movement etc
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
     console.log("brickIdRef.current", brickIdRef.current);
@@ -897,11 +897,10 @@ function Game() {
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
           // Set the damage value inside the ripple div
-          ripple.textContent = `${
-            brick.health - ball.damage > 0
+          ripple.textContent = `${brick.health - ball.damage > 0
               ? ball.damage.toFixed(0)
               : `+${brick.gemsInside}g`
-          }`;
+            }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
@@ -1093,9 +1092,8 @@ function Game() {
         console.log(
           brickSpawnRate === 3000
             ? "Unable to find a suitable location for new brick after 30 attempts, however brick spawn interval is already at max (3s)"
-            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
-                brickSpawnRate * 1.1
-              }`
+            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${brickSpawnRate * 1.1
+            }`
         );
         setBrickSpawnRate((prevRate) =>
           prevRate * 1.1 < 3000 ? prevRate * 1.1 : 3000
