@@ -799,7 +799,7 @@ function Game() {
           // Set the damage value inside the ripple div
           ripple.textContent = `${
             brick.health - ball.damage > 0
-              ? ball.damage
+              ? ball.damage.toFixed(0)
               : `+${brick.gemsInside}g`
           }`;
 
