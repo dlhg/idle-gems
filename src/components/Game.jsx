@@ -821,9 +821,6 @@ function Game() {
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
           // playSound(shortThud);
-
-          //play sound when brick is hit
-
           const randomIndex = Math.floor(
             Math.random() * synthSoundPlayersRef.current.length
           );
