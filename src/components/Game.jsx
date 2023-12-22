@@ -53,6 +53,56 @@ import F3_filter3_transposed from "../assets/sfx/synthtones/F3_filter3_transpose
 import G3_filter1_transposed from "../assets/sfx/synthtones/G3_filter1_transposed.mp3";
 import G3_filter2_transposed from "../assets/sfx/synthtones/G3_filter2_transposed.mp3";
 import G3_filter3_transposed from "../assets/sfx/synthtones/G3_filter3_transposed.mp3";
+import A3_filter1_soft_01 from "../assets/sfx/synthtones/A3_filter1_soft-01.mp3";
+import A3_filter1_soft_02 from "../assets/sfx/synthtones/A3_filter1_soft-02.mp3";
+import A3_filter1_soft_03 from "../assets/sfx/synthtones/A3_filter1_soft-03.mp3";
+import A3_filter1_soft_04 from "../assets/sfx/synthtones/A3_filter1_soft-04.mp3";
+import A3_filter1_soft_05 from "../assets/sfx/synthtones/A3_filter1_soft-05.mp3";
+import A3_filter1_soft_06 from "../assets/sfx/synthtones/A3_filter1_soft-06.mp3";
+import A3_filter1_soft_07 from "../assets/sfx/synthtones/A3_filter1_soft-07.mp3";
+import A3_filter1_soft_08 from "../assets/sfx/synthtones/A3_filter1_soft-08.mp3";
+import A3_filter1_soft_09 from "../assets/sfx/synthtones/A3_filter1_soft-09.mp3";
+import A3_filter1_soft_10 from "../assets/sfx/synthtones/A3_filter1_soft-10.mp3";
+import A3_filter1_soft_11 from "../assets/sfx/synthtones/A3_filter1_soft-11.mp3";
+import A3_filter1_soft_12 from "../assets/sfx/synthtones/A3_filter1_soft-12.mp3";
+import A3_filter1_soft_13 from "../assets/sfx/synthtones/A3_filter1_soft-13.mp3";
+import A3_filter1_soft_14 from "../assets/sfx/synthtones/A3_filter1_soft-14.mp3";
+import A3_filter1_soft_15 from "../assets/sfx/synthtones/A3_filter1_soft-15.mp3";
+import A3_filter1_soft_16 from "../assets/sfx/synthtones/A3_filter1_soft-16.mp3";
+import A3_filter1_soft_17 from "../assets/sfx/synthtones/A3_filter1_soft-17.mp3";
+import A3_filter1_soft_18 from "../assets/sfx/synthtones/A3_filter1_soft-18.mp3";
+import A3_filter1_soft_19 from "../assets/sfx/synthtones/A3_filter1_soft-19.mp3";
+import A3_filter1_soft_20 from "../assets/sfx/synthtones/A3_filter1_soft-20.mp3";
+import A3_filter1_soft_21 from "../assets/sfx/synthtones/A3_filter1_soft-21.mp3";
+import A3_filter1_soft_22 from "../assets/sfx/synthtones/A3_filter1_soft-22.mp3";
+import A3_filter1_soft_23 from "../assets/sfx/synthtones/A3_filter1_soft-23.mp3";
+import A3_filter1_soft_24 from "../assets/sfx/synthtones/A3_filter1_soft-24.mp3";
+import A3_filter1_soft_25 from "../assets/sfx/synthtones/A3_filter1_soft-25.mp3";
+import A3_filter1_soft_26 from "../assets/sfx/synthtones/A3_filter1_soft-26.mp3";
+import A3_filter1_soft_27 from "../assets/sfx/synthtones/A3_filter1_soft-27.mp3";
+import A3_filter1_soft_28 from "../assets/sfx/synthtones/A3_filter1_soft-28.mp3";
+import A3_filter1_soft_29 from "../assets/sfx/synthtones/A3_filter1_soft-29.mp3";
+import A3_filter1_soft_30 from "../assets/sfx/synthtones/A3_filter1_soft-30.mp3";
+import A3_filter1_soft_31 from "../assets/sfx/synthtones/A3_filter1_soft-31.mp3";
+import A3_filter1_soft_32 from "../assets/sfx/synthtones/A3_filter1_soft-32.mp3";
+import A3_filter1_soft_33 from "../assets/sfx/synthtones/A3_filter1_soft-33.mp3";
+import A3_filter1_soft_34 from "../assets/sfx/synthtones/A3_filter1_soft-34.mp3";
+import A3_filter1_soft_35 from "../assets/sfx/synthtones/A3_filter1_soft-35.mp3";
+import A3_filter1_soft_36 from "../assets/sfx/synthtones/A3_filter1_soft-36.mp3";
+import A3_filter1_soft_37 from "../assets/sfx/synthtones/A3_filter1_soft-37.mp3";
+import A3_filter1_soft_38 from "../assets/sfx/synthtones/A3_filter1_soft-38.mp3";
+import A3_filter1_soft_39 from "../assets/sfx/synthtones/A3_filter1_soft-39.mp3";
+import A3_filter1_soft_40 from "../assets/sfx/synthtones/A3_filter1_soft-40.mp3";
+import A3_filter1_soft_41 from "../assets/sfx/synthtones/A3_filter1_soft-41.mp3";
+import A3_filter1_soft_42 from "../assets/sfx/synthtones/A3_filter1_soft-42.mp3";
+import A3_filter1_soft_43 from "../assets/sfx/synthtones/A3_filter1_soft-43.mp3";
+import A3_filter1_soft_44 from "../assets/sfx/synthtones/A3_filter1_soft-44.mp3";
+import A3_filter1_soft_45 from "../assets/sfx/synthtones/A3_filter1_soft-45.mp3";
+import A3_filter1_soft_46 from "../assets/sfx/synthtones/A3_filter1_soft-46.mp3";
+import A3_filter1_soft_47 from "../assets/sfx/synthtones/A3_filter1_soft-47.mp3";
+import A3_filter1_soft_48 from "../assets/sfx/synthtones/A3_filter1_soft-48.mp3";
+import A3_filter1_soft_49 from "../assets/sfx/synthtones/A3_filter1_soft-49.mp3";
+import A3_filter1_soft_50 from "../assets/sfx/synthtones/A3_filter1_soft-50.mp3";
 
 import tele1 from "../assets/sfx/teleports/tele1_gainboosted.mp3";
 import tele2 from "../assets/sfx/teleports/tele2.mp3";
@@ -309,6 +359,56 @@ function Game() {
     G3_filter1_transposed,
     G3_filter2_transposed,
     G3_filter3_transposed,
+    A3_filter1_soft_01,
+    A3_filter1_soft_02,
+    A3_filter1_soft_03,
+    A3_filter1_soft_04,
+    A3_filter1_soft_05,
+    A3_filter1_soft_06,
+    A3_filter1_soft_07,
+    A3_filter1_soft_08,
+    A3_filter1_soft_09,
+    A3_filter1_soft_10,
+    A3_filter1_soft_11,
+    A3_filter1_soft_12,
+    A3_filter1_soft_13,
+    A3_filter1_soft_14,
+    A3_filter1_soft_15,
+    A3_filter1_soft_16,
+    A3_filter1_soft_17,
+    A3_filter1_soft_18,
+    A3_filter1_soft_19,
+    A3_filter1_soft_20,
+    A3_filter1_soft_21,
+    A3_filter1_soft_22,
+    A3_filter1_soft_23,
+    A3_filter1_soft_24,
+    A3_filter1_soft_25,
+    A3_filter1_soft_26,
+    A3_filter1_soft_27,
+    A3_filter1_soft_28,
+    A3_filter1_soft_29,
+    A3_filter1_soft_30,
+    A3_filter1_soft_31,
+    A3_filter1_soft_32,
+    A3_filter1_soft_33,
+    A3_filter1_soft_34,
+    A3_filter1_soft_35,
+    A3_filter1_soft_36,
+    A3_filter1_soft_37,
+    A3_filter1_soft_38,
+    A3_filter1_soft_39,
+    A3_filter1_soft_40,
+    A3_filter1_soft_41,
+    A3_filter1_soft_42,
+    A3_filter1_soft_43,
+    A3_filter1_soft_44,
+    A3_filter1_soft_45,
+    A3_filter1_soft_46,
+    A3_filter1_soft_47,
+    A3_filter1_soft_48,
+    A3_filter1_soft_49,
+    A3_filter1_soft_50,
   ];
 
   const teleportSounds = [
