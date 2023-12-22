@@ -73,6 +73,7 @@ import { Limiter } from "tone";
 
 //component imports
 import Navbar from "./Navbar";
+import GoalText from "./GoalText";
 import FooterActionButtons from "./FooterActionButtons";
 
 //music loop
@@ -960,6 +961,7 @@ function Game() {
         id: brickIdRef.current,
         x,
         y,
+
         health: brickIdRef.current,
         gemsInside: brickIdRef.current,
       };
@@ -1163,6 +1165,10 @@ function Game() {
         clickDamage={clickDamage}
         ballRadius={ballRadius}
       />
+      {/* <GoalText
+      
+      
+      /> */}
       <div className="canvas--wrapper">
         <canvas
           className="game--canvas"
