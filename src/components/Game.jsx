@@ -703,7 +703,7 @@ function Game() {
       ctx.restore();
 
       // Drawing HP text over the image
-      const fontSize = brickRadius * 0.65;
+      const fontSize = brickRadius * 0.55;
       ctx.font = `bold ${fontSize}px Arial`;
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
