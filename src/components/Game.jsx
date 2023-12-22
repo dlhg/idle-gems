@@ -1,15 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
-import * as Tone from "tone";
-import { Limiter } from "tone";
-
-//component imports
-import Navbar from "./Navbar";
-import FooterActionButtons from "./FooterActionButtons";
-
-//music loop
-import europaLoop from "../assets/bgmusic/europa.mp3";
-
-//sfx
+//SFX imports
 import shortthud from "../assets/sfx/shortthud.mp3";
 import brickbreak from "../assets/sfx/beep.mp3";
 import teleport from "../assets/sfx/teleport.mp3";
@@ -74,6 +63,20 @@ import tele6 from "../assets/sfx/teleports/tele6.mp3";
 import tele7 from "../assets/sfx/teleports/tele7.mp3";
 import tele8 from "../assets/sfx/teleports/tele8.mp3";
 import tele9 from "../assets/sfx/teleports/tele9.mp3";
+
+//React imports
+import React, { useState, useRef, useEffect, useCallback } from "react";
+
+//Tone JS imports
+import * as Tone from "tone";
+import { Limiter } from "tone";
+
+//component imports
+import Navbar from "./Navbar";
+import FooterActionButtons from "./FooterActionButtons";
+
+//music loop
+import europaLoop from "../assets/bgmusic/europa.mp3";
 
 // brick texture images
 import bluegemtexture from "../assets/images/backgrounds/patt.png";
