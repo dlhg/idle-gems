@@ -108,6 +108,59 @@ function Game() {
       : Math.sqrt(window.innerWidth * window.innerHeight) / 200;
   });
 
+  //bricks
+  const [bricks, setBricks] = useState(() => {
+    const savedBricks = localStorage.getItem("bricks");
+    return savedBricks ? JSON.parse(savedBricks) : [];
+  });
+  const [brickInitialHealth, setBrickInitialHealth] = useState(() => {
+    const savedBrickInitialHealth = localStorage.getItem("brickInitialHealth");
+    return savedBrickInitialHealth ? JSON.parse(savedBrickInitialHealth) : 100;
+  });
+  const [brickRadius, setBrickRadius] = useState(() => {
+    const savedBrickRadius = localStorage.getItem("brickRadius");
+    return savedBrickRadius
+      ? JSON.parse(savedBrickRadius)
+      : Math.sqrt(window.innerWidth * window.innerHeight) / 45;
+  });
+  const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
+    const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
+    return savedIsSpawningBricks ? JSON.parse(savedIsSpawningBricks) : true;
+  });
+  const [brickSpawnRate, setBrickSpawnRate] = useState(() => {
+    const savedBrickSpawnRate = localStorage.getItem("brickSpawnRate");
+    return savedBrickSpawnRate ? JSON.parse(savedBrickSpawnRate) : 100;
+  });
+  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
+    const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
+    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 150;
+  });
+
+  //perks/unlocks
+  const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
+    useState(() => {
+      const savedCanPlayerTeleportBallsOnClick = localStorage.getItem(
+        "canPlayerTeleportBallsOnClick"
+      );
+      return savedCanPlayerTeleportBallsOnClick
+        ? JSON.parse(savedCanPlayerTeleportBallsOnClick)
+        : true;
+    });
+  const [clickDamage, setClickDamage] = useState(() => {
+    const savedClickDamage = localStorage.getItem("clickDamage");
+    return savedClickDamage ? JSON.parse(savedClickDamage) : 20;
+  });
+
+  //currency
+  const [gems, setGems] = useState(() => {
+    const savedGems = localStorage.getItem("gems");
+    return savedGems ? JSON.parse(savedGems) : 1000;
+  });
+
+  //canvas size
+  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
+  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
+
   //prices and upgrade amounts
   const [upgradePriceMultiplier, setUpgradePriceMultiplier] = useState(() => {
     const savedUpgradePriceMultiplier = localStorage.getItem(
@@ -188,58 +241,6 @@ function Game() {
         : clickDamage * 1.25;
     }
   );
-  //bricks
-  const [bricks, setBricks] = useState(() => {
-    const savedBricks = localStorage.getItem("bricks");
-    return savedBricks ? JSON.parse(savedBricks) : [];
-  });
-  const [brickInitialHealth, setBrickInitialHealth] = useState(() => {
-    const savedBrickInitialHealth = localStorage.getItem("brickInitialHealth");
-    return savedBrickInitialHealth ? JSON.parse(savedBrickInitialHealth) : 100;
-  });
-  const [brickRadius, setBrickRadius] = useState(() => {
-    const savedBrickRadius = localStorage.getItem("brickRadius");
-    return savedBrickRadius
-      ? JSON.parse(savedBrickRadius)
-      : Math.sqrt(window.innerWidth * window.innerHeight) / 45;
-  });
-  const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
-    const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
-    return savedIsSpawningBricks ? JSON.parse(savedIsSpawningBricks) : true;
-  });
-  const [brickSpawnRate, setBrickSpawnRate] = useState(() => {
-    const savedBrickSpawnRate = localStorage.getItem("brickSpawnRate");
-    return savedBrickSpawnRate ? JSON.parse(savedBrickSpawnRate) : 100;
-  });
-  const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
-    const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
-    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 150;
-  });
-
-  //perks/unlocks
-  const [canPlayerTeleportBallsOnClick, setCanPlayerTeleportBallsOnClick] =
-    useState(() => {
-      const savedCanPlayerTeleportBallsOnClick = localStorage.getItem(
-        "canPlayerTeleportBallsOnClick"
-      );
-      return savedCanPlayerTeleportBallsOnClick
-        ? JSON.parse(savedCanPlayerTeleportBallsOnClick)
-        : true;
-    });
-  const [clickDamage, setClickDamage] = useState(() => {
-    const savedClickDamage = localStorage.getItem("clickDamage");
-    return savedClickDamage ? JSON.parse(savedClickDamage) : 20;
-  });
-
-  //currency
-  const [gems, setGems] = useState(() => {
-    const savedGems = localStorage.getItem("gems");
-    return savedGems ? JSON.parse(savedGems) : 1000;
-  });
-
-  //canvas size
-  const [canvasWidth, setCanvasWidth] = useState(window.innerWidth);
-  const [canvasHeight, setCanvasHeight] = useState(window.innerHeight * 0.7);
 
   //unused
   const [playerLevel, setPlayerLevel] = useState(1);
