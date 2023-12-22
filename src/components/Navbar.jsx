@@ -34,7 +34,7 @@ const Navbar = ({
       <span>
         Ball Speed
         <br />
-        {(ballSpeed * 200).toFixed(0)}
+        {(ballSpeed * 200).toFixed(2)}
       </span>
       <span>
         Ball Radius
@@ -44,12 +44,12 @@ const Navbar = ({
       <span>
         Ball Damage
         <br />
-        {ballDamage}
+        {ballDamage.toFixed(2)}
       </span>
       <span>
         Click Damage
         <br />
-        {clickDamage}
+        {clickDamage.toFixed(2)}
       </span>
       <span>to add: crit multiplier and crit chance</span>
       {/* critical hit should have different animation
