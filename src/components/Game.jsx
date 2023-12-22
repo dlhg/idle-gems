@@ -821,6 +821,9 @@ function Game() {
           bricks[index].health -= ball.damage;
           // Play ball + brick impact sound
           // playSound(shortThud);
+
+          //play sound when brick is hit
+
           const randomIndex = Math.floor(
             Math.random() * synthSoundPlayersRef.current.length
           );
@@ -844,7 +847,7 @@ function Game() {
 
       // Remove destroyed brick and update state
       if (brickDestroyed) {
-        playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
+        // playSound(brickBreak); // Play brickbreak sound when a brick is destroyed
         const destroyedBrick = bricks.find(
           (brick) => brick.id === destroyedBrickId
         );
