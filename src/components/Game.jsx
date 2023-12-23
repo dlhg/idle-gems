@@ -180,7 +180,7 @@ function Game() {
   });
   const [brickSpawnRate, setBrickSpawnRate] = useState(() => {
     const savedBrickSpawnRate = localStorage.getItem("brickSpawnRate");
-    return savedBrickSpawnRate ? JSON.parse(savedBrickSpawnRate) : 100;
+    return savedBrickSpawnRate ? JSON.parse(savedBrickSpawnRate) : 500;
   });
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
     const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
@@ -827,6 +827,7 @@ function Game() {
   // MAIN LOOP USEEFFECT
 
   useEffect(() => {
+    console.log(`main loop useEffect triggered`);
     // Update the ref's current value whenever bricks or balls change
     // console.log("brickIdRef.current", brickIdRef.current);
     bricksRef.current = bricks;
