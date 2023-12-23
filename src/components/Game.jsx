@@ -761,6 +761,19 @@ function Game() {
   const brickFontSize = brickRadius * 0.55;
   const brickImage = new Image();
 
+  const blueGemImage = new Image();
+  blueGemImage.src = bluegemtexture;
+  const purpleGemImage = new Image();
+  purpleGemImage.src = purplegemtexture;
+  const greenGemImage = new Image();
+  greenGemImage.src = greengemtexture;
+  const redGemImage = new Image();
+  redGemImage.src = redgemtexture;
+  const clearGemImage = new Image();
+  clearGemImage.src = cleargemtexture;
+  const darkGemImage = new Image();
+  darkGemImage.src = darkgemtexture;
+
   const gemTextureImages = [purplegemtexture, bluegemtexture];
 
   // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
