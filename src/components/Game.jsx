@@ -130,7 +130,7 @@ import FooterActionButtons from "./FooterActionButtons";
 import europaLoop from "../assets/bgmusic/europa.mp3";
 
 // brick texture images
-import purplegemtexture from "../assets/images/textures/bricks/purplegem.png";
+import purplegemtexture from "../assets/images/textures/bricks/pinkgem.png";
 import bluegemtexture from "../assets/images/textures/bricks/bluegem.png";
 
 function Game() {
@@ -756,7 +756,7 @@ function Game() {
 
   const brickFontSize = brickRadius * 0.55;
   const brickImage = new Image();
-  brickImage.src = purplegemtexture;
+
   const gemTextureImages = [purplegemtexture, bluegemtexture];
 
   // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
@@ -779,12 +779,29 @@ function Game() {
     ctx.fill();
     ctx.closePath();
   }
-  function drawBrick(ctx, brick, brickRadius, brickImage, brickFontSize) {
+  function drawBrick(
+    ctx,
+    brick,
+    brickRadius,
+    brickImage,
+    brickFontSize,
+    gemsInside
+  ) {
     if (brick.health < 0) {
       return;
     }
+
     // Save the current context state (style settings, transformations, etc.)
     ctx.save();
+
+    // Choose brick image based on gems inside
+    // console.log("gems inside", gemsInside);
+    if (gemsInside <= 100) {
+      brickImage.src = purplegemtexture;
+    }
+    if (gemsInside > 100) {
+      brickImage.src = bluegemtexture;
+    }
 
     // Create a circular path
     ctx.beginPath();
@@ -981,7 +998,14 @@ function Game() {
       });
 
       bricks.forEach((brick) => {
-        drawBrick(ctx, brick, brickRadius, brickImage, brickFontSize);
+        drawBrick(
+          ctx,
+          brick,
+          brickRadius,
+          brickImage,
+          brickFontSize,
+          brick.gemsInside
+        );
       });
 
       animationFrameId = requestAnimationFrame(update);
