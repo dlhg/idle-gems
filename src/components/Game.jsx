@@ -1222,7 +1222,7 @@ function Game() {
     }
     setGems((prev) => prev - clickDamageUpgradePrice);
     setClickDamageUpgradePrice((prev) => prev * upgradePriceMultiplier);
-    const newDamage = clickDamage * clickDamageUpgradeAmount;
+    const newDamage = Math.floor(clickDamage * clickDamageUpgradeAmount);
     setClickDamage(newDamage);
   }
 
