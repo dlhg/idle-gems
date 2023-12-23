@@ -828,11 +828,12 @@ function Game() {
 
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
-    console.log("brickIdRef.current", brickIdRef.current);
+    // console.log("brickIdRef.current", brickIdRef.current);
     bricksRef.current = bricks;
     ballsRef.current = balls;
     //if there are no bricks on screen, increase brick radius
-    if (bricks.length === 0) {
+    if (!bricks[0]) {
+      console.log("no bricks on screen, increasing brick radius");
       setBrickSpawnRate(500);
     }
     const canvas = canvasRef.current;
