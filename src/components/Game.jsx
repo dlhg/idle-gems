@@ -130,7 +130,8 @@ import FooterActionButtons from "./FooterActionButtons";
 import europaLoop from "../assets/bgmusic/europa.mp3";
 
 // brick texture images
-import bluegemtexture from "../assets/images/backgrounds/patt.png";
+import purplegemtexture from "../assets/images/textures/bricks/purplegem.png";
+import bluegemtexture from "../assets/images/textures/bricks/bluegem.png";
 
 function Game() {
   /* STATE*/
@@ -752,7 +753,7 @@ function Game() {
   // MAIN LOOP  for game rendering/physics - handles collision, movement etc
   const brickFontSize = brickRadius * 0.55;
   const brickImage = new Image();
-  brickImage.src = bluegemtexture;
+  brickImage.src = purplegemtexture;
 
   // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
 
