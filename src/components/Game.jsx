@@ -130,8 +130,12 @@ import FooterActionButtons from "./FooterActionButtons";
 import europaLoop from "../assets/bgmusic/europa.mp3";
 
 // brick texture images
-import purplegemtexture from "../assets/images/textures/bricks/pinkgem.png";
+import purplegemtexture from "../assets/images/textures/bricks/purplegem.png";
 import bluegemtexture from "../assets/images/textures/bricks/bluegem.png";
+import greengemtexture from "../assets/images/textures/bricks/greengem.png";
+import redgemtexture from "../assets/images/textures/bricks/redgem.png";
+import cleargemtexture from "../assets/images/textures/bricks/cleargem.png";
+import darkgemtexture from "../assets/images/textures/bricks/darkgem.png";
 
 function Game() {
   /* STATE*/
