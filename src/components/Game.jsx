@@ -857,6 +857,7 @@ function Game() {
       } else if (ball.x - ballRadius < 0) {
         ball.x = ballRadius; // Adjust position to avoid overlap
         ball.direction = Math.PI - ball.direction; // Reflect horizontal direction
+        return;
       }
 
       // Collision with bottom or top canvas border
@@ -867,6 +868,7 @@ function Game() {
       } else if (ball.y - ballRadius < 0) {
         ball.y = ballRadius; // Adjust position to avoid overlap
         ball.direction *= -1; // Reflect vertical direction
+        return;
       }
 
       // Initialize variables for brick collision
