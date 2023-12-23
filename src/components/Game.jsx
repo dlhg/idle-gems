@@ -778,6 +778,9 @@ function Game() {
     ctx.closePath();
   }
   function drawBrick(ctx, brick, brickRadius, brickImage, brickFontSize) {
+    if (brick.health < 0) {
+      return;
+    }
     // Save the current context state (style settings, transformations, etc.)
     ctx.save();
 
