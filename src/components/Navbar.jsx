@@ -44,12 +44,12 @@ const Navbar = ({
       <span>
         Ball Damage
         <br />
-        {ballDamage.toFixed(2)}
+        {ballDamage.toFixed(0)}
       </span>
       <span>
         Click Damage
         <br />
-        {clickDamage.toFixed(2)}
+        {clickDamage.toFixed(0)}
       </span>
       <span>to add: crit multiplier and crit chance</span>
       {/* critical hit should have different animation
