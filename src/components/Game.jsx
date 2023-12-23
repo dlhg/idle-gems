@@ -264,7 +264,7 @@ function Game() {
     );
     return savedBallDamageUpgradeAmount
       ? JSON.parse(savedBallDamageUpgradeAmount)
-      : 1.2;
+      : 1.3;
   });
   const [ballSpeedUpgradeAmount, setBallSpeedUpgradeAmount] = useState(() => {
     const savedBallSpeedUpgradeAmount = localStorage.getItem(
@@ -1209,7 +1209,7 @@ function Game() {
     }
     setGems((prev) => prev - ballDamageUpgradePrice);
     setBallDamageUpgradePrice((prev) => prev * upgradePriceMultiplier);
-    const newDamage = Math.floor(ballDamage * ballDamageUpgradeAmount);
+    const newDamage = Math.round(ballDamage * ballDamageUpgradeAmount);
     setBallDamage(newDamage);
     setBalls((currentBalls) =>
       currentBalls.map((ball) => ({ ...ball, damage: newDamage }))
@@ -1222,7 +1222,7 @@ function Game() {
     }
     setGems((prev) => prev - clickDamageUpgradePrice);
     setClickDamageUpgradePrice((prev) => prev * upgradePriceMultiplier);
-    const newDamage = Math.floor(clickDamage * clickDamageUpgradeAmount);
+    const newDamage = Math.round(clickDamage * clickDamageUpgradeAmount);
     setClickDamage(newDamage);
   }
 
