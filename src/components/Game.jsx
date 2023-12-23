@@ -757,6 +757,27 @@ function Game() {
   const brickImage = new Image();
   brickImage.src = bluegemtexture;
 
+  // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
+
+  function drawBall(ctx, ball, ballRadius) {
+    const gradient = ctx.createRadialGradient(
+      ball.x,
+      ball.y,
+      0, // x, y, and radius of the inner circle (0 to start at the center)
+      ball.x,
+      ball.y,
+      ballRadius // x, y, and radius of the outer circle
+    );
+    gradient.addColorStop(0, "white"); // White center
+    gradient.addColorStop(1, "grey"); // Grey edge
+
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.closePath();
+  }
+
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
     console.log("brickIdRef.current", brickIdRef.current);
@@ -769,25 +790,6 @@ function Game() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
-
-    // Draw ball
-    const drawBall = (ball) => {
-      const gradient = ctx.createRadialGradient(
-        ball.x,
-        ball.y,
-        0, // x, y, and radius of the inner circle (0 to start at the center)
-        ball.x,
-        ball.y,
-        ballRadius // x, y, and radius of the outer circle
-      );
-      gradient.addColorStop(0, "white"); // White center
-      gradient.addColorStop(1, "grey"); // Blue edge
-      ctx.beginPath();
-      ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-      ctx.closePath();
-    };
 
     const drawBrick = (brick) => {
       // Save the current context state (style settings, transformations, etc.)
