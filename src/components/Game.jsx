@@ -185,7 +185,7 @@ function Game() {
   });
   const [maxBricksOnScreen, setMaxBricksOnScreen] = useState(() => {
     const savedMaxBricksOnScreen = localStorage.getItem("maxBricksOnScreen");
-    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 200;
+    return savedMaxBricksOnScreen ? JSON.parse(savedMaxBricksOnScreen) : 120;
   });
 
   //perks/unlocks
@@ -757,6 +757,7 @@ function Game() {
   const brickFontSize = brickRadius * 0.55;
   const brickImage = new Image();
   brickImage.src = purplegemtexture;
+  const gemTextureImages = [purplegemtexture, bluegemtexture];
 
   // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
 
