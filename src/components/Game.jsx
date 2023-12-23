@@ -1074,7 +1074,16 @@ function Game() {
     setBalls([...balls, newBall]);
   };
 
-  const spawnBrickAtRandomLocationInFixedGrid = () => {};
+  // const spawnBrickAtRandomLocationInFixedGrid = () => {};
+
+  function assignBrickImage(gemsInside) {
+    if (gemsInside <= 100) {
+      return purplegemtexture;
+    }
+    if (gemsInside > 100) {
+      return bluegemtexture;
+    }
+  }
 
   const spawnBrickAtRandomLocation = () => {
     let newBrick;
@@ -1095,6 +1104,7 @@ function Game() {
 
         health: brickIdRef.current,
         gemsInside: brickIdRef.current,
+        // brickImage:
       };
 
       for (const brick of bricks) {
@@ -1119,11 +1129,11 @@ function Game() {
 
       attempts++;
 
-      if (attempts >= 30) {
+      if (attempts >= 10) {
         console.log(
           brickSpawnRate === 3000
-            ? "Unable to find a suitable location for new brick after 30 attempts, however brick spawn interval is already at max (3s)"
-            : `Unable to find a suitable location for new brick after 30 attempts, increasing brick spawn interval to ${
+            ? "Unable to find a suitable location for new brick after 10 attempts, however brick spawn interval is already at max (3s)"
+            : `Unable to find a suitable location for new brick after 10 attempts, increasing brick spawn interval to ${
                 brickSpawnRate * 1.1
               }`
         );
