@@ -754,6 +754,9 @@ function Game() {
 
   // MAIN LOOP  for game rendering/physics - handles collision, movement etc
   const brickFontSize = brickRadius * 0.55;
+  const brickImage = new Image();
+  brickImage.src = bluegemtexture;
+
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
     console.log("brickIdRef.current", brickIdRef.current);
@@ -785,9 +788,6 @@ function Game() {
       ctx.fill();
       ctx.closePath();
     };
-
-    const brickImage = new Image();
-    brickImage.src = bluegemtexture;
 
     const drawBrick = (brick) => {
       // Save the current context state (style settings, transformations, etc.)
