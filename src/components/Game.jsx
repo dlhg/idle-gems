@@ -830,7 +830,7 @@ function Game() {
   // MAIN LOOP USEEFFECT
 
   useEffect(() => {
-    console.log(`main loop useEffect triggered`);
+    console.log(`main loop useEffect dependency array triggered`);
     // Update the ref's current value whenever bricks or balls change
     // console.log("brickIdRef.current", brickIdRef.current);
     bricksRef.current = bricks;
