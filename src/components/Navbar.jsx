@@ -26,11 +26,6 @@ const Navbar = ({
 
   return (
     <div className="navbar">
-      <span key={gems} className="glow--on--change">
-        Gems
-        <br />
-        {gems.toFixed(0)}g
-      </span>
       <span>
         Ball Speed
         <br />
@@ -40,6 +35,9 @@ const Navbar = ({
         Ball Radius
         <br />
         {ballRadius.toFixed(2)}
+      </span>
+      <span key={gems} className="glow--on--change">
+        {gems.toFixed(0)}g
       </span>
       <span>
         Ball Damage
@@ -51,7 +49,7 @@ const Navbar = ({
         <br />
         {clickDamage.toFixed(0)}
       </span>
-      <span>to add: crit multiplier and crit chance</span>
+      {/* <span>to add: crit multiplier and crit chance</span> */}
       {/* critical hit should have different animation
       critical hit should have different sound (maybe add reverb /decay?) */}
 
