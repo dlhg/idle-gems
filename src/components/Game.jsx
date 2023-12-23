@@ -759,7 +759,7 @@ function Game() {
   // VARIABLES FOR MAIN LOOP
 
   const brickFontSize = brickRadius * 0.55;
-  const brickImage = new Image();
+  let brickImage;
 
   const blueGemImage = new Image();
   blueGemImage.src = bluegemtexture;
@@ -814,10 +814,22 @@ function Game() {
     // Choose brick image based on gems inside
     // console.log("gems inside", gemsInside);
     if (gemsInside <= 100) {
-      brickImage.src = purplegemtexture;
+      brickImage = blueGemImage;
     }
-    if (gemsInside > 100) {
-      brickImage.src = bluegemtexture;
+    if (gemsInside > 100 && gemsInside <= 250) {
+      brickImage = purpleGemImage;
+    }
+    if (gemsInside > 250 && gemsInside <= 500) {
+      brickImage = greenGemImage;
+    }
+    if (gemsInside > 500 && gemsInside <= 1000) {
+      brickImage = redGemImage;
+    }
+    if (gemsInside > 1000 && gemsInside <= 2000) {
+      brickImage = clearGemImage;
+    }
+    if (gemsInside > 2000) {
+      brickImage = darkGemImage;
     }
 
     // Create a circular path
