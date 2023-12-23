@@ -844,10 +844,11 @@ function Game() {
       ball.x += ball.speed * Math.cos(ball.direction);
       ball.y += ball.speed * Math.sin(ball.direction);
 
-      // Collision with right or left canvas border
+      // Collision with right or left canvas border - if ball hits border, adjust position and return out of loop (don't check for brick collision)
       if (ball.x + ballRadius > canvasWidth) {
         ball.x = canvasWidth - ballRadius; // Adjust position to avoid overlap
         ball.direction = Math.PI - ball.direction; // Reflect horizontal direction
+        return;
       } else if (ball.x - ballRadius < 0) {
         ball.x = ballRadius; // Adjust position to avoid overlap
         ball.direction = Math.PI - ball.direction; // Reflect horizontal direction
@@ -857,6 +858,7 @@ function Game() {
       if (ball.y + ballRadius > canvasHeight) {
         ball.y = canvasHeight - ballRadius; // Adjust position to avoid overlap
         ball.direction *= -1; // Reflect vertical direction
+        return;
       } else if (ball.y - ballRadius < 0) {
         ball.y = ballRadius; // Adjust position to avoid overlap
         ball.direction *= -1; // Reflect vertical direction
