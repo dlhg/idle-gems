@@ -36,7 +36,7 @@ const Navbar = ({
         <br />
         {ballRadius.toFixed(2)}
       </span>
-      <span key={gems} className="glow--on--change">
+      <span key={gems} className="glow--on--change" style={{ fontSize: "2em" }}>
         {gems.toFixed(0)}g
       </span>
       <span>
