@@ -751,6 +751,9 @@ function Game() {
   }, [isSpawningBricks, bricks, brickSpawnRate]);
 
   // MAIN LOOP  for game rendering/physics - handles collision, movement etc
+
+  // VARIABLES FOR MAIN LOOP
+
   const brickFontSize = brickRadius * 0.55;
   const brickImage = new Image();
   brickImage.src = purplegemtexture;
