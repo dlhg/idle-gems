@@ -777,6 +777,54 @@ function Game() {
     ctx.fill();
     ctx.closePath();
   }
+  function drawBrick(ctx, brick, brickRadius, brickImage, brickFontSize) {
+    // Save the current context state (style settings, transformations, etc.)
+    ctx.save();
+
+    // Create a circular path
+    ctx.beginPath();
+    ctx.arc(brick.x, brick.y, brickRadius, 0, Math.PI * 2);
+    ctx.closePath();
+
+    // Clip to the circular path
+    ctx.clip();
+
+    // Draw the image within the clipped region
+    ctx.drawImage(
+      brickImage,
+      brick.x - brickRadius,
+      brick.y - brickRadius,
+      brickRadius * 2,
+      brickRadius * 2
+    );
+
+    // Restore the context to its original state
+    ctx.restore();
+
+    // Drawing HP text over the image
+    const fontSize = brickFontSize;
+    ctx.font = `bold ${fontSize}px Arial`;
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 3;
+
+    const healthText = brick.health.toFixed(0);
+    // Text stroke to create an outline
+    ctx.strokeText(healthText, brick.x, brick.y);
+    // Fill the text after stroking so it appears on top
+    ctx.fillText(healthText, brick.x, brick.y);
+
+    // Optional shadow for better visibility
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    ctx.shadowBlur = 3;
+    ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
+    ctx.fillText(healthText, brick.x, brick.y);
+  }
+
+  // MAIN LOOP USEEFFECT
 
   useEffect(() => {
     // Update the ref's current value whenever bricks or balls change
@@ -790,58 +838,6 @@ function Game() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
-
-    const drawBrick = (brick) => {
-      // Save the current context state (style settings, transformations, etc.)
-      ctx.save();
-
-      // Create a circular path
-      ctx.beginPath();
-      ctx.arc(brick.x, brick.y, brickRadius, 0, Math.PI * 2);
-      ctx.closePath();
-
-      // Clip to the circular path
-      ctx.clip();
-
-      // Draw the image within the clipped region
-      ctx.drawImage(
-        brickImage,
-        brick.x - brickRadius,
-        brick.y - brickRadius,
-        brickRadius * 2,
-        brickRadius * 2
-      );
-
-      // Restore the context to its original state
-      ctx.restore();
-
-      // Drawing HP text over the image
-      const fontSize = brickFontSize;
-      ctx.font = `bold ${fontSize}px Arial`;
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 3;
-
-      if (brick.health <= 0) {
-        // Display skull if health is below 0
-        ctx.fillText("☠", brick.x, brick.y);
-      } else {
-        // Text stroke to create an outline
-        const healthText = brick.health.toFixed(0);
-        ctx.strokeText(healthText, brick.x, brick.y);
-        // Fill the text after stroking so it appears on top
-        ctx.fillText(healthText, brick.x, brick.y);
-
-        // Text shadow
-        ctx.shadowOffsetX = 2;
-        ctx.shadowOffsetY = 2;
-        ctx.shadowBlur = 3;
-        ctx.shadowColor = "rgba(0, 0, 0, 0.7)";
-        ctx.fillText(healthText, brick.x, brick.y);
-      }
-    };
 
     const updateBallPosition = (ball) => {
       // Update ball position
@@ -970,11 +966,11 @@ function Game() {
 
       balls.forEach((ball) => {
         updateBallPosition(ball);
-        drawBall(ball);
+        drawBall(ctx, ball, ballRadius);
       });
 
       bricks.forEach((brick) => {
-        drawBrick(brick);
+        drawBrick(ctx, brick, brickRadius, brickImage, brickFontSize);
       });
 
       animationFrameId = requestAnimationFrame(update);
