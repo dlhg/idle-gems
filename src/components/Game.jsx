@@ -1276,6 +1276,7 @@ function Game() {
       <FooterActionButtons
         gems={gems}
         buyBall={buyBall}
+        ballCount={ballCount}
         ballPrice={ballPrice}
         buyBallSpeedUpgrade={buyBallSpeedUpgrade}
         ballSpeedUpgradePrice={ballSpeedUpgradePrice}

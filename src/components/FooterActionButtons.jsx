@@ -1,7 +1,8 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 
 const FooterActionButtons = ({
   gems,
+  ballCount,
   buyBall,
   ballPrice,
   buyBallSpeedUpgrade,
@@ -13,14 +14,11 @@ const FooterActionButtons = ({
   buyClickDamageUpgrade,
   clickDamageUpgradePrice,
 }) => {
-  const [doesPlayerHaveAtLeastOneBall, setDoesPlayerHaveAtLeastOneBall] =
-    useState(false);
   return (
     <div className="footer">
       <button
         onClick={() => {
           buyBall();
-          setDoesPlayerHaveAtLeastOneBall(true);
         }}
         style={{ color: gems >= ballPrice ? "green" : "red" }}
       >
@@ -28,7 +26,7 @@ const FooterActionButtons = ({
         <br />({ballPrice.toFixed(0)}g)
       </button>
 
-      {doesPlayerHaveAtLeastOneBall && (
+      {ballCount > 0 && (
         <>
           <button
             onClick={buyBallSpeedUpgrade}
@@ -51,15 +49,15 @@ const FooterActionButtons = ({
             +Ball Damage
             <br />({ballDamageUpgradePrice.toFixed(0)}g)
           </button>
-          <button
-            onClick={buyClickDamageUpgrade}
-            style={{ color: gems >= clickDamageUpgradePrice ? "green" : "red" }}
-          >
-            +Click Damage
-            <br />({clickDamageUpgradePrice.toFixed(0)}g)
-          </button>
         </>
       )}
+      <button
+        onClick={buyClickDamageUpgrade}
+        style={{ color: gems >= clickDamageUpgradePrice ? "green" : "red" }}
+      >
+        +Click Damage
+        <br />({clickDamageUpgradePrice.toFixed(0)}g)
+      </button>
     </div>
   );
 };
