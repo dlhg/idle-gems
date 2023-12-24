@@ -16,48 +16,53 @@ const FooterActionButtons = ({
 }) => {
   return (
     <div className="footer">
-      <button
-        onClick={() => {
-          buyBall();
-        }}
-        style={{ color: gems >= ballPrice ? "green" : "red" }}
-      >
+      <button onClick={buyBall}>
         +Ball
-        <br />({ballPrice.toFixed(0)}g)
+        <br />(
+        <span style={{ color: gems >= ballPrice ? "green" : "red" }}>
+          {ballPrice.toFixed(0)}g
+        </span>
+        )
       </button>
 
       {ballCount > 0 && (
         <>
-          <button
-            onClick={buyBallSpeedUpgrade}
-            style={{ color: gems >= ballSpeedUpgradePrice ? "green" : "red" }}
-          >
+          <button onClick={buyBallSpeedUpgrade}>
             +Speed
-            <br />({ballSpeedUpgradePrice.toFixed(0)}g)
+            <br />(
+            <span
+              style={{ color: gems >= ballSpeedUpgradePrice ? "green" : "red" }}
+            >
+              {ballSpeedUpgradePrice.toFixed(0)}g
+            </span>
+            )
           </button>
-          <button
-            onClick={buyBallRadiusUpgrade}
-            style={{ color: gems >= ballRadiusUpgradePrice ? "green" : "red" }}
-          >
+          <button onClick={buyBallRadiusUpgrade}>
             +Size
-            <br />({ballRadiusUpgradePrice.toFixed(0)}g)
+            <br />(
+            <span
+              style={{
+                color: gems >= ballRadiusUpgradePrice ? "green" : "red",
+              }}
+            >
+              {ballRadiusUpgradePrice.toFixed(0)}g
+            </span>
+            )
           </button>
-          <button
-            onClick={buyBallDamageUpgrade}
-            style={{ color: gems >= ballDamageUpgradePrice ? "green" : "red" }}
-          >
+          <button onClick={buyBallDamageUpgrade}>
             +Ball Damage
-            <br />({ballDamageUpgradePrice.toFixed(0)}g)
+            <br />(
+            <span
+              style={{
+                color: gems >= ballDamageUpgradePrice ? "green" : "red",
+              }}
+            >
+              {ballDamageUpgradePrice.toFixed(0)}g
+            </span>
+            )
           </button>
         </>
       )}
-      <button
-        onClick={buyClickDamageUpgrade}
-        style={{ color: gems >= clickDamageUpgradePrice ? "green" : "red" }}
-      >
-        +Click Damage
-        <br />({clickDamageUpgradePrice.toFixed(0)}g)
-      </button>
     </div>
   );
 };
