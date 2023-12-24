@@ -57,6 +57,17 @@ const FooterActionButtons = ({
               {ballDamageUpgradePrice.toFixed(0)}g
             </span>
           </button>
+          <button onClick={buyClickDamageUpgrade}>
+            +Click Damage
+            <br />
+            <span
+              style={{
+                color: gems >= clickDamageUpgradePrice ? "green" : "red",
+              }}
+            >
+              {clickDamageUpgradePrice.toFixed(0)}g
+            </span>
+          </button>
         </>
       )}
     </div>

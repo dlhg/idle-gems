@@ -231,7 +231,7 @@ function Game() {
 
   const [ballPrice, setBallPrice] = useState(() => {
     const savedBallPrice = localStorage.getItem("ballPrice");
-    return savedBallPrice ? JSON.parse(savedBallPrice) : 1000;
+    return savedBallPrice ? JSON.parse(savedBallPrice) : 750;
   });
   const [ballSpeedUpgradePrice, setBallSpeedUpgradePrice] = useState(() => {
     const savedBallSpeedUpgradePrice = localStorage.getItem(
