@@ -52,6 +52,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: none;
 }
 
 html,
@@ -105,7 +106,7 @@ body {
   align-items: center;
   height: 100%;
   user-select: none;
-  pointer-events: none; /* Add this line */
+  pointer-events: none;
 }
 .canvas-component {
   width: 100vw;
