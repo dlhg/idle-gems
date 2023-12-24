@@ -136,6 +136,8 @@ import greengemtexture from "../assets/images/textures/bricks/greengem.png";
 import redgemtexture from "../assets/images/textures/bricks/redgem.png";
 import cleargemtexture from "../assets/images/textures/bricks/cleargem.png";
 import darkgemtexture from "../assets/images/textures/bricks/darkgem.png";
+import rainbowgemtexture from "../assets/images/textures/bricks/rainbowgem.png";
+import cosmicgemtexture from "../assets/images/textures/bricks/cosmicgem.png";
 
 function Game() {
   /* STATE*/
@@ -773,8 +775,10 @@ function Game() {
   clearGemImage.src = cleargemtexture;
   const darkGemImage = new Image();
   darkGemImage.src = darkgemtexture;
-
-  const gemTextureImages = [purplegemtexture, bluegemtexture];
+  const rainbowGemImage = new Image();
+  rainbowGemImage.src = rainbowgemtexture;
+  const cosmicGemImage = new Image();
+  cosmicGemImage.src = cosmicgemtexture;
 
   // FUNCTIONS EXTRACTED FROM MAIN LOOP        (refactoring)
 
@@ -828,8 +832,14 @@ function Game() {
     if (gemsInside > 1000 && gemsInside <= 2000) {
       brickImage = clearGemImage;
     }
-    if (gemsInside > 2000) {
+    if (gemsInside > 2000 && gemsInside <= 5000) {
       brickImage = darkGemImage;
+    }
+    if (gemsInside > 5000 && gemsInside <= 10000) {
+      brickImage = rainbowGemImage;
+    }
+    if (gemsInside > 10000) {
+      brickImage = cosmicGemImage;
     }
 
     // Create a circular path
