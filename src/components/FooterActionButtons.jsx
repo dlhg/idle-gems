@@ -19,7 +19,7 @@ const FooterActionButtons = ({
       <button onClick={buyBall}>
         +Ball
         <br />
-        <span style={{ color: gems >= ballPrice ? "green" : "red" }}>
+        <span style={{ color: gems >= ballPrice ? "darkgreen" : "darkred" }}>
           {ballPrice.toFixed(0)}g
         </span>
       </button>
@@ -30,7 +30,9 @@ const FooterActionButtons = ({
             +Speed
             <br />
             <span
-              style={{ color: gems >= ballSpeedUpgradePrice ? "green" : "red" }}
+              style={{
+                color: gems >= ballSpeedUpgradePrice ? "darkgreen" : "darkred",
+              }}
             >
               {ballSpeedUpgradePrice.toFixed(0)}g
             </span>
@@ -40,7 +42,7 @@ const FooterActionButtons = ({
             <br />
             <span
               style={{
-                color: gems >= ballRadiusUpgradePrice ? "green" : "red",
+                color: gems >= ballRadiusUpgradePrice ? "darkgreen" : "darkred",
               }}
             >
               {ballRadiusUpgradePrice.toFixed(0)}g
@@ -51,7 +53,7 @@ const FooterActionButtons = ({
             <br />
             <span
               style={{
-                color: gems >= ballDamageUpgradePrice ? "green" : "red",
+                color: gems >= ballDamageUpgradePrice ? "darkgreen" : "darkred",
               }}
             >
               {ballDamageUpgradePrice.toFixed(0)}g
@@ -62,7 +64,8 @@ const FooterActionButtons = ({
             <br />
             <span
               style={{
-                color: gems >= clickDamageUpgradePrice ? "green" : "red",
+                color:
+                  gems >= clickDamageUpgradePrice ? "darkgreen" : "darkred",
               }}
             >
               {clickDamageUpgradePrice.toFixed(0)}g
