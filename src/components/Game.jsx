@@ -464,7 +464,7 @@ function Game() {
       player.start(Tone.now());
     }
   }
-
+  // this is really pointing to the playerName not a filename. the file is loaded into the player.
   function playSound(fileName) {
     if (!fileName.current.loaded) {
       // Check if the player exists and is loaded
@@ -516,7 +516,7 @@ function Game() {
 
         if (
           numOfBricksFarEnoughAwayToAllowBallTeleport ===
-            bricksRef.current.length &&
+          bricksRef.current.length &&
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
@@ -966,11 +966,10 @@ function Game() {
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
           // Set the damage value inside the ripple div
-          ripple.textContent = `${
-            brick.health - ball.damage > 0
+          ripple.textContent = `${brick.health - ball.damage > 0
               ? ball.damage.toFixed(0)
               : `+${brick.gemsInside}g`
-          }`;
+            }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
@@ -1168,9 +1167,8 @@ function Game() {
         console.log(
           brickSpawnRate === 3000
             ? "Unable to find a suitable location for new brick after 10 attempts, however brick spawn interval is already at max (3s)"
-            : `Unable to find a suitable location for new brick after 10 attempts, increasing brick spawn interval to ${
-                brickSpawnRate * 1.1
-              }`
+            : `Unable to find a suitable location for new brick after 10 attempts, increasing brick spawn interval to ${brickSpawnRate * 1.1
+            }`
         );
         setBrickSpawnRate((prevRate) =>
           prevRate * 1.1 < 3000 ? prevRate * 1.1 : 3000
