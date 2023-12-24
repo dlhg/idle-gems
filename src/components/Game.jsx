@@ -762,6 +762,8 @@ function Game() {
 
   const brickFontSize = brickRadius * 0.55;
   let brickImage;
+  const TWO_PI = Math.PI * 2;
+
 
   const blueGemImage = new Image();
   blueGemImage.src = bluegemtexture;
@@ -795,7 +797,7 @@ function Game() {
     gradient.addColorStop(1, "grey"); // Grey edge
 
     ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ballRadius, 0, Math.PI * 2);
+    ctx.arc(ball.x, ball.y, ballRadius, 0, TWO_PI);
     ctx.fillStyle = gradient;
     ctx.fill();
     ctx.closePath();
@@ -844,7 +846,7 @@ function Game() {
 
     // Create a circular path
     ctx.beginPath();
-    ctx.arc(brick.x, brick.y, brickRadius, 0, Math.PI * 2);
+    ctx.arc(brick.x, brick.y, brickRadius, 0, TWO_PI);
     ctx.closePath();
 
     // Clip to the circular path
@@ -967,8 +969,8 @@ function Game() {
 
           // Set the damage value inside the ripple div
           ripple.textContent = `${brick.health - ball.damage > 0
-              ? ball.damage.toFixed(0)
-              : `+${brick.gemsInside}g`
+            ? ball.damage.toFixed(0)
+            : `+${brick.gemsInside}g`
             }`;
 
           // Customize the font
