@@ -86,7 +86,7 @@ function Game() {
   //currency
   const [gems, setGems] = useState(() => {
     const savedGems = localStorage.getItem("gems");
-    return savedGems ? JSON.parse(savedGems) : 10000000000;
+    return savedGems ? JSON.parse(savedGems) : 1000000000000;
   });
 
   //canvas size
@@ -620,7 +620,7 @@ function Game() {
             });
           }
           // spawnBricksInConcentricCircles();
-          spawnBrickAtRandomLocation();
+          // spawnBrickAtRandomLocation();
         }
       }, brickSpawnRate);
     }
