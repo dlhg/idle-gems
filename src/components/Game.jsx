@@ -86,7 +86,7 @@ function Game() {
   //currency
   const [gems, setGems] = useState(() => {
     const savedGems = localStorage.getItem("gems");
-    return savedGems ? JSON.parse(savedGems) : 1000;
+    return savedGems ? JSON.parse(savedGems) : 10000000000;
   });
 
   //canvas size
@@ -373,10 +373,11 @@ function Game() {
       let gemsToAdd = 0;
 
       // if there are no bricks on screen, teleport balls to click location
-      if (bricksRef.current.length === 0) {
+      if (!bricksRef.current[0]) {
         playSound(telePort);
         setBalls(ballsRef.current.map((ball) => ({ ...ball, x, y })));
         createRipple(x, y, "teleport", "1rem", "blue");
+        return;
       }
       // if there are bricks on screen, check if click is within brick radius. if yes, damage brick. if no, teleport balls to click location.
       const newBricks = bricksRef.current.map((brick) => {
@@ -397,6 +398,7 @@ function Game() {
           playSound(telePort);
           setBalls(ballsRef.current.map((ball) => ({ ...ball, x, y })));
           createRipple(x, y, "teleport", "1rem", "blue");
+          return;
         }
 
         if (distance < brickRadius) {
