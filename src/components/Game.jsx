@@ -819,29 +819,31 @@ function Game() {
 
     // Choose brick image based on gems inside
     // console.log("gems inside", gemsInside);
-    if (gemsInside <= 100) {
-      brickImage = blueGemImage;
-    }
-    if (gemsInside > 100 && gemsInside <= 250) {
-      brickImage = purpleGemImage;
-    }
-    if (gemsInside > 250 && gemsInside <= 500) {
-      brickImage = greenGemImage;
-    }
-    if (gemsInside > 500 && gemsInside <= 1000) {
-      brickImage = redGemImage;
-    }
-    if (gemsInside > 1000 && gemsInside <= 2000) {
-      brickImage = clearGemImage;
-    }
-    if (gemsInside > 2000 && gemsInside <= 5000) {
-      brickImage = darkGemImage;
-    }
-    if (gemsInside > 5000 && gemsInside <= 10000) {
-      brickImage = rainbowGemImage;
-    }
-    if (gemsInside > 10000) {
-      brickImage = cosmicGemImage;
+    switch (true) {
+      case gemsInside <= 100:
+        brickImage = blueGemImage;
+        break;
+      case gemsInside > 100 && gemsInside <= 250:
+        brickImage = purpleGemImage;
+        break;
+      case gemsInside > 250 && gemsInside <= 500:
+        brickImage = greenGemImage;
+        break;
+      case gemsInside > 500 && gemsInside <= 1000:
+        brickImage = redGemImage;
+        break;
+      case gemsInside > 1000 && gemsInside <= 2000:
+        brickImage = clearGemImage;
+        break;
+      case gemsInside > 2000 && gemsInside <= 5000:
+        brickImage = darkGemImage;
+        break;
+      case gemsInside > 5000 && gemsInside <= 10000:
+        brickImage = rainbowGemImage;
+        break;
+      case gemsInside > 10000:
+        brickImage = cosmicGemImage;
+        break;
     }
 
     // Create a circular path
