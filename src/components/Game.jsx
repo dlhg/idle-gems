@@ -995,7 +995,6 @@ function Game() {
     setBalls([...balls, newBall]);
   };
 
-  // const spawnBrickAtRandomLocationInFixedGrid = () => {};
 
   function assignBrickImage(gemsInside) {
     if (gemsInside <= 100) {
