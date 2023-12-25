@@ -864,7 +864,14 @@ function Game() {
             document.body.removeChild(ripple);
           }, 1000);
           // Decrement the brick's HP by the ball's damage
-          bricks[index].health -= ball.damage;
+          setBricks((prevBricks) => {
+            const updatedBricks = [...prevBricks];
+            updatedBricks[index] = {
+              ...updatedBricks[index],
+              health: updatedBricks[index].health - ball.damage,
+            };
+            return updatedBricks;
+          });
           // Play ball + brick impact sound
           // playSound(shortThud);
           const randomIndex = Math.floor(
