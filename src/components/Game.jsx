@@ -1,5 +1,4 @@
-
-import { assets } from './assetImports';
+import { assets } from "./assetImports";
 
 //React imports
 import React, { useState, useRef, useEffect, useCallback } from "react";
@@ -86,7 +85,7 @@ function Game() {
   //currency
   const [gems, setGems] = useState(() => {
     const savedGems = localStorage.getItem("gems");
-    return savedGems ? JSON.parse(savedGems) : 10000000000;
+    return savedGems ? JSON.parse(savedGems) : 1000;
   });
 
   //canvas size
@@ -391,7 +390,7 @@ function Game() {
 
         if (
           numOfBricksFarEnoughAwayToAllowBallTeleport ===
-          bricksRef.current.length &&
+            bricksRef.current.length &&
           canPlayerTeleportBallsOnClick &&
           ballCount > 0
         ) {
@@ -640,7 +639,6 @@ function Game() {
   let brickImage;
   const TWO_PI = Math.PI * 2;
 
-
   const blueGemImage = new Image();
   blueGemImage.src = assets.bluegemtexture;
   const purpleGemImage = new Image();
@@ -775,8 +773,8 @@ function Game() {
     ballsRef.current = balls;
     //if there are no bricks on screen, increase brick radius
     if (!bricks[0]) {
-      console.log("no bricks on screen, increasing brick radius");
-      setBrickSpawnRate(500);
+      console.log("no bricks on screen");
+      setBrickSpawnRate(50);
     }
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -846,10 +844,11 @@ function Game() {
           ripple.style.top = `${rippleY - ballRadius + navbarHeight}px`; // Offset by navbar height
 
           // Set the damage value inside the ripple div
-          ripple.textContent = `${brick.health - ball.damage > 0
-            ? ball.damage.toFixed(0)
-            : `+${brick.gemsInside}g`
-            }`;
+          ripple.textContent = `${
+            brick.health - ball.damage > 0
+              ? ball.damage.toFixed(0)
+              : `+${brick.gemsInside}g`
+          }`;
 
           // Customize the font
           ripple.style.fontFamily = "Arial";
@@ -1054,8 +1053,9 @@ function Game() {
         console.log(
           brickSpawnRate === 3000
             ? "Unable to find a suitable location for new brick after 10 attempts, however brick spawn interval is already at max (3s)"
-            : `Unable to find a suitable location for new brick after 10 attempts, increasing brick spawn interval to ${brickSpawnRate * 1.1
-            }`
+            : `Unable to find a suitable location for new brick after 10 attempts, increasing brick spawn interval to ${
+                brickSpawnRate * 1.1
+              }`
         );
         setBrickSpawnRate((prevRate) =>
           prevRate * 1.1 < 3000 ? prevRate * 1.1 : 3000
