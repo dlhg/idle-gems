@@ -11,6 +11,7 @@ Idle Gems is an idle/incremental game made with React and Tone JS.
 - The amount of damage done by a mouse click can also be upgraded with currency
 - The amount of currency contained within a gem is equivalent to its starting health
 - The starting health and currency contained within each new gem will be one greater than the last gem before it
+- You can teleport all your balls by clicking somewhere where there are no gems
 
 ## Youtube Demo
 [![Demo Video](https://img.youtube.com/vi/tCdsM8nZnMA/0.jpg)](https://www.youtube.com/watch?v=tCdsM8nZnMA)
