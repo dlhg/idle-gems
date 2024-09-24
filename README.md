@@ -1,7 +1,7 @@
 # Idle Gems
 
 ## Description
-Idle Gems is an idle/incremental game made with React and Tone JS. 
+Idle Gems is an idle/incremental game made with HTML Canvas, React and Tone JS. 
 
 ## How to play
 - Earn currency for upgrades by breaking open gems
