@@ -12,6 +12,8 @@ import FooterActionButtons from "./FooterActionButtons";
 
 // Constants and Static Assets outside component to avoid recreation
 const TWO_PI = Math.PI * 2;
+const CANVAS_W = 800;
+const CANVAS_H = 560;
 
 const blueGemImage = new Image();
 blueGemImage.src = assets.bluegemtexture;
@@ -50,7 +52,7 @@ function Game() {
     const savedBallRadius = localStorage.getItem("ballRadius");
     return savedBallRadius
       ? JSON.parse(savedBallRadius)
-      : Math.sqrt(window.innerWidth * window.innerHeight) / 200;
+      : Math.sqrt(CANVAS_W * CANVAS_H) / 200;
   });
 
   // Bricks
@@ -62,7 +64,7 @@ function Game() {
     const savedBrickRadius = localStorage.getItem("brickRadius");
     return savedBrickRadius
       ? JSON.parse(savedBrickRadius)
-      : Math.sqrt(window.innerWidth * window.innerHeight) / 45;
+      : Math.sqrt(CANVAS_W * CANVAS_H) / 45;
   });
   const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
     const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
@@ -97,10 +99,6 @@ function Game() {
     const savedGems = localStorage.getItem("gems");
     return savedGems ? JSON.parse(savedGems) : 1000;
   });
-
-  // Canvas size
-  const [canvasWidth] = useState(window.innerWidth);
-  const [canvasHeight] = useState(window.innerHeight * 0.7);
 
   // Prices and upgrade amounts
   const [upgradePriceMultiplier] = useState(() => {
@@ -440,8 +438,8 @@ function Game() {
         let overlap = true;
         let nx, ny;
         while(overlap && attempts < 10) {
-          nx = Math.random() * (canvasWidth - 4 * bRad) + 2 * bRad;
-          ny = Math.random() * (canvasHeight - 4 * bRad) + 2 * bRad;
+          nx = Math.random() * (CANVAS_W - 4 * bRad) + 2 * bRad;
+          ny = Math.random() * (CANVAS_H - 4 * bRad) + 2 * bRad;
           overlap = currentBricks.some(b => Math.hypot(b.x - nx, b.y - ny) < bRad * 2);
           attempts++;
         }
@@ -457,7 +455,7 @@ function Game() {
       }
     }, 100); 
     return () => clearInterval(interval);
-  }, [canvasWidth, canvasHeight]);
+  }, []);
 
   /* GAME LOOP */
   useEffect(() => {
@@ -475,13 +473,13 @@ function Game() {
         ball.x += ball.speed * Math.cos(ball.direction);
         ball.y += ball.speed * Math.sin(ball.direction);
 
-        if (ball.x + ballRad > canvasWidth || ball.x - ballRad < 0) {
+        if (ball.x + ballRad > CANVAS_W || ball.x - ballRad < 0) {
           ball.direction = Math.PI - ball.direction;
-          ball.x = Math.max(ballRad, Math.min(canvasWidth - ballRad, ball.x));
+          ball.x = Math.max(ballRad, Math.min(CANVAS_W - ballRad, ball.x));
         }
-        if (ball.y + ballRad > canvasHeight || ball.y - ballRad < 0) {
+        if (ball.y + ballRad > CANVAS_H || ball.y - ballRad < 0) {
           ball.direction *= -1;
-          ball.y = Math.max(ballRad, Math.min(canvasHeight - ballRad, ball.y));
+          ball.y = Math.max(ballRad, Math.min(CANVAS_H - ballRad, ball.y));
         }
 
         for (let i = bricks.length - 1; i >= 0; i--) {
@@ -508,7 +506,7 @@ function Game() {
         }
       });
 
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
       bricks.forEach(brick => {
         let img = blueGemImage;
         const g = brick.gemsInside;
@@ -565,7 +563,7 @@ function Game() {
 
     update();
     return () => cancelAnimationFrame(animationFrameId);
-  }, [canvasWidth, canvasHeight]);
+  }, []);
 
   /* ACTIONS */
   const buyBall = () => {
@@ -581,8 +579,8 @@ function Game() {
 
     ballsRef.current.push({
       id: ballIdRef.current++,
-      x: canvasWidth / 2,
-      y: canvasHeight / 2,
+      x: CANVAS_W / 2,
+      y: CANVAS_H / 2,
       speed: ballSpeedRef.current,
       direction: Math.random() * TWO_PI,
       damage: ballDamageRef.current,
@@ -639,8 +637,8 @@ function Game() {
         <canvas
           className="game--canvas"
           ref={canvasRef}
-          width={canvasWidth}
-          height={canvasHeight}
+          width={CANVAS_W}
+          height={CANVAS_H}
         />
       </div>
       <FooterActionButtons
