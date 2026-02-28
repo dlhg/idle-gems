@@ -340,7 +340,7 @@ function Game() {
       x, y, text, size, color,
       alpha: 1.0,
       life: 1.0, 
-      vy: -1, 
+      vy: -0.5, 
     });
   };
 
@@ -369,7 +369,7 @@ function Game() {
         const isDestroyed = brick.health <= 0;
         const text = isDestroyed ? `+${brick.gemsInside}g` : cDmg.toString();
         const color = isDestroyed ? "white" : "orange";
-        const size = isDestroyed ? 24 : 16;
+        const size = isDestroyed ? 48 : 32;
         createRipple(x, y, text, size, color);
 
         if (isDestroyed) {
@@ -388,7 +388,7 @@ function Game() {
         ball.x = x;
         ball.y = y;
       });
-      createRipple(x, y, "teleport", 20, "blue");
+      createRipple(x, y, "teleport", 40, "blue");
     }
   }, []);
 
@@ -455,8 +455,7 @@ function Game() {
           });
         }
       }
-    }, 100); // Check frequently, but spawn rate is governed by brickSpawnRateRef if you want more complex logic. 
-    // Actually, let's stick closer to original spawn rate logic.
+    }, 100); 
     return () => clearInterval(interval);
   }, [canvasWidth, canvasHeight]);
 
@@ -495,7 +494,7 @@ function Game() {
             playSoundPlayer(synthSoundPlayersRef.current[playerIdx]);
 
             const isDestroyed = brick.health <= 0;
-            createRipple(ball.x, ball.y, isDestroyed ? `+${brick.gemsInside}g` : ball.damage.toFixed(0), isDestroyed ? 20 : 12, isDestroyed ? "white" : "orange");
+            createRipple(ball.x, ball.y, isDestroyed ? `+${brick.gemsInside}g` : ball.damage.toFixed(0), isDestroyed ? 40 : 24, isDestroyed ? "white" : "orange");
 
             if (isDestroyed) {
               gemsRef.current += brick.gemsInside;
@@ -552,7 +551,7 @@ function Game() {
       for (let i = ripples.length - 1; i >= 0; i--) {
         const r = ripples[i];
         r.y += r.vy;
-        r.life -= 0.02;
+        r.life -= 0.01;
         if (r.life <= 0) { ripples.splice(i, 1); continue; }
         ctx.globalAlpha = r.life;
         ctx.font = `bold ${r.size}px Arial`;
@@ -566,7 +565,7 @@ function Game() {
 
     update();
     return () => cancelAnimationFrame(animationFrameId);
-  }, [canvasWidth, canvasHeight]); // Minimal dependencies
+  }, [canvasWidth, canvasHeight]);
 
   /* ACTIONS */
   const buyBall = () => {
