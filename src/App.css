@@ -93,6 +93,23 @@ body {
   justify-content: space-evenly;
 }
 
+.new-game-btn {
+  align-self: center;
+  padding: 4px 10px;
+  font-size: 0.7em;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.new-game-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+
 .glow--on--change {
   animation: textGlowAndPulse 0.5s linear;
 }

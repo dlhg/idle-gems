@@ -37,8 +37,8 @@ function Game() {
 
   // Balls - keep React state for ballCount but use Ref for individual ball data
   const [ballCount, setBallCount] = useState(() => {
-    const savedBallCount = localStorage.getItem("ballCount");
-    return savedBallCount ? JSON.parse(savedBallCount) : 0;
+    const savedBalls = localStorage.getItem("balls");
+    return savedBalls ? JSON.parse(savedBalls).length : 0;
   });
   const [ballDamage, setBallDamage] = useState(() => {
     const savedBallDamage = localStorage.getItem("ballDamage");
@@ -229,6 +229,7 @@ function Game() {
   ];
 
   /* REFS for Game Engine - These don't trigger re-renders when changed */
+  const isResettingRef = useRef(false);
   const canvasRef = useRef(null);
   const ballsRef = useRef([]);
   const bricksRef = useRef([]);
@@ -245,6 +246,11 @@ function Game() {
   const brickSpawnRateRef = useRef(brickSpawnRate);
   const maxBricksOnScreenRef = useRef(maxBricksOnScreen);
   const canPlayerTeleportBallsOnClickRef = useRef(canPlayerTeleportBallsOnClick);
+  const ballPriceRef = useRef(ballPrice);
+  const ballSpeedUpgradePriceRef = useRef(ballSpeedUpgradePrice);
+  const ballRadiusUpgradePriceRef = useRef(ballRadiusUpgradePrice);
+  const ballDamageUpgradePriceRef = useRef(ballDamageUpgradePrice);
+  const clickDamageUpgradePriceRef = useRef(clickDamageUpgradePrice);
 
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(1);
@@ -412,18 +418,41 @@ function Game() {
     };
   }, []);
 
-  // Save State Interval - Stable
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("Saving game state...");
-      localStorage.setItem("brickId", JSON.stringify(brickIdRef.current));
-      localStorage.setItem("balls", JSON.stringify(ballsRef.current));
-      localStorage.setItem("bricks", JSON.stringify(bricksRef.current));
-      localStorage.setItem("gems", JSON.stringify(gemsRef.current));
-      // Save other constants as needed, though they only change on upgrade
-    }, 5000);
-    return () => clearInterval(interval);
+  // Reset all game state and start fresh
+  const handleNewGame = useCallback(() => {
+    if (!window.confirm("Start a new game? All progress will be lost.")) return;
+    isResettingRef.current = true;
+    localStorage.clear();
+    window.location.reload();
   }, []);
+
+  // Save all game state to localStorage
+  const saveGameState = useCallback(() => {
+    if (isResettingRef.current) return;
+    localStorage.setItem("brickId", JSON.stringify(brickIdRef.current));
+    localStorage.setItem("balls", JSON.stringify(ballsRef.current));
+    localStorage.setItem("bricks", JSON.stringify(bricksRef.current));
+    localStorage.setItem("gems", JSON.stringify(gemsRef.current));
+    localStorage.setItem("ballDamage", JSON.stringify(ballDamageRef.current));
+    localStorage.setItem("ballSpeed", JSON.stringify(ballSpeedRef.current));
+    localStorage.setItem("ballRadius", JSON.stringify(ballRadiusRef.current));
+    localStorage.setItem("clickDamage", JSON.stringify(clickDamageRef.current));
+    localStorage.setItem("ballPrice", JSON.stringify(ballPriceRef.current));
+    localStorage.setItem("ballSpeedUpgradePrice", JSON.stringify(ballSpeedUpgradePriceRef.current));
+    localStorage.setItem("ballRadiusUpgradePrice", JSON.stringify(ballRadiusUpgradePriceRef.current));
+    localStorage.setItem("ballDamageUpgradePrice", JSON.stringify(ballDamageUpgradePriceRef.current));
+    localStorage.setItem("clickDamageUpgradePrice", JSON.stringify(clickDamageUpgradePriceRef.current));
+  }, []);
+
+  // Save on interval + before tab close
+  useEffect(() => {
+    const interval = setInterval(saveGameState, 5000);
+    window.addEventListener("beforeunload", saveGameState);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("beforeunload", saveGameState);
+    };
+  }, [saveGameState]);
 
   // Brick Spawning
   useEffect(() => {
@@ -567,15 +596,15 @@ function Game() {
 
   /* ACTIONS */
   const buyBall = () => {
-    if (gemsRef.current < ballPrice) return;
-    gemsRef.current -= ballPrice;
+    const price = ballPriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
     setGems(gemsRef.current);
-    setBallPrice(prev => prev * upgradePriceMultiplier);
-    setBallCount(prev => {
-      const count = prev + 1;
-      ballCountRef.current = count;
-      return count;
-    });
+    const newPrice = price * upgradePriceMultiplier;
+    ballPriceRef.current = newPrice;
+    setBallPrice(newPrice);
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
 
     ballsRef.current.push({
       id: ballIdRef.current++,
@@ -585,42 +614,65 @@ function Game() {
       direction: Math.random() * TWO_PI,
       damage: ballDamageRef.current,
     });
+    saveGameState();
   };
 
   const buyBallSpeedUpgrade = () => {
-    if (gemsRef.current < ballSpeedUpgradePrice || ballCount < 1) return;
-    gemsRef.current -= ballSpeedUpgradePrice;
+    const price = ballSpeedUpgradePriceRef.current;
+    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    gemsRef.current -= price;
     setGems(gemsRef.current);
-    setBallSpeedUpgradePrice(prev => prev * upgradePriceMultiplier);
-    const newSpeed = ballSpeed + ballSpeedUpgradeAmount;
+    const newPrice = price * upgradePriceMultiplier;
+    ballSpeedUpgradePriceRef.current = newPrice;
+    setBallSpeedUpgradePrice(newPrice);
+    const newSpeed = ballSpeedRef.current + ballSpeedUpgradeAmount;
+    ballSpeedRef.current = newSpeed;
     setBallSpeed(newSpeed);
     ballsRef.current.forEach(b => b.speed = newSpeed);
+    saveGameState();
   };
 
   const buyBallRadiusUpgrade = () => {
-    if (gemsRef.current < ballRadiusUpgradePrice || ballCount < 1) return;
-    gemsRef.current -= ballRadiusUpgradePrice;
+    const price = ballRadiusUpgradePriceRef.current;
+    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    gemsRef.current -= price;
     setGems(gemsRef.current);
-    setBallRadiusUpgradePrice(prev => prev * upgradePriceMultiplier);
-    setBallRadius(prev => prev + ballRadiusUpgradeAmount);
+    const newPrice = price * upgradePriceMultiplier;
+    ballRadiusUpgradePriceRef.current = newPrice;
+    setBallRadiusUpgradePrice(newPrice);
+    const newRadius = ballRadiusRef.current + ballRadiusUpgradeAmount;
+    ballRadiusRef.current = newRadius;
+    setBallRadius(newRadius);
+    saveGameState();
   };
 
   const buyBallDamageUpgrade = () => {
-    if (gemsRef.current < ballDamageUpgradePrice || ballCount < 1) return;
-    gemsRef.current -= ballDamageUpgradePrice;
+    const price = ballDamageUpgradePriceRef.current;
+    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    gemsRef.current -= price;
     setGems(gemsRef.current);
-    setBallDamageUpgradePrice(prev => prev * upgradePriceMultiplier);
-    const newDamage = Math.round(ballDamage * ballDamageUpgradeAmount);
+    const newPrice = price * upgradePriceMultiplier;
+    ballDamageUpgradePriceRef.current = newPrice;
+    setBallDamageUpgradePrice(newPrice);
+    const newDamage = Math.round(ballDamageRef.current * ballDamageUpgradeAmount);
+    ballDamageRef.current = newDamage;
     setBallDamage(newDamage);
     ballsRef.current.forEach(b => b.damage = newDamage);
+    saveGameState();
   };
 
   const buyClickDamageUpgrade = () => {
-    if (gemsRef.current < clickDamageUpgradePrice) return;
-    gemsRef.current -= clickDamageUpgradePrice;
+    const price = clickDamageUpgradePriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
     setGems(gemsRef.current);
-    setClickDamageUpgradePrice(prev => prev * upgradePriceMultiplier);
-    setClickDamage(prev => Math.round(prev * clickDamageUpgradeAmount));
+    const newPrice = price * upgradePriceMultiplier;
+    clickDamageUpgradePriceRef.current = newPrice;
+    setClickDamageUpgradePrice(newPrice);
+    const newDamage = Math.round(clickDamageRef.current * clickDamageUpgradeAmount);
+    clickDamageRef.current = newDamage;
+    setClickDamage(newDamage);
+    saveGameState();
   };
 
   return (
@@ -632,6 +684,7 @@ function Game() {
         ballDamage={ballDamage}
         clickDamage={clickDamage}
         ballRadius={ballRadius}
+        onNewGame={handleNewGame}
       />
       <div className="canvas--wrapper">
         <canvas

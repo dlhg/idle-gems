@@ -14,6 +14,7 @@ const Navbar = ({
   ballRadius,
   ballDamage,
   clickDamage,
+  onNewGame,
 }) => {
   const [isSettingsIconClicked, setIsSettingsIconClicked] = useState(false);
 
@@ -26,6 +27,9 @@ const Navbar = ({
 
   return (
     <div className="navbar">
+      <button className="new-game-btn" onClick={onNewGame}>
+        New Game
+      </button>
       <span>
         Ball Speed
         <br />
