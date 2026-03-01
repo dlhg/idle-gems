@@ -181,6 +181,52 @@ function Game() {
     }
   );
 
+  // Swarm ball type
+  const [swarmBallCount, setSwarmBallCount] = useState(() => {
+    const saved = localStorage.getItem("balls");
+    if (!saved) return 0;
+    return JSON.parse(saved).filter((b) => b.type === "swarm").length;
+  });
+  const [swarmBallPrice, setSwarmBallPrice] = useState(() => {
+    const saved = localStorage.getItem("swarmBallPrice");
+    return saved ? JSON.parse(saved) : 400;
+  });
+  const [swarmSpeedUpgradePrice, setSwarmSpeedUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("swarmSpeedUpgradePrice");
+    return saved ? JSON.parse(saved) : 150;
+  });
+  const [swarmSizeUpgradePrice, setSwarmSizeUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("swarmSizeUpgradePrice");
+    return saved ? JSON.parse(saved) : 150;
+  });
+  const [swarmDamageUpgradePrice, setSwarmDamageUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("swarmDamageUpgradePrice");
+    return saved ? JSON.parse(saved) : 150;
+  });
+
+  // Bomb ball type
+  const [bombBallCount, setBombBallCount] = useState(() => {
+    const saved = localStorage.getItem("balls");
+    if (!saved) return 0;
+    return JSON.parse(saved).filter((b) => b.type === "bomb").length;
+  });
+  const [bombBallPrice, setBombBallPrice] = useState(() => {
+    const saved = localStorage.getItem("bombBallPrice");
+    return saved ? JSON.parse(saved) : 2500;
+  });
+  const [bombSpeedUpgradePrice, setBombSpeedUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("bombSpeedUpgradePrice");
+    return saved ? JSON.parse(saved) : 300;
+  });
+  const [bombSizeUpgradePrice, setBombSizeUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("bombSizeUpgradePrice");
+    return saved ? JSON.parse(saved) : 300;
+  });
+  const [bombDamageUpgradePrice, setBombDamageUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("bombDamageUpgradePrice");
+    return saved ? JSON.parse(saved) : 300;
+  });
+
   const [playerLevel] = useState(1);
 
   // Volume
@@ -233,7 +279,8 @@ function Game() {
   const canvasRef = useRef(null);
   const ballsRef = useRef([]);
   const bricksRef = useRef([]);
-  const ripplesRef = useRef([]); 
+  const ripplesRef = useRef([]);
+  const explosionsRef = useRef([]);
   const gemsRef = useRef(gems);
   const ballCountRef = useRef(ballCount);
   const ballDamageRef = useRef(ballDamage);
@@ -251,6 +298,25 @@ function Game() {
   const ballRadiusUpgradePriceRef = useRef(ballRadiusUpgradePrice);
   const ballDamageUpgradePriceRef = useRef(ballDamageUpgradePrice);
   const clickDamageUpgradePriceRef = useRef(clickDamageUpgradePrice);
+
+  const swarmBallPriceRef = useRef(swarmBallPrice);
+
+  const bombBallPriceRef = useRef(bombBallPrice);
+  const bombSpeedUpgradePriceRef = useRef(bombSpeedUpgradePrice);
+  const bombSizeUpgradePriceRef = useRef(bombSizeUpgradePrice);
+  const bombDamageUpgradePriceRef = useRef(bombDamageUpgradePrice);
+  // Tracks current stats for newly spawned bomb balls (updated by bomb upgrades)
+  const bombCurrentSpeedRef = useRef(ballSpeed * 0.4);
+  const bombCurrentRadiusRef = useRef(ballRadius * 2.0);
+  const bombCurrentDamageRef = useRef(ballDamage * 3.0);
+  const bombCurrentSplashRadiusRef = useRef(null); // set in init useEffect (needs brickRadius)
+  const swarmSpeedUpgradePriceRef = useRef(swarmSpeedUpgradePrice);
+  const swarmSizeUpgradePriceRef = useRef(swarmSizeUpgradePrice);
+  const swarmDamageUpgradePriceRef = useRef(swarmDamageUpgradePrice);
+  // Tracks current stats for newly spawned swarm balls (updated by swarm upgrades)
+  const swarmCurrentSpeedRef = useRef(ballSpeed * 2.5);
+  const swarmCurrentRadiusRef = useRef(ballRadius * 0.35);
+  const swarmCurrentDamageRef = useRef(ballDamage * 0.25);
 
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(1);
@@ -278,6 +344,25 @@ function Game() {
     brickSpawnRateRef.current = brickSpawnRate;
     maxBricksOnScreenRef.current = maxBricksOnScreen;
     canPlayerTeleportBallsOnClickRef.current = canPlayerTeleportBallsOnClick;
+
+    const savedSwarmSpeed = localStorage.getItem("swarmCurrentSpeed");
+    if (savedSwarmSpeed) swarmCurrentSpeedRef.current = JSON.parse(savedSwarmSpeed);
+    const savedSwarmRadius = localStorage.getItem("swarmCurrentRadius");
+    if (savedSwarmRadius) swarmCurrentRadiusRef.current = JSON.parse(savedSwarmRadius);
+    const savedSwarmDamage = localStorage.getItem("swarmCurrentDamage");
+    if (savedSwarmDamage) swarmCurrentDamageRef.current = JSON.parse(savedSwarmDamage);
+
+    const savedBombSpeed = localStorage.getItem("bombCurrentSpeed");
+    if (savedBombSpeed) bombCurrentSpeedRef.current = JSON.parse(savedBombSpeed);
+    const savedBombRadius = localStorage.getItem("bombCurrentRadius");
+    if (savedBombRadius) bombCurrentRadiusRef.current = JSON.parse(savedBombRadius);
+    const savedBombDamage = localStorage.getItem("bombCurrentDamage");
+    if (savedBombDamage) bombCurrentDamageRef.current = JSON.parse(savedBombDamage);
+    // Splash radius: load from save or derive from brickRadius
+    const savedBombSplash = localStorage.getItem("bombCurrentSplashRadius");
+    bombCurrentSplashRadiusRef.current = savedBombSplash
+      ? JSON.parse(savedBombSplash)
+      : brickRadiusRef.current * 3.5;
   }, []);
 
   // Sync state to refs for high-frequency access in loop
@@ -343,9 +428,13 @@ function Game() {
     ripplesRef.current.push({
       x, y, text, size, color,
       alpha: 1.0,
-      life: 1.0, 
-      vy: -0.5, 
+      life: 1.0,
+      vy: -0.5,
     });
+  };
+
+  const createExplosion = (x, y, maxRadius, color) => {
+    explosionsRef.current.push({ x, y, maxRadius, color, life: 1.0 });
   };
 
   const handleCanvasClick = useCallback((event) => {
@@ -442,6 +531,21 @@ function Game() {
     localStorage.setItem("ballRadiusUpgradePrice", JSON.stringify(ballRadiusUpgradePriceRef.current));
     localStorage.setItem("ballDamageUpgradePrice", JSON.stringify(ballDamageUpgradePriceRef.current));
     localStorage.setItem("clickDamageUpgradePrice", JSON.stringify(clickDamageUpgradePriceRef.current));
+    localStorage.setItem("swarmBallPrice", JSON.stringify(swarmBallPriceRef.current));
+    localStorage.setItem("swarmSpeedUpgradePrice", JSON.stringify(swarmSpeedUpgradePriceRef.current));
+    localStorage.setItem("swarmSizeUpgradePrice", JSON.stringify(swarmSizeUpgradePriceRef.current));
+    localStorage.setItem("swarmDamageUpgradePrice", JSON.stringify(swarmDamageUpgradePriceRef.current));
+    localStorage.setItem("swarmCurrentSpeed", JSON.stringify(swarmCurrentSpeedRef.current));
+    localStorage.setItem("swarmCurrentRadius", JSON.stringify(swarmCurrentRadiusRef.current));
+    localStorage.setItem("swarmCurrentDamage", JSON.stringify(swarmCurrentDamageRef.current));
+    localStorage.setItem("bombBallPrice", JSON.stringify(bombBallPriceRef.current));
+    localStorage.setItem("bombSpeedUpgradePrice", JSON.stringify(bombSpeedUpgradePriceRef.current));
+    localStorage.setItem("bombSizeUpgradePrice", JSON.stringify(bombSizeUpgradePriceRef.current));
+    localStorage.setItem("bombDamageUpgradePrice", JSON.stringify(bombDamageUpgradePriceRef.current));
+    localStorage.setItem("bombCurrentSpeed", JSON.stringify(bombCurrentSpeedRef.current));
+    localStorage.setItem("bombCurrentRadius", JSON.stringify(bombCurrentRadiusRef.current));
+    localStorage.setItem("bombCurrentDamage", JSON.stringify(bombCurrentDamageRef.current));
+    localStorage.setItem("bombCurrentSplashRadius", JSON.stringify(bombCurrentSplashRadiusRef.current));
   }, []);
 
   // Save on interval + before tab close
@@ -499,33 +603,55 @@ function Game() {
       const ballRad = ballRadiusRef.current;
       
       balls.forEach(ball => {
+        const r = ball.radius ?? ballRad;
+
         ball.x += ball.speed * Math.cos(ball.direction);
         ball.y += ball.speed * Math.sin(ball.direction);
 
-        if (ball.x + ballRad > CANVAS_W || ball.x - ballRad < 0) {
+        if (ball.x + r > CANVAS_W || ball.x - r < 0) {
           ball.direction = Math.PI - ball.direction;
-          ball.x = Math.max(ballRad, Math.min(CANVAS_W - ballRad, ball.x));
+          ball.x = Math.max(r, Math.min(CANVAS_W - r, ball.x));
         }
-        if (ball.y + ballRad > CANVAS_H || ball.y - ballRad < 0) {
+        if (ball.y + r > CANVAS_H || ball.y - r < 0) {
           ball.direction *= -1;
-          ball.y = Math.max(ballRad, Math.min(CANVAS_H - ballRad, ball.y));
+          ball.y = Math.max(r, Math.min(CANVAS_H - r, ball.y));
         }
 
         for (let i = bricks.length - 1; i >= 0; i--) {
           const brick = bricks[i];
           const dist = Math.hypot(ball.x - brick.x, ball.y - brick.y);
 
-          if (dist < ballRad + bRad) {
+          if (dist < r + bRad) {
             brick.health -= ball.damage;
             const playerIdx = Math.floor(Math.random() * synthSoundPlayersRef.current.length);
             playSoundPlayer(synthSoundPlayersRef.current[playerIdx]);
 
             const isDestroyed = brick.health <= 0;
-            createRipple(ball.x, ball.y, isDestroyed ? `+${brick.gemsInside}g` : ball.damage.toFixed(0), isDestroyed ? 40 : 24, isDestroyed ? "white" : "orange");
+            const hitColor = ball.color ?? "orange";
+            createRipple(ball.x, ball.y, isDestroyed ? `+${brick.gemsInside}g` : ball.damage.toFixed(0), isDestroyed ? 40 : 24, isDestroyed ? "white" : hitColor);
 
             if (isDestroyed) {
               gemsRef.current += brick.gemsInside;
               bricks.splice(i, 1);
+            }
+
+            // Bomb AoE: splash damage to all gems within splashRadius
+            if (ball.type === "bomb" && ball.splashRadius > 0) {
+              createExplosion(ball.x, ball.y, ball.splashRadius, ball.color);
+              const splashDmg = ball.damage * 0.5;
+              for (let j = bricks.length - 1; j >= 0; j--) {
+                if (bricks[j] === brick) continue; // skip directly-hit brick
+                const splashDist = Math.hypot(ball.x - bricks[j].x, ball.y - bricks[j].y);
+                if (splashDist < ball.splashRadius + bRad) {
+                  bricks[j].health -= splashDmg;
+                  createRipple(bricks[j].x, bricks[j].y, splashDmg.toFixed(0), 20, ball.color);
+                  if (bricks[j].health <= 0) {
+                    gemsRef.current += bricks[j].gemsInside;
+                    createRipple(bricks[j].x, bricks[j].y, `+${bricks[j].gemsInside}g`, 32, "white");
+                    bricks.splice(j, 1);
+                  }
+                }
+              }
             }
 
             const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
@@ -565,14 +691,44 @@ function Game() {
       });
 
       balls.forEach(ball => {
-        const grad = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ballRad);
+        const r = ball.radius ?? ballRad;
+        const grad = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, r);
         grad.addColorStop(0, "white");
-        grad.addColorStop(1, "grey");
+        grad.addColorStop(1, ball.color ?? "grey");
         ctx.beginPath();
-        ctx.arc(ball.x, ball.y, ballRad, 0, TWO_PI);
+        ctx.arc(ball.x, ball.y, r, 0, TWO_PI);
         ctx.fillStyle = grad;
         ctx.fill();
       });
+
+      // Explosion rings (bomb AoE visual)
+      const explosions = explosionsRef.current;
+      for (let i = explosions.length - 1; i >= 0; i--) {
+        const exp = explosions[i];
+        exp.life -= 0.025;
+        if (exp.life <= 0) { explosions.splice(i, 1); continue; }
+
+        const progress = 1 - exp.life;               // 0 → 1 as animation plays
+        const currentRadius = exp.maxRadius * progress;
+
+        // Brief inner fill flash at start
+        if (exp.life > 0.65) {
+          ctx.globalAlpha = ((exp.life - 0.65) / 0.35) * 0.2;
+          ctx.beginPath();
+          ctx.arc(exp.x, exp.y, currentRadius, 0, TWO_PI);
+          ctx.fillStyle = exp.color;
+          ctx.fill();
+        }
+
+        // Expanding ring — thickest and brightest at start, thins and fades as it grows
+        ctx.globalAlpha = exp.life * 0.85;
+        ctx.beginPath();
+        ctx.arc(exp.x, exp.y, currentRadius, 0, TWO_PI);
+        ctx.strokeStyle = exp.color;
+        ctx.lineWidth = 4 * exp.life + 1;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1.0;
 
       const ripples = ripplesRef.current;
       for (let i = ripples.length - 1; i >= 0; i--) {
@@ -613,13 +769,43 @@ function Game() {
       speed: ballSpeedRef.current,
       direction: Math.random() * TWO_PI,
       damage: ballDamageRef.current,
+      type: "standard",
+      color: null,
+      radius: null,
     });
     saveGameState();
   };
 
+  const buySwarmBall = () => {
+    const price = swarmBallPriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    swarmBallPriceRef.current = newPrice;
+    setSwarmBallPrice(newPrice);
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setSwarmBallCount((c) => c + 1);
+
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2,
+      y: CANVAS_H / 2,
+      speed: swarmCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: swarmCurrentDamageRef.current,
+      type: "swarm",
+      color: "#00e5ff",
+      radius: swarmCurrentRadiusRef.current,
+    });
+    saveGameState();
+  };
+
+  // ── Standard ball upgrades (only affect standard balls) ──────────────
   const buyBallSpeedUpgrade = () => {
     const price = ballSpeedUpgradePriceRef.current;
-    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
     const newPrice = price * upgradePriceMultiplier;
@@ -628,18 +814,19 @@ function Game() {
     const newSpeed = ballSpeedRef.current + ballSpeedUpgradeAmount;
     ballSpeedRef.current = newSpeed;
     setBallSpeed(newSpeed);
-    ballsRef.current.forEach(b => b.speed = newSpeed);
+    ballsRef.current.forEach(b => { if (!b.type || b.type === "standard") b.speed = newSpeed; });
     saveGameState();
   };
 
   const buyBallRadiusUpgrade = () => {
     const price = ballRadiusUpgradePriceRef.current;
-    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
     const newPrice = price * upgradePriceMultiplier;
     ballRadiusUpgradePriceRef.current = newPrice;
     setBallRadiusUpgradePrice(newPrice);
+    // Standard balls use ball.radius ?? ballRadiusRef, so updating the ref is enough
     const newRadius = ballRadiusRef.current + ballRadiusUpgradeAmount;
     ballRadiusRef.current = newRadius;
     setBallRadius(newRadius);
@@ -648,7 +835,7 @@ function Game() {
 
   const buyBallDamageUpgrade = () => {
     const price = ballDamageUpgradePriceRef.current;
-    if (gemsRef.current < price || ballCountRef.current < 1) return;
+    if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
     const newPrice = price * upgradePriceMultiplier;
@@ -657,7 +844,124 @@ function Game() {
     const newDamage = Math.round(ballDamageRef.current * ballDamageUpgradeAmount);
     ballDamageRef.current = newDamage;
     setBallDamage(newDamage);
-    ballsRef.current.forEach(b => b.damage = newDamage);
+    ballsRef.current.forEach(b => { if (!b.type || b.type === "standard") b.damage = newDamage; });
+    saveGameState();
+  };
+
+  const buyBombBall = () => {
+    const price = bombBallPriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    bombBallPriceRef.current = newPrice;
+    setBombBallPrice(newPrice);
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setBombBallCount((c) => c + 1);
+
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2,
+      y: CANVAS_H / 2,
+      speed: bombCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: bombCurrentDamageRef.current,
+      type: "bomb",
+      color: "#ff8c00",
+      radius: bombCurrentRadiusRef.current,
+      splashRadius: bombCurrentSplashRadiusRef.current,
+    });
+    saveGameState();
+  };
+
+  // ── Swarm ball upgrades (only affect swarm balls) ────────────────────
+  const buySwarmSpeedUpgrade = () => {
+    const price = swarmSpeedUpgradePriceRef.current;
+    if (gemsRef.current < price || swarmBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    swarmSpeedUpgradePriceRef.current = newPrice;
+    setSwarmSpeedUpgradePrice(newPrice);
+    const newSpeed = swarmCurrentSpeedRef.current + ballSpeedUpgradeAmount;
+    swarmCurrentSpeedRef.current = newSpeed;
+    ballsRef.current.forEach(b => { if (b.type === "swarm") b.speed = newSpeed; });
+    saveGameState();
+  };
+
+  const buySwarmSizeUpgrade = () => {
+    const price = swarmSizeUpgradePriceRef.current;
+    if (gemsRef.current < price || swarmBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    swarmSizeUpgradePriceRef.current = newPrice;
+    setSwarmSizeUpgradePrice(newPrice);
+    const newRadius = swarmCurrentRadiusRef.current + ballRadiusUpgradeAmount;
+    swarmCurrentRadiusRef.current = newRadius;
+    ballsRef.current.forEach(b => { if (b.type === "swarm") b.radius = newRadius; });
+    saveGameState();
+  };
+
+  const buySwarmDamageUpgrade = () => {
+    const price = swarmDamageUpgradePriceRef.current;
+    if (gemsRef.current < price || swarmBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    swarmDamageUpgradePriceRef.current = newPrice;
+    setSwarmDamageUpgradePrice(newPrice);
+    const newDamage = swarmCurrentDamageRef.current * ballDamageUpgradeAmount;
+    swarmCurrentDamageRef.current = newDamage;
+    ballsRef.current.forEach(b => { if (b.type === "swarm") b.damage = newDamage; });
+    saveGameState();
+  };
+
+  // ── Bomb ball upgrades (only affect bomb balls) ──────────────────────
+  const buyBombSpeedUpgrade = () => {
+    const price = bombSpeedUpgradePriceRef.current;
+    if (gemsRef.current < price || bombBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    bombSpeedUpgradePriceRef.current = newPrice;
+    setBombSpeedUpgradePrice(newPrice);
+    const newSpeed = bombCurrentSpeedRef.current + ballSpeedUpgradeAmount;
+    bombCurrentSpeedRef.current = newSpeed;
+    ballsRef.current.forEach(b => { if (b.type === "bomb") b.speed = newSpeed; });
+    saveGameState();
+  };
+
+  const buyBombSizeUpgrade = () => {
+    const price = bombSizeUpgradePriceRef.current;
+    if (gemsRef.current < price || bombBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    bombSizeUpgradePriceRef.current = newPrice;
+    setBombSizeUpgradePrice(newPrice);
+    const newRadius = bombCurrentRadiusRef.current + ballRadiusUpgradeAmount;
+    bombCurrentRadiusRef.current = newRadius;
+    const newSplash = bombCurrentSplashRadiusRef.current + brickRadiusRef.current * 0.5;
+    bombCurrentSplashRadiusRef.current = newSplash;
+    ballsRef.current.forEach(b => {
+      if (b.type === "bomb") { b.radius = newRadius; b.splashRadius = newSplash; }
+    });
+    saveGameState();
+  };
+
+  const buyBombDamageUpgrade = () => {
+    const price = bombDamageUpgradePriceRef.current;
+    if (gemsRef.current < price || bombBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    bombDamageUpgradePriceRef.current = newPrice;
+    setBombDamageUpgradePrice(newPrice);
+    const newDamage = bombCurrentDamageRef.current * ballDamageUpgradeAmount;
+    bombCurrentDamageRef.current = newDamage;
+    ballsRef.current.forEach(b => { if (b.type === "bomb") b.damage = newDamage; });
     saveGameState();
   };
 
@@ -699,12 +1003,30 @@ function Game() {
         buyBall={buyBall}
         ballCount={ballCount}
         ballPrice={ballPrice}
+        swarmBallCount={swarmBallCount}
+        buySwarmBall={buySwarmBall}
+        swarmBallPrice={swarmBallPrice}
         buyBallSpeedUpgrade={buyBallSpeedUpgrade}
         ballSpeedUpgradePrice={ballSpeedUpgradePrice}
         buyBallRadiusUpgrade={buyBallRadiusUpgrade}
         ballRadiusUpgradePrice={ballRadiusUpgradePrice}
         buyBallDamageUpgrade={buyBallDamageUpgrade}
         ballDamageUpgradePrice={ballDamageUpgradePrice}
+        buySwarmSpeedUpgrade={buySwarmSpeedUpgrade}
+        swarmSpeedUpgradePrice={swarmSpeedUpgradePrice}
+        buySwarmSizeUpgrade={buySwarmSizeUpgrade}
+        swarmSizeUpgradePrice={swarmSizeUpgradePrice}
+        buySwarmDamageUpgrade={buySwarmDamageUpgrade}
+        swarmDamageUpgradePrice={swarmDamageUpgradePrice}
+        bombBallCount={bombBallCount}
+        bombBallPrice={bombBallPrice}
+        buyBombBall={buyBombBall}
+        bombSpeedUpgradePrice={bombSpeedUpgradePrice}
+        buyBombSpeedUpgrade={buyBombSpeedUpgrade}
+        bombSizeUpgradePrice={bombSizeUpgradePrice}
+        buyBombSizeUpgrade={buyBombSizeUpgrade}
+        bombDamageUpgradePrice={bombDamageUpgradePrice}
+        buyBombDamageUpgrade={buyBombDamageUpgrade}
         buyClickDamageUpgrade={buyClickDamageUpgrade}
         clickDamageUpgradePrice={clickDamageUpgradePrice}
       />

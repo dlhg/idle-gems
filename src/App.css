@@ -203,6 +203,47 @@ canvas {
   font-style: italic;
 }
 
+.upgrade-section-divider {
+  width: 1px;
+  height: 70%;
+  background: rgba(255, 255, 255, 0.15);
+  flex-shrink: 0;
+  align-self: center;
+  margin: 0 4px;
+}
+
+.upgrade-type-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex-shrink: 0;
+  width: 56px;
+  height: 100%;
+  border-left: 2px solid;
+  border-radius: 0 6px 6px 0;
+  padding: 6px 4px 6px 6px;
+  font-size: 0.5em;
+}
+
+.upgrade-type-label__icon {
+  font-size: 1.8em;
+  line-height: 1;
+}
+
+.upgrade-type-label__name {
+  font-weight: 700;
+  font-size: 1.1em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.upgrade-type-label__count {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.95em;
+}
+
 /* ── Upgrade Card ────────────────────────────────── */
 .upgrade-card {
   display: flex;
