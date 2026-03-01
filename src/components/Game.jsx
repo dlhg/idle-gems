@@ -8,7 +8,7 @@ import * as Tone from "tone";
 
 //component imports
 import Navbar from "./Navbar";
-import FooterActionButtons from "./FooterActionButtons";
+import ShopPanel from "./ShopPanel";
 
 // Constants and Static Assets outside component to avoid recreation
 const TWO_PI = Math.PI * 2;
@@ -694,7 +694,7 @@ function Game() {
           height={CANVAS_H}
         />
       </div>
-      <FooterActionButtons
+      <ShopPanel
         gems={gems}
         buyBall={buyBall}
         ballCount={ballCount}
