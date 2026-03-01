@@ -19,11 +19,10 @@ npm run dev
 ```
 
 ## Project Structure
-- `src/components/Game.jsx`: The central component managing the game loop, state, and Canvas rendering.
-- `src/components/Navbar.jsx`: Top bar displaying gems, player level, and settings.
-- `src/components/FooterActionButtons.jsx`: The UI for purchasing upgrades (Balls, Speed, Size, Damage).
-- `src/components/Store.jsx` / `StoreItem.jsx`: Shop UI for purchasing upgrades.
-- `src/components/GoalText.jsx`: Displays current goal/level progression text.
+- `src/components/Game.jsx`: Central component — game loop, all state, Canvas rendering, buy functions.
+- `src/components/ShopPanel.jsx`: Tabbed shop UI (Balls / Upgrades / Perks). Contains `BALL_TYPES` constant.
+- `src/components/UpgradeCard.jsx`: Reusable shop card component (icon, name, price, accentColor).
+- `src/components/Navbar.jsx`: Top bar — gem count, ball stats, New Game button.
 - `src/components/assetImports.js`: Centralized file for importing all audio and visual assets.
 - `src/assets/`:
   - `bgmusic/`: Background music tracks.
@@ -33,6 +32,18 @@ npm run dev
     - `textures/`: Gem textures (bluegemtexture, purplegemtexture, etc.).
     - `backgrounds/`: Background images.
 - `src/main.jsx`: Entry point (renders `<Game />` directly).
+
+## Ball Type System
+Each ball type lives in `BALL_TYPES` (ShopPanel.jsx) and needs these additions in Game.jsx:
+1. State: `[xBallCount, setXBallCount]`, `[xBallPrice, setXBallPrice]`, upgrade prices
+2. Refs: price refs + `xCurrentSpeed/Radius/DamageRef`
+3. Init in the startup `useEffect` (load from localStorage)
+4. Entries in `saveGameState`
+5. `buyXBall()` function + upgrade functions (filter `b.type === "x"`)
+6. Type-specific behavior in the game loop (e.g. homing steering, bomb AoE)
+7. Type-specific render pass (e.g. targeting lines, explosion rings)
+
+Ball properties: `{ id, x, y, speed, direction, damage, type, color, radius, ...typeSpecific }`
 
 ## Coding Standards
 - **Component Style:** Use functional React components and hooks.
@@ -44,4 +55,6 @@ npm run dev
 
 ## Gotchas
 - **Canvas size:** Fixed at 800×560px (`CANVAS_W`/`CANVAS_H` constants in `Game.jsx`). Responsive sizing must account for this.
-- **Lint is strict:** `--max-warnings 0` means zero warnings allowed; fix all lint issues before building.
+- **Lint:** Project has pre-existing prop-types errors (~70). `npm run build` passes; `npm run lint` does not.
+- **localStorage save state:** Changing a default stat value only affects new games. Existing saves load the old value. Use "New Game" to test fresh defaults.
+- **Ball radius localStorage:** `brickRadius` and `ballRadius` are persisted — changed defaults won't apply until the save is cleared.
