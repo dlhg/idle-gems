@@ -97,7 +97,7 @@ function Game() {
   // Currency
   const [gems, setGems] = useState(() => {
     const savedGems = localStorage.getItem("gems");
-    return savedGems ? JSON.parse(savedGems) : 1000;
+    return savedGems ? JSON.parse(savedGems) : 100000;
   });
 
   // Prices and upgrade amounts
