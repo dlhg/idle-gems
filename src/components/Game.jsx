@@ -52,7 +52,7 @@ function Game() {
     const savedBallRadius = localStorage.getItem("ballRadius");
     return savedBallRadius
       ? JSON.parse(savedBallRadius)
-      : Math.sqrt(CANVAS_W * CANVAS_H) / 200;
+      : Math.sqrt(CANVAS_W * CANVAS_H) * 3 / 200;
   });
 
   // Bricks
@@ -334,7 +334,7 @@ function Game() {
   const homingDamageUpgradePriceRef = useRef(homingDamageUpgradePrice);
   // Tracks current stats for newly spawned homing balls (updated by homing upgrades)
   const homingCurrentSpeedRef = useRef(ballSpeed * 1.0);
-  const homingCurrentRadiusRef = useRef(ballRadius * 3.0);
+  const homingCurrentRadiusRef = useRef(ballRadius * 1.0);
   const homingCurrentDamageRef = useRef(ballDamage * 1.5);
   const homingCurrentTurnRateRef = useRef(0.06);
 
