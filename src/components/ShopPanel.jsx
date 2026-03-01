@@ -4,9 +4,10 @@ import UpgradeCard from "./UpgradeCard";
 const TABS = ["Balls", "Upgrades", "Perks"];
 
 export const BALL_TYPES = {
-  standard: { color: null,      icon: "⚪", label: "Ball"  },
-  swarm:    { color: "#00e5ff", icon: "🔵", label: "Swarm" },
-  bomb:     { color: "#ff8c00", icon: "🟠", label: "Bomb"  },
+  standard: { color: null,      icon: "⚪", label: "Ball"   },
+  swarm:    { color: "#00e5ff", icon: "🔵", label: "Swarm"  },
+  homing:   { color: "#00ff88", icon: "🟢", label: "Homing" },
+  bomb:     { color: "#ff8c00", icon: "🟠", label: "Bomb"   },
 };
 
 const TypeLabel = ({ icon, label, color, count }) => (
@@ -35,6 +36,15 @@ const ShopPanel = ({
   swarmBallCount,
   swarmBallPrice,
   buySwarmBall,
+  homingBallCount,
+  homingBallPrice,
+  buyHomingBall,
+  homingSpeedUpgradePrice,
+  buyHomingSpeedUpgrade,
+  homingAccuracyUpgradePrice,
+  buyHomingAccuracyUpgrade,
+  homingDamageUpgradePrice,
+  buyHomingDamageUpgrade,
   bombBallCount,
   bombBallPrice,
   buyBombBall,
@@ -60,7 +70,7 @@ const ShopPanel = ({
   buyClickDamageUpgrade,
 }) => {
   const [activeTab, setActiveTab] = useState("Balls");
-  const standardBallCount = ballCount - swarmBallCount - bombBallCount;
+  const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount;
 
   return (
     <div className="shop-panel">
@@ -97,6 +107,16 @@ const ShopPanel = ({
               onClick={buySwarmBall}
               count={swarmBallCount}
               accentColor={BALL_TYPES.swarm.color}
+            />
+            <UpgradeCard
+              icon={BALL_TYPES.homing.icon}
+              name={BALL_TYPES.homing.label}
+              price={homingBallPrice}
+              canAfford={gems >= homingBallPrice}
+              locked={false}
+              onClick={buyHomingBall}
+              count={homingBallCount}
+              accentColor={BALL_TYPES.homing.color}
             />
             <UpgradeCard
               icon={BALL_TYPES.bomb.icon}
@@ -173,6 +193,40 @@ const ShopPanel = ({
               locked={swarmBallCount < 1}
               onClick={buySwarmDamageUpgrade}
               accentColor={BALL_TYPES.swarm.color}
+            />
+
+            <SectionDivider />
+
+            {/* ── Homing ── */}
+            <TypeLabel
+              icon={BALL_TYPES.homing.icon}
+              label={BALL_TYPES.homing.label}
+              color={BALL_TYPES.homing.color}
+              count={homingBallCount}
+            />
+            <UpgradeCard
+              icon="⚡" name="Speed"
+              price={homingSpeedUpgradePrice}
+              canAfford={gems >= homingSpeedUpgradePrice}
+              locked={homingBallCount < 1}
+              onClick={buyHomingSpeedUpgrade}
+              accentColor={BALL_TYPES.homing.color}
+            />
+            <UpgradeCard
+              icon="🎯" name="Accuracy"
+              price={homingAccuracyUpgradePrice}
+              canAfford={gems >= homingAccuracyUpgradePrice}
+              locked={homingBallCount < 1}
+              onClick={buyHomingAccuracyUpgrade}
+              accentColor={BALL_TYPES.homing.color}
+            />
+            <UpgradeCard
+              icon="💥" name="Damage"
+              price={homingDamageUpgradePrice}
+              canAfford={gems >= homingDamageUpgradePrice}
+              locked={homingBallCount < 1}
+              onClick={buyHomingDamageUpgrade}
+              accentColor={BALL_TYPES.homing.color}
             />
 
             <SectionDivider />

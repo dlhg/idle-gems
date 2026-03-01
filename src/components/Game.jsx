@@ -227,6 +227,29 @@ function Game() {
     return saved ? JSON.parse(saved) : 300;
   });
 
+  // Homing ball type
+  const [homingBallCount, setHomingBallCount] = useState(() => {
+    const saved = localStorage.getItem("balls");
+    if (!saved) return 0;
+    return JSON.parse(saved).filter((b) => b.type === "homing").length;
+  });
+  const [homingBallPrice, setHomingBallPrice] = useState(() => {
+    const saved = localStorage.getItem("homingBallPrice");
+    return saved ? JSON.parse(saved) : 1500;
+  });
+  const [homingSpeedUpgradePrice, setHomingSpeedUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("homingSpeedUpgradePrice");
+    return saved ? JSON.parse(saved) : 200;
+  });
+  const [homingAccuracyUpgradePrice, setHomingAccuracyUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("homingAccuracyUpgradePrice");
+    return saved ? JSON.parse(saved) : 200;
+  });
+  const [homingDamageUpgradePrice, setHomingDamageUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("homingDamageUpgradePrice");
+    return saved ? JSON.parse(saved) : 200;
+  });
+
   const [playerLevel] = useState(1);
 
   // Volume
@@ -305,6 +328,16 @@ function Game() {
   const bombSpeedUpgradePriceRef = useRef(bombSpeedUpgradePrice);
   const bombSizeUpgradePriceRef = useRef(bombSizeUpgradePrice);
   const bombDamageUpgradePriceRef = useRef(bombDamageUpgradePrice);
+  const homingBallPriceRef = useRef(homingBallPrice);
+  const homingSpeedUpgradePriceRef = useRef(homingSpeedUpgradePrice);
+  const homingAccuracyUpgradePriceRef = useRef(homingAccuracyUpgradePrice);
+  const homingDamageUpgradePriceRef = useRef(homingDamageUpgradePrice);
+  // Tracks current stats for newly spawned homing balls (updated by homing upgrades)
+  const homingCurrentSpeedRef = useRef(ballSpeed * 1.0);
+  const homingCurrentRadiusRef = useRef(ballRadius * 0.8);
+  const homingCurrentDamageRef = useRef(ballDamage * 1.5);
+  const homingCurrentTurnRateRef = useRef(0.06);
+
   // Tracks current stats for newly spawned bomb balls (updated by bomb upgrades)
   const bombCurrentSpeedRef = useRef(ballSpeed * 0.4);
   const bombCurrentRadiusRef = useRef(ballRadius * 2.0);
@@ -351,6 +384,15 @@ function Game() {
     if (savedSwarmRadius) swarmCurrentRadiusRef.current = JSON.parse(savedSwarmRadius);
     const savedSwarmDamage = localStorage.getItem("swarmCurrentDamage");
     if (savedSwarmDamage) swarmCurrentDamageRef.current = JSON.parse(savedSwarmDamage);
+
+    const savedHomingSpeed = localStorage.getItem("homingCurrentSpeed");
+    if (savedHomingSpeed) homingCurrentSpeedRef.current = JSON.parse(savedHomingSpeed);
+    const savedHomingRadius = localStorage.getItem("homingCurrentRadius");
+    if (savedHomingRadius) homingCurrentRadiusRef.current = JSON.parse(savedHomingRadius);
+    const savedHomingDamage = localStorage.getItem("homingCurrentDamage");
+    if (savedHomingDamage) homingCurrentDamageRef.current = JSON.parse(savedHomingDamage);
+    const savedHomingTurnRate = localStorage.getItem("homingCurrentTurnRate");
+    if (savedHomingTurnRate) homingCurrentTurnRateRef.current = JSON.parse(savedHomingTurnRate);
 
     const savedBombSpeed = localStorage.getItem("bombCurrentSpeed");
     if (savedBombSpeed) bombCurrentSpeedRef.current = JSON.parse(savedBombSpeed);
@@ -538,6 +580,14 @@ function Game() {
     localStorage.setItem("swarmCurrentSpeed", JSON.stringify(swarmCurrentSpeedRef.current));
     localStorage.setItem("swarmCurrentRadius", JSON.stringify(swarmCurrentRadiusRef.current));
     localStorage.setItem("swarmCurrentDamage", JSON.stringify(swarmCurrentDamageRef.current));
+    localStorage.setItem("homingBallPrice", JSON.stringify(homingBallPriceRef.current));
+    localStorage.setItem("homingSpeedUpgradePrice", JSON.stringify(homingSpeedUpgradePriceRef.current));
+    localStorage.setItem("homingAccuracyUpgradePrice", JSON.stringify(homingAccuracyUpgradePriceRef.current));
+    localStorage.setItem("homingDamageUpgradePrice", JSON.stringify(homingDamageUpgradePriceRef.current));
+    localStorage.setItem("homingCurrentSpeed", JSON.stringify(homingCurrentSpeedRef.current));
+    localStorage.setItem("homingCurrentRadius", JSON.stringify(homingCurrentRadiusRef.current));
+    localStorage.setItem("homingCurrentDamage", JSON.stringify(homingCurrentDamageRef.current));
+    localStorage.setItem("homingCurrentTurnRate", JSON.stringify(homingCurrentTurnRateRef.current));
     localStorage.setItem("bombBallPrice", JSON.stringify(bombBallPriceRef.current));
     localStorage.setItem("bombSpeedUpgradePrice", JSON.stringify(bombSpeedUpgradePriceRef.current));
     localStorage.setItem("bombSizeUpgradePrice", JSON.stringify(bombSizeUpgradePriceRef.current));
@@ -604,6 +654,24 @@ function Game() {
       
       balls.forEach(ball => {
         const r = ball.radius ?? ballRad;
+
+        // Homing: steer toward nearest gem before moving
+        if (ball.type === "homing" && bricks.length > 0) {
+          let nearest = null;
+          let minDist = Infinity;
+          for (const brick of bricks) {
+            const d = Math.hypot(ball.x - brick.x, ball.y - brick.y);
+            if (d < minDist) { minDist = d; nearest = brick; }
+          }
+          if (nearest) {
+            const targetAngle = Math.atan2(nearest.y - ball.y, nearest.x - ball.x);
+            let diff = targetAngle - ball.direction;
+            // Normalise to [-PI, PI] so we always take the shortest arc
+            while (diff > Math.PI) diff -= TWO_PI;
+            while (diff < -Math.PI) diff += TWO_PI;
+            ball.direction += diff * (ball.turnRate ?? 0.06);
+          }
+        }
 
         ball.x += ball.speed * Math.cos(ball.direction);
         ball.y += ball.speed * Math.sin(ball.direction);
@@ -699,6 +767,28 @@ function Game() {
         ctx.arc(ball.x, ball.y, r, 0, TWO_PI);
         ctx.fillStyle = grad;
         ctx.fill();
+      });
+
+      // Homing targeting lines
+      balls.forEach(ball => {
+        if (ball.type !== "homing" || bricks.length === 0) return;
+        let nearest = null;
+        let minDist = Infinity;
+        for (const brick of bricks) {
+          const d = Math.hypot(ball.x - brick.x, ball.y - brick.y);
+          if (d < minDist) { minDist = d; nearest = brick; }
+        }
+        if (!nearest) return;
+        ctx.globalAlpha = 0.3;
+        ctx.setLineDash([4, 7]);
+        ctx.strokeStyle = ball.color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(ball.x, ball.y);
+        ctx.lineTo(nearest.x, nearest.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1.0;
       });
 
       // Explosion rings (bomb AoE visual)
@@ -845,6 +935,76 @@ function Game() {
     ballDamageRef.current = newDamage;
     setBallDamage(newDamage);
     ballsRef.current.forEach(b => { if (!b.type || b.type === "standard") b.damage = newDamage; });
+    saveGameState();
+  };
+
+  const buyHomingBall = () => {
+    const price = homingBallPriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    homingBallPriceRef.current = newPrice;
+    setHomingBallPrice(newPrice);
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setHomingBallCount((c) => c + 1);
+
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2,
+      y: CANVAS_H / 2,
+      speed: homingCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: homingCurrentDamageRef.current,
+      type: "homing",
+      color: "#00ff88",
+      radius: homingCurrentRadiusRef.current,
+      turnRate: homingCurrentTurnRateRef.current,
+    });
+    saveGameState();
+  };
+
+  // ── Homing ball upgrades ─────────────────────────────────────────────
+  const buyHomingSpeedUpgrade = () => {
+    const price = homingSpeedUpgradePriceRef.current;
+    if (gemsRef.current < price || homingBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    homingSpeedUpgradePriceRef.current = newPrice;
+    setHomingSpeedUpgradePrice(newPrice);
+    const newSpeed = homingCurrentSpeedRef.current + ballSpeedUpgradeAmount;
+    homingCurrentSpeedRef.current = newSpeed;
+    ballsRef.current.forEach(b => { if (b.type === "homing") b.speed = newSpeed; });
+    saveGameState();
+  };
+
+  const buyHomingAccuracyUpgrade = () => {
+    const price = homingAccuracyUpgradePriceRef.current;
+    if (gemsRef.current < price || homingBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    homingAccuracyUpgradePriceRef.current = newPrice;
+    setHomingAccuracyUpgradePrice(newPrice);
+    const newTurnRate = homingCurrentTurnRateRef.current + 0.025;
+    homingCurrentTurnRateRef.current = newTurnRate;
+    ballsRef.current.forEach(b => { if (b.type === "homing") b.turnRate = newTurnRate; });
+    saveGameState();
+  };
+
+  const buyHomingDamageUpgrade = () => {
+    const price = homingDamageUpgradePriceRef.current;
+    if (gemsRef.current < price || homingBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    homingDamageUpgradePriceRef.current = newPrice;
+    setHomingDamageUpgradePrice(newPrice);
+    const newDamage = homingCurrentDamageRef.current * ballDamageUpgradeAmount;
+    homingCurrentDamageRef.current = newDamage;
+    ballsRef.current.forEach(b => { if (b.type === "homing") b.damage = newDamage; });
     saveGameState();
   };
 
@@ -1018,6 +1178,15 @@ function Game() {
         swarmSizeUpgradePrice={swarmSizeUpgradePrice}
         buySwarmDamageUpgrade={buySwarmDamageUpgrade}
         swarmDamageUpgradePrice={swarmDamageUpgradePrice}
+        homingBallCount={homingBallCount}
+        homingBallPrice={homingBallPrice}
+        buyHomingBall={buyHomingBall}
+        homingSpeedUpgradePrice={homingSpeedUpgradePrice}
+        buyHomingSpeedUpgrade={buyHomingSpeedUpgrade}
+        homingAccuracyUpgradePrice={homingAccuracyUpgradePrice}
+        buyHomingAccuracyUpgrade={buyHomingAccuracyUpgrade}
+        homingDamageUpgradePrice={homingDamageUpgradePrice}
+        buyHomingDamageUpgrade={buyHomingDamageUpgrade}
         bombBallCount={bombBallCount}
         bombBallPrice={bombBallPrice}
         buyBombBall={buyBombBall}
