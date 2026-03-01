@@ -64,7 +64,7 @@ function Game() {
     const savedBrickRadius = localStorage.getItem("brickRadius");
     return savedBrickRadius
       ? JSON.parse(savedBrickRadius)
-      : Math.sqrt(CANVAS_W * CANVAS_H) / 45;
+      : Math.sqrt(CANVAS_W * CANVAS_H) / 22.5;
   });
   const [isSpawningBricks, setIsSpawningBricks] = useState(() => {
     const savedIsSpawningBricks = localStorage.getItem("isSpawningBricks");
