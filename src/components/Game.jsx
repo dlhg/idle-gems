@@ -250,6 +250,29 @@ function Game() {
     return saved ? JSON.parse(saved) : 200;
   });
 
+  // Chain ball type
+  const [chainBallCount, setChainBallCount] = useState(() => {
+    const saved = localStorage.getItem("balls");
+    if (!saved) return 0;
+    return JSON.parse(saved).filter((b) => b.type === "chain").length;
+  });
+  const [chainBallPrice, setChainBallPrice] = useState(() => {
+    const saved = localStorage.getItem("chainBallPrice");
+    return saved ? JSON.parse(saved) : 3500;
+  });
+  const [chainSpeedUpgradePrice, setChainSpeedUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("chainSpeedUpgradePrice");
+    return saved ? JSON.parse(saved) : 350;
+  });
+  const [chainCountUpgradePrice, setChainCountUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("chainCountUpgradePrice");
+    return saved ? JSON.parse(saved) : 350;
+  });
+  const [chainDamageUpgradePrice, setChainDamageUpgradePrice] = useState(() => {
+    const saved = localStorage.getItem("chainDamageUpgradePrice");
+    return saved ? JSON.parse(saved) : 350;
+  });
+
   const [playerLevel] = useState(1);
 
   // Volume
@@ -304,6 +327,7 @@ function Game() {
   const bricksRef = useRef([]);
   const ripplesRef = useRef([]);
   const explosionsRef = useRef([]);
+  const chainArcsRef = useRef([]);
   const gemsRef = useRef(gems);
   const ballCountRef = useRef(ballCount);
   const ballDamageRef = useRef(ballDamage);
@@ -350,6 +374,15 @@ function Game() {
   const swarmCurrentSpeedRef = useRef(ballSpeed * 2.5);
   const swarmCurrentRadiusRef = useRef(ballRadius * 0.35);
   const swarmCurrentDamageRef = useRef(ballDamage * 0.25);
+
+  const chainBallPriceRef = useRef(chainBallPrice);
+  const chainSpeedUpgradePriceRef = useRef(chainSpeedUpgradePrice);
+  const chainCountUpgradePriceRef = useRef(chainCountUpgradePrice);
+  const chainDamageUpgradePriceRef = useRef(chainDamageUpgradePrice);
+  const chainCurrentSpeedRef = useRef(ballSpeed * 0.9);
+  const chainCurrentRadiusRef = useRef(ballRadius * 1.0);
+  const chainCurrentDamageRef = useRef(ballDamage * 2.0);
+  const chainCurrentCountRef = useRef(2);
 
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(1);
@@ -405,6 +438,15 @@ function Game() {
     bombCurrentSplashRadiusRef.current = savedBombSplash
       ? JSON.parse(savedBombSplash)
       : brickRadiusRef.current * 3.5;
+
+    const savedChainSpeed = localStorage.getItem("chainCurrentSpeed");
+    if (savedChainSpeed) chainCurrentSpeedRef.current = JSON.parse(savedChainSpeed);
+    const savedChainRadius = localStorage.getItem("chainCurrentRadius");
+    if (savedChainRadius) chainCurrentRadiusRef.current = JSON.parse(savedChainRadius);
+    const savedChainDamage = localStorage.getItem("chainCurrentDamage");
+    if (savedChainDamage) chainCurrentDamageRef.current = JSON.parse(savedChainDamage);
+    const savedChainCount = localStorage.getItem("chainCurrentCount");
+    if (savedChainCount) chainCurrentCountRef.current = JSON.parse(savedChainCount);
   }, []);
 
   // Sync state to refs for high-frequency access in loop
@@ -477,6 +519,10 @@ function Game() {
 
   const createExplosion = (x, y, maxRadius, color) => {
     explosionsRef.current.push({ x, y, maxRadius, color, life: 1.0 });
+  };
+
+  const createChainArc = (x1, y1, x2, y2, color) => {
+    chainArcsRef.current.push({ x1, y1, x2, y2, color, life: 1.0 });
   };
 
   const handleCanvasClick = useCallback((event) => {
@@ -596,6 +642,14 @@ function Game() {
     localStorage.setItem("bombCurrentRadius", JSON.stringify(bombCurrentRadiusRef.current));
     localStorage.setItem("bombCurrentDamage", JSON.stringify(bombCurrentDamageRef.current));
     localStorage.setItem("bombCurrentSplashRadius", JSON.stringify(bombCurrentSplashRadiusRef.current));
+    localStorage.setItem("chainBallPrice", JSON.stringify(chainBallPriceRef.current));
+    localStorage.setItem("chainSpeedUpgradePrice", JSON.stringify(chainSpeedUpgradePriceRef.current));
+    localStorage.setItem("chainCountUpgradePrice", JSON.stringify(chainCountUpgradePriceRef.current));
+    localStorage.setItem("chainDamageUpgradePrice", JSON.stringify(chainDamageUpgradePriceRef.current));
+    localStorage.setItem("chainCurrentSpeed", JSON.stringify(chainCurrentSpeedRef.current));
+    localStorage.setItem("chainCurrentRadius", JSON.stringify(chainCurrentRadiusRef.current));
+    localStorage.setItem("chainCurrentDamage", JSON.stringify(chainCurrentDamageRef.current));
+    localStorage.setItem("chainCurrentCount", JSON.stringify(chainCurrentCountRef.current));
   }, []);
 
   // Save on interval + before tab close
@@ -722,6 +776,26 @@ function Game() {
               }
             }
 
+            // Chain ball: on destroy, arc to nearest N gems
+            if (ball.type === "chain" && isDestroyed) {
+              const count = ball.chainCount ?? 2;
+              const chainDmg = ball.damage * 0.6;
+              const targets = [...bricks]
+                .sort((a, b) => Math.hypot(a.x - brick.x, a.y - brick.y) - Math.hypot(b.x - brick.x, b.y - brick.y))
+                .slice(0, count);
+              targets.forEach(target => {
+                createChainArc(brick.x, brick.y, target.x, target.y, ball.color);
+                target.health -= chainDmg;
+                createRipple(target.x, target.y, chainDmg.toFixed(0), 20, ball.color);
+                if (target.health <= 0) {
+                  gemsRef.current += target.gemsInside;
+                  createRipple(target.x, target.y, `+${target.gemsInside}g`, 32, "white");
+                  const idx = bricks.indexOf(target);
+                  if (idx !== -1) bricks.splice(idx, 1);
+                }
+              });
+            }
+
             const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
             ball.direction = 2 * angle - ball.direction + Math.PI;
             break;
@@ -825,6 +899,37 @@ function Game() {
         ctx.strokeStyle = exp.color;
         ctx.lineWidth = 4 * exp.life + 1;
         ctx.stroke();
+      }
+      ctx.globalAlpha = 1.0;
+
+      // Chain arcs (chain ball visual)
+      const chainArcs = chainArcsRef.current;
+      for (let i = chainArcs.length - 1; i >= 0; i--) {
+        const arc = chainArcs[i];
+        arc.life -= 0.04;
+        if (arc.life <= 0) { chainArcs.splice(i, 1); continue; }
+
+        const mx = (arc.x1 + arc.x2) / 2;
+        const my = (arc.y1 + arc.y2) / 2;
+        const dx = arc.x2 - arc.x1;
+        const dy = arc.y2 - arc.y1;
+        const cpx = mx - dy * 0.4;
+        const cpy = my + dx * 0.4;
+
+        ctx.globalAlpha = arc.life * 0.9;
+        ctx.beginPath();
+        ctx.moveTo(arc.x1, arc.y1);
+        ctx.quadraticCurveTo(cpx, cpy, arc.x2, arc.y2);
+        ctx.strokeStyle = arc.color;
+        ctx.lineWidth = 3 * arc.life + 1;
+        ctx.setLineDash([]);
+        ctx.stroke();
+
+        // Bright endpoint dot
+        ctx.beginPath();
+        ctx.arc(arc.x2, arc.y2, 4 * arc.life, 0, TWO_PI);
+        ctx.fillStyle = arc.color;
+        ctx.fill();
       }
       ctx.globalAlpha = 1.0;
 
@@ -1133,6 +1238,76 @@ function Game() {
     saveGameState();
   };
 
+  const buyChainBall = () => {
+    const price = chainBallPriceRef.current;
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    chainBallPriceRef.current = newPrice;
+    setChainBallPrice(newPrice);
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setChainBallCount((c) => c + 1);
+
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2,
+      y: CANVAS_H / 2,
+      speed: chainCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: chainCurrentDamageRef.current,
+      type: "chain",
+      color: "#cc44ff",
+      radius: chainCurrentRadiusRef.current,
+      chainCount: chainCurrentCountRef.current,
+    });
+    saveGameState();
+  };
+
+  // ── Chain ball upgrades ──────────────────────────────────────────────
+  const buyChainSpeedUpgrade = () => {
+    const price = chainSpeedUpgradePriceRef.current;
+    if (gemsRef.current < price || chainBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    chainSpeedUpgradePriceRef.current = newPrice;
+    setChainSpeedUpgradePrice(newPrice);
+    const newSpeed = chainCurrentSpeedRef.current + ballSpeedUpgradeAmount;
+    chainCurrentSpeedRef.current = newSpeed;
+    ballsRef.current.forEach(b => { if (b.type === "chain") b.speed = newSpeed; });
+    saveGameState();
+  };
+
+  const buyChainCountUpgrade = () => {
+    const price = chainCountUpgradePriceRef.current;
+    if (gemsRef.current < price || chainBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    chainCountUpgradePriceRef.current = newPrice;
+    setChainCountUpgradePrice(newPrice);
+    const newCount = chainCurrentCountRef.current + 1;
+    chainCurrentCountRef.current = newCount;
+    ballsRef.current.forEach(b => { if (b.type === "chain") b.chainCount = newCount; });
+    saveGameState();
+  };
+
+  const buyChainDamageUpgrade = () => {
+    const price = chainDamageUpgradePriceRef.current;
+    if (gemsRef.current < price || chainBallCount < 1) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = price * upgradePriceMultiplier;
+    chainDamageUpgradePriceRef.current = newPrice;
+    setChainDamageUpgradePrice(newPrice);
+    const newDamage = chainCurrentDamageRef.current * ballDamageUpgradeAmount;
+    chainCurrentDamageRef.current = newDamage;
+    ballsRef.current.forEach(b => { if (b.type === "chain") b.damage = newDamage; });
+    saveGameState();
+  };
+
   const buyClickDamageUpgrade = () => {
     const price = clickDamageUpgradePriceRef.current;
     if (gemsRef.current < price) return;
@@ -1206,6 +1381,15 @@ function Game() {
         buyBombDamageUpgrade={buyBombDamageUpgrade}
         buyClickDamageUpgrade={buyClickDamageUpgrade}
         clickDamageUpgradePrice={clickDamageUpgradePrice}
+        chainBallCount={chainBallCount}
+        chainBallPrice={chainBallPrice}
+        buyChainBall={buyChainBall}
+        chainSpeedUpgradePrice={chainSpeedUpgradePrice}
+        buyChainSpeedUpgrade={buyChainSpeedUpgrade}
+        chainCountUpgradePrice={chainCountUpgradePrice}
+        buyChainCountUpgrade={buyChainCountUpgrade}
+        chainDamageUpgradePrice={chainDamageUpgradePrice}
+        buyChainDamageUpgrade={buyChainDamageUpgrade}
       />
     </>
   );

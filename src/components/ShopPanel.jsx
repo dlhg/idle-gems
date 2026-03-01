@@ -8,6 +8,7 @@ export const BALL_TYPES = {
   swarm:    { color: "#00e5ff", icon: "🔵", label: "Swarm"  },
   homing:   { color: "#00ff88", icon: "🟢", label: "Homing" },
   bomb:     { color: "#ff8c00", icon: "🟠", label: "Bomb"   },
+  chain:    { color: "#cc44ff", icon: "🟣", label: "Chain"  },
 };
 
 const TypeLabel = ({ icon, label, color, count }) => (
@@ -66,11 +67,20 @@ const ShopPanel = ({
   buyBombSizeUpgrade,
   bombDamageUpgradePrice,
   buyBombDamageUpgrade,
+  chainBallCount,
+  chainBallPrice,
+  buyChainBall,
+  chainSpeedUpgradePrice,
+  buyChainSpeedUpgrade,
+  chainCountUpgradePrice,
+  buyChainCountUpgrade,
+  chainDamageUpgradePrice,
+  buyChainDamageUpgrade,
   clickDamageUpgradePrice,
   buyClickDamageUpgrade,
 }) => {
   const [activeTab, setActiveTab] = useState("Balls");
-  const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount;
+  const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount - chainBallCount;
 
   return (
     <div className="shop-panel">
@@ -127,6 +137,16 @@ const ShopPanel = ({
               onClick={buyBombBall}
               count={bombBallCount}
               accentColor={BALL_TYPES.bomb.color}
+            />
+            <UpgradeCard
+              icon={BALL_TYPES.chain.icon}
+              name={BALL_TYPES.chain.label}
+              price={chainBallPrice}
+              canAfford={gems >= chainBallPrice}
+              locked={false}
+              onClick={buyChainBall}
+              count={chainBallCount}
+              accentColor={BALL_TYPES.chain.color}
             />
           </>
         )}
@@ -261,6 +281,40 @@ const ShopPanel = ({
               locked={bombBallCount < 1}
               onClick={buyBombDamageUpgrade}
               accentColor={BALL_TYPES.bomb.color}
+            />
+
+            <SectionDivider />
+
+            {/* ── Chain ── */}
+            <TypeLabel
+              icon={BALL_TYPES.chain.icon}
+              label={BALL_TYPES.chain.label}
+              color={BALL_TYPES.chain.color}
+              count={chainBallCount}
+            />
+            <UpgradeCard
+              icon="⚡" name="Speed"
+              price={chainSpeedUpgradePrice}
+              canAfford={gems >= chainSpeedUpgradePrice}
+              locked={chainBallCount < 1}
+              onClick={buyChainSpeedUpgrade}
+              accentColor={BALL_TYPES.chain.color}
+            />
+            <UpgradeCard
+              icon="🔗" name="Chains"
+              price={chainCountUpgradePrice}
+              canAfford={gems >= chainCountUpgradePrice}
+              locked={chainBallCount < 1}
+              onClick={buyChainCountUpgrade}
+              accentColor={BALL_TYPES.chain.color}
+            />
+            <UpgradeCard
+              icon="💥" name="Damage"
+              price={chainDamageUpgradePrice}
+              canAfford={gems >= chainDamageUpgradePrice}
+              locked={chainBallCount < 1}
+              onClick={buyChainDamageUpgrade}
+              accentColor={BALL_TYPES.chain.color}
             />
 
             <SectionDivider />
