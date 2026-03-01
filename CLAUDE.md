@@ -12,14 +12,26 @@
 - **Game Engine:** Custom HTML5 Canvas engine
 - **Audio:** Tone.js
 
+## Setup
+```bash
+npm install
+npm run dev
+```
+
 ## Project Structure
 - `src/components/Game.jsx`: The central component managing the game loop, state, and Canvas rendering.
+- `src/components/Navbar.jsx`: Top bar displaying gems, player level, and settings.
 - `src/components/FooterActionButtons.jsx`: The UI for purchasing upgrades (Balls, Speed, Size, Damage).
+- `src/components/Store.jsx` / `StoreItem.jsx`: Shop UI for purchasing upgrades.
+- `src/components/GoalText.jsx`: Displays current goal/level progression text.
 - `src/components/assetImports.js`: Centralized file for importing all audio and visual assets.
 - `src/assets/`:
   - `bgmusic/`: Background music tracks.
   - `sfx/`: Sound effects (impacts, teleports, synth tones).
-  - `images/`: Textures and UI elements.
+  - `images/`:
+    - `UI/`: HUD icons and interface elements.
+    - `textures/`: Gem textures (bluegemtexture, purplegemtexture, etc.).
+    - `backgrounds/`: Background images.
 - `src/main.jsx`: Entry point (renders `<Game />` directly).
 
 ## Coding Standards
@@ -30,3 +42,7 @@
 - **Assets:** Always import assets through `src/components/assetImports.js` to keep imports organized.
 - **Styling:** Use CSS files (`App.css`, `index.css`).
 
+## Gotchas
+- **Package name:** `package.json` uses the legacy name `"burgerbreaker"` — the project is Idle Gems.
+- **Canvas size:** Fixed at 800×560px (`CANVAS_W`/`CANVAS_H` constants in `Game.jsx`). Responsive sizing must account for this.
+- **Lint is strict:** `--max-warnings 0` means zero warnings allowed; fix all lint issues before building.
