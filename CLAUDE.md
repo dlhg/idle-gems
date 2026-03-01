@@ -43,6 +43,5 @@ npm run dev
 - **Styling:** Use CSS files (`App.css`, `index.css`).
 
 ## Gotchas
-- **Package name:** `package.json` uses the legacy name `"burgerbreaker"` — the project is Idle Gems.
 - **Canvas size:** Fixed at 800×560px (`CANVAS_W`/`CANVAS_H` constants in `Game.jsx`). Responsive sizing must account for this.
 - **Lint is strict:** `--max-warnings 0` means zero warnings allowed; fix all lint issues before building.
