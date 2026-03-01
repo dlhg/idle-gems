@@ -334,7 +334,7 @@ function Game() {
   const homingDamageUpgradePriceRef = useRef(homingDamageUpgradePrice);
   // Tracks current stats for newly spawned homing balls (updated by homing upgrades)
   const homingCurrentSpeedRef = useRef(ballSpeed * 1.0);
-  const homingCurrentRadiusRef = useRef(ballRadius * 0.8);
+  const homingCurrentRadiusRef = useRef(ballRadius * 3.0);
   const homingCurrentDamageRef = useRef(ballDamage * 1.5);
   const homingCurrentTurnRateRef = useRef(0.06);
 
@@ -779,15 +779,23 @@ function Game() {
           if (d < minDist) { minDist = d; nearest = brick; }
         }
         if (!nearest) return;
-        ctx.globalAlpha = 0.3;
-        ctx.setLineDash([4, 7]);
+        // Targeting line
+        ctx.globalAlpha = 0.6;
+        ctx.setLineDash([6, 5]);
         ctx.strokeStyle = ball.color;
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(ball.x, ball.y);
         ctx.lineTo(nearest.x, nearest.y);
         ctx.stroke();
         ctx.setLineDash([]);
+        // Highlight ring on the targeted gem
+        ctx.globalAlpha = 0.5;
+        ctx.beginPath();
+        ctx.arc(nearest.x, nearest.y, bRad * 1.25, 0, TWO_PI);
+        ctx.strokeStyle = ball.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
         ctx.globalAlpha = 1.0;
       });
 
