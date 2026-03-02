@@ -1,5 +1,6 @@
 import { useState } from "react";
 import UpgradeCard from "./UpgradeCard";
+import { CHOICE_POOL } from "./choiceCards";
 
 const TABS = ["Balls", "Upgrades", "Perks"];
 
@@ -80,6 +81,8 @@ const ShopPanel = ({
   buyChainDamageUpgrade,
   clickDamageUpgradePrice,
   buyClickDamageUpgrade,
+  activePerks,
+  shopDiscount,
 }) => {
   const [activeTab, setActiveTab] = useState("Balls");
   const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount - chainBallCount;
@@ -349,7 +352,26 @@ const ShopPanel = ({
         )}
 
         {activeTab === "Perks" && (
-          <p className="shop-panel__empty">More coming soon...</p>
+          Object.keys(activePerks || {}).length === 0
+            ? <p className="shop-panel__empty">Earn gems to unlock perk choices!</p>
+            : Object.entries(activePerks).map(([id, stacks]) => {
+                const card = CHOICE_POOL.find(c => c.id === id);
+                if (!card) return null;
+                return (
+                  <div
+                    key={id}
+                    className="perk-badge"
+                    style={{
+                      borderColor: card.category.color,
+                      boxShadow: `0 0 8px ${card.category.color}33`,
+                    }}
+                  >
+                    <span className="perk-badge__icon">{card.icon}</span>
+                    <span className="perk-badge__name">{card.name}</span>
+                    {stacks > 1 && <span className="perk-badge__stacks">x{stacks}</span>}
+                  </div>
+                );
+              })
         )}
       </div>
     </div>

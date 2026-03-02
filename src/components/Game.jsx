@@ -9,11 +9,15 @@ import * as Tone from "tone";
 //component imports
 import Navbar from "./Navbar";
 import ShopPanel from "./ShopPanel";
+import ChoiceOverlay from "./ChoiceOverlay";
+import { CHOICE_POOL, getAvailableCards, pickRandomCards } from "./choiceCards";
 
 // Constants and Static Assets outside component to avoid recreation
 const TWO_PI = Math.PI * 2;
 const CANVAS_W = 800;
 const CANVAS_H = 560;
+const MILESTONE_BASE = 1000;
+const MILESTONE_GROWTH = 2.0;
 
 const blueGemImage = new Image();
 blueGemImage.src = assets.bluegemtexture;
@@ -92,6 +96,14 @@ function Game() {
   const [clickDamage, setClickDamage] = useState(() => {
     const savedClickDamage = localStorage.getItem("clickDamage");
     return savedClickDamage ? JSON.parse(savedClickDamage) : 20;
+  });
+
+  // Choice system
+  const [showChoiceOverlay, setShowChoiceOverlay] = useState(false);
+  const [choiceCards, setChoiceCards] = useState([]);
+  const [activePerks, setActivePerks] = useState(() => {
+    const saved = localStorage.getItem("activePerks");
+    return saved ? JSON.parse(saved) : {};
   });
 
   // Currency
@@ -387,6 +399,20 @@ function Game() {
   const ballIdRef = useRef(0);
   const brickIdRef = useRef(1);
 
+  // Choice system refs
+  const totalGemsEarnedRef = useRef(0);
+  const nextMilestoneRef = useRef(MILESTONE_BASE);
+  const milestoneCountRef = useRef(0);
+  const isPausedRef = useRef(false);
+  const activePerksRef = useRef({});
+  // Perk behavior refs
+  const gemBonusMultiplierRef = useRef(1.0);
+  const piercingRef = useRef(false);
+  const gemRainRef = useRef(false);
+  const clickNovaRef = useRef(false);
+  const bombChainOnKillRef = useRef(false);
+  const shopDiscountRef = useRef(1.0);
+
   useEffect(() => {
     // Initializing values from local storage into refs
     const savedBalls = localStorage.getItem("balls");
@@ -447,6 +473,32 @@ function Game() {
     if (savedChainDamage) chainCurrentDamageRef.current = JSON.parse(savedChainDamage);
     const savedChainCount = localStorage.getItem("chainCurrentCount");
     if (savedChainCount) chainCurrentCountRef.current = JSON.parse(savedChainCount);
+
+    // Choice system
+    const savedTotalGems = localStorage.getItem("totalGemsEarned");
+    if (savedTotalGems) totalGemsEarnedRef.current = JSON.parse(savedTotalGems);
+    const savedNextMilestone = localStorage.getItem("nextMilestone");
+    if (savedNextMilestone) nextMilestoneRef.current = JSON.parse(savedNextMilestone);
+    const savedMilestoneCount = localStorage.getItem("milestoneCount");
+    if (savedMilestoneCount) milestoneCountRef.current = JSON.parse(savedMilestoneCount);
+    const savedActivePerks = localStorage.getItem("activePerks");
+    if (savedActivePerks) {
+      const perks = JSON.parse(savedActivePerks);
+      activePerksRef.current = perks;
+      setActivePerks(perks);
+    }
+    const savedGemBonus = localStorage.getItem("gemBonusMultiplier");
+    if (savedGemBonus) gemBonusMultiplierRef.current = JSON.parse(savedGemBonus);
+    const savedPiercing = localStorage.getItem("piercing");
+    if (savedPiercing) piercingRef.current = JSON.parse(savedPiercing);
+    const savedGemRain = localStorage.getItem("gemRain");
+    if (savedGemRain) gemRainRef.current = JSON.parse(savedGemRain);
+    const savedClickNova = localStorage.getItem("clickNova");
+    if (savedClickNova) clickNovaRef.current = JSON.parse(savedClickNova);
+    const savedBombChain = localStorage.getItem("bombChainOnKill");
+    if (savedBombChain) bombChainOnKillRef.current = JSON.parse(savedBombChain);
+    const savedShopDiscount = localStorage.getItem("shopDiscount");
+    if (savedShopDiscount) shopDiscountRef.current = JSON.parse(savedShopDiscount);
   }, []);
 
   // Sync state to refs for high-frequency access in loop
@@ -460,10 +512,22 @@ function Game() {
   useEffect(() => { maxBricksOnScreenRef.current = maxBricksOnScreen; }, [maxBricksOnScreen]);
   useEffect(() => { canPlayerTeleportBallsOnClickRef.current = canPlayerTeleportBallsOnClick; }, [canPlayerTeleportBallsOnClick]);
 
+  // Milestone progress for UI
+  const [milestoneProgress, setMilestoneProgress] = useState(0);
+
   // UI Sync Loop - periodically update React state from engine refs
   useEffect(() => {
     const interval = setInterval(() => {
       if (gems !== gemsRef.current) setGems(gemsRef.current);
+      // Sync milestone progress
+      const prevMilestone = milestoneCountRef.current === 0
+        ? 0
+        : Math.floor(MILESTONE_BASE * (Math.pow(MILESTONE_GROWTH, milestoneCountRef.current) - 1));
+      const range = nextMilestoneRef.current - prevMilestone;
+      const progress = range > 0
+        ? Math.min(1, (totalGemsEarnedRef.current - prevMilestone) / range)
+        : 0;
+      setMilestoneProgress(progress);
     }, 100); // 10Hz is plenty for UI updates
     return () => clearInterval(interval);
   }, [gems]);
@@ -544,6 +608,34 @@ function Game() {
     chainArcsRef.current.push({ x1, y1, x2, y2, color, life: 1.0, points });
   };
 
+  const awardGems = (amount) => {
+    const bonus = Math.floor(amount * gemBonusMultiplierRef.current);
+    gemsRef.current += bonus;
+    totalGemsEarnedRef.current += bonus;
+    if (totalGemsEarnedRef.current >= nextMilestoneRef.current && !isPausedRef.current) {
+      isPausedRef.current = true;
+      milestoneCountRef.current += 1;
+      nextMilestoneRef.current = Math.floor(
+        MILESTONE_BASE * (Math.pow(MILESTONE_GROWTH, milestoneCountRef.current + 1) - 1)
+      );
+      const gameState = {
+        ballCount: ballCountRef.current,
+        swarmBallCount: ballsRef.current.filter(b => b.type === "swarm").length,
+        homingBallCount: ballsRef.current.filter(b => b.type === "homing").length,
+        bombBallCount: ballsRef.current.filter(b => b.type === "bomb").length,
+        chainBallCount: ballsRef.current.filter(b => b.type === "chain").length,
+      };
+      const available = getAvailableCards(activePerksRef.current, gameState);
+      if (available.length > 0) {
+        const picked = pickRandomCards(available, 3);
+        setChoiceCards(picked);
+        setShowChoiceOverlay(true);
+      } else {
+        isPausedRef.current = false;
+      }
+    }
+  };
+
   const handleCanvasClick = useCallback((event) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -574,7 +666,7 @@ function Game() {
 
         if (isDestroyed) {
           playSoundRef(brickBreak);
-          gemsRef.current += brick.gemsInside;
+          awardGems(brick.gemsInside);
           currentBricks.splice(i, 1);
         }
         handled = true;
@@ -582,13 +674,35 @@ function Game() {
       }
     }
 
-    if (!handled && canPlayerTeleportBallsOnClickRef.current && ballCountRef.current > 0) {
-      playSoundRef(telePort);
-      ballsRef.current.forEach(ball => {
-        ball.x = x;
-        ball.y = y;
-      });
-      createRipple(x, y, "teleport", 40, "blue");
+    if (!handled) {
+      if (clickNovaRef.current) {
+        // Click Nova perk: AoE damage on empty-space click
+        const novaRadius = 100;
+        const novaDmg = clickDamageRef.current * 2;
+        const currentBricksForNova = bricksRef.current;
+        let hitAny = false;
+        for (let i = currentBricksForNova.length - 1; i >= 0; i--) {
+          const b = currentBricksForNova[i];
+          if (Math.hypot(x - b.x, y - b.y) < novaRadius) {
+            b.health -= novaDmg;
+            createRipple(b.x, b.y, novaDmg.toFixed(0), 20, "#ffcc00");
+            hitAny = true;
+            if (b.health <= 0) {
+              awardGems(b.gemsInside);
+              createRipple(b.x, b.y, `+${b.gemsInside}g`, 32, "white");
+              currentBricksForNova.splice(i, 1);
+            }
+          }
+        }
+        if (hitAny) createRipple(x, y, "NOVA", 48, "#ffcc00");
+      } else if (canPlayerTeleportBallsOnClickRef.current && ballCountRef.current > 0) {
+        playSoundRef(telePort);
+        ballsRef.current.forEach(ball => {
+          ball.x = x;
+          ball.y = y;
+        });
+        createRipple(x, y, "teleport", 40, "blue");
+      }
     }
   }, []);
 
@@ -669,6 +783,17 @@ function Game() {
     localStorage.setItem("chainCurrentRadius", JSON.stringify(chainCurrentRadiusRef.current));
     localStorage.setItem("chainCurrentDamage", JSON.stringify(chainCurrentDamageRef.current));
     localStorage.setItem("chainCurrentCount", JSON.stringify(chainCurrentCountRef.current));
+    // Choice system
+    localStorage.setItem("totalGemsEarned", JSON.stringify(totalGemsEarnedRef.current));
+    localStorage.setItem("nextMilestone", JSON.stringify(nextMilestoneRef.current));
+    localStorage.setItem("milestoneCount", JSON.stringify(milestoneCountRef.current));
+    localStorage.setItem("activePerks", JSON.stringify(activePerksRef.current));
+    localStorage.setItem("gemBonusMultiplier", JSON.stringify(gemBonusMultiplierRef.current));
+    localStorage.setItem("piercing", JSON.stringify(piercingRef.current));
+    localStorage.setItem("gemRain", JSON.stringify(gemRainRef.current));
+    localStorage.setItem("clickNova", JSON.stringify(clickNovaRef.current));
+    localStorage.setItem("bombChainOnKill", JSON.stringify(bombChainOnKillRef.current));
+    localStorage.setItem("shopDiscount", JSON.stringify(shopDiscountRef.current));
   }, []);
 
   // Save on interval + before tab close
@@ -684,7 +809,7 @@ function Game() {
   // Brick Spawning
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isSpawningBricksRef.current) return;
+      if (!isSpawningBricksRef.current || isPausedRef.current) return;
       const currentBricks = bricksRef.current;
       const maxBricks = maxBricksOnScreenRef.current;
       const bRad = brickRadiusRef.current;
@@ -718,13 +843,40 @@ function Game() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let animationFrameId;
+    let gemRainTimer = 0;
 
     const update = () => {
       const balls = ballsRef.current;
       const bricks = bricksRef.current;
       const bRad = brickRadiusRef.current;
       const ballRad = ballRadiusRef.current;
-      
+
+      if (!isPausedRef.current) {
+
+      // Gem Rain perk: spawn drifting bricks from the top
+      if (gemRainRef.current) {
+        gemRainTimer++;
+        if (gemRainTimer >= 90) { // roughly every 1.5s at 60fps
+          gemRainTimer = 0;
+          const nx = Math.random() * (CANVAS_W - 4 * bRad) + 2 * bRad;
+          const health = Math.max(10, Math.floor(brickIdRef.current * 0.3));
+          bricks.push({
+            id: brickIdRef.current++,
+            x: nx, y: bRad,
+            health: health,
+            gemsInside: health,
+            drifting: true,
+          });
+        }
+        // Move drifting bricks downward
+        for (let i = bricks.length - 1; i >= 0; i--) {
+          if (bricks[i].drifting) {
+            bricks[i].y += 0.5;
+            if (bricks[i].y > CANVAS_H + bRad) bricks.splice(i, 1);
+          }
+        }
+      }
+
       balls.forEach(ball => {
         const r = ball.radius ?? ballRad;
 
@@ -758,8 +910,19 @@ function Game() {
           ball.y = Math.max(r, Math.min(CANVAS_H - r, ball.y));
         }
 
+        // Piercing: clear recentHits for bricks no longer overlapping
+        if (piercingRef.current && ball.recentHits instanceof Set) {
+          for (const hitId of ball.recentHits) {
+            const b = bricks.find(br => br.id === hitId);
+            if (!b || Math.hypot(ball.x - b.x, ball.y - b.y) >= r + bRad + 2) {
+              ball.recentHits.delete(hitId);
+            }
+          }
+        }
+
         for (let i = bricks.length - 1; i >= 0; i--) {
           const brick = bricks[i];
+          if (piercingRef.current && ball.recentHits instanceof Set && ball.recentHits.has(brick.id)) continue;
           const dist = Math.hypot(ball.x - brick.x, ball.y - brick.y);
 
           if (dist < r + bRad) {
@@ -772,7 +935,7 @@ function Game() {
             createRipple(ball.x, ball.y, isDestroyed ? `+${brick.gemsInside}g` : ball.damage.toFixed(0), isDestroyed ? 40 : 24, isDestroyed ? "white" : hitColor);
 
             if (isDestroyed) {
-              gemsRef.current += brick.gemsInside;
+              awardGems(brick.gemsInside);
               bricks.splice(i, 1);
             }
 
@@ -787,8 +950,20 @@ function Game() {
                   bricks[j].health -= splashDmg;
                   createRipple(bricks[j].x, bricks[j].y, splashDmg.toFixed(0), 20, ball.color);
                   if (bricks[j].health <= 0) {
-                    gemsRef.current += bricks[j].gemsInside;
+                    awardGems(bricks[j].gemsInside);
                     createRipple(bricks[j].x, bricks[j].y, `+${bricks[j].gemsInside}g`, 32, "white");
+                    // Chain Reaction perk: bomb kills trigger chain arcs
+                    if (bombChainOnKillRef.current) {
+                      const chainTargets = [...bricks]
+                        .filter((b2, idx) => idx !== j && b2 !== bricks[j])
+                        .sort((a, b2) => Math.hypot(a.x - bricks[j].x, a.y - bricks[j].y) - Math.hypot(b2.x - bricks[j].x, b2.y - bricks[j].y))
+                        .slice(0, 2);
+                      chainTargets.forEach(ct => {
+                        createChainArc(bricks[j].x, bricks[j].y, ct.x, ct.y, "#cc44ff");
+                        ct.health -= splashDmg;
+                        createRipple(ct.x, ct.y, splashDmg.toFixed(0), 20, "#cc44ff");
+                      });
+                    }
                     bricks.splice(j, 1);
                   }
                 }
@@ -807,7 +982,7 @@ function Game() {
                 target.health -= chainDmg;
                 createRipple(target.x, target.y, chainDmg.toFixed(0), 20, ball.color);
                 if (target.health <= 0) {
-                  gemsRef.current += target.gemsInside;
+                  awardGems(target.gemsInside);
                   createRipple(target.x, target.y, `+${target.gemsInside}g`, 32, "white");
                   const idx = bricks.indexOf(target);
                   if (idx !== -1) bricks.splice(idx, 1);
@@ -815,12 +990,19 @@ function Game() {
               });
             }
 
-            const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
-            ball.direction = 2 * angle - ball.direction + Math.PI;
-            break;
+            if (piercingRef.current) {
+              // Piercing: skip bounce, track hit bricks to avoid re-hitting
+              if (!ball.recentHits) ball.recentHits = new Set();
+              ball.recentHits.add(brick.id);
+            } else {
+              const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
+              ball.direction = 2 * angle - ball.direction + Math.PI;
+              break;
+            }
           }
         }
       });
+      } // end isPaused guard
 
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
       bricks.forEach(brick => {
@@ -1025,55 +1207,107 @@ function Game() {
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
 
-  /* ACTIONS */
-  const buyBall = () => {
-    const price = ballPriceRef.current;
-    if (gemsRef.current < price) return;
-    gemsRef.current -= price;
-    setGems(gemsRef.current);
-    const newPrice = price * upgradePriceMultiplier;
-    ballPriceRef.current = newPrice;
-    setBallPrice(newPrice);
+  /* SPAWN HELPERS (used by buy functions and choice cards) */
+  const spawnStandardBall = () => {
     ballCountRef.current += 1;
     setBallCount(ballCountRef.current);
-
     ballsRef.current.push({
       id: ballIdRef.current++,
-      x: CANVAS_W / 2,
-      y: CANVAS_H / 2,
+      x: CANVAS_W / 2, y: CANVAS_H / 2,
       speed: ballSpeedRef.current,
       direction: Math.random() * TWO_PI,
       damage: ballDamageRef.current,
-      type: "standard",
-      color: null,
-      radius: null,
+      type: "standard", color: null, radius: null,
     });
+  };
+
+  const spawnSwarmBall = () => {
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setSwarmBallCount((c) => c + 1);
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2, y: CANVAS_H / 2,
+      speed: swarmCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: swarmCurrentDamageRef.current,
+      type: "swarm", color: "#00e5ff",
+      radius: swarmCurrentRadiusRef.current,
+    });
+  };
+
+  const spawnHomingBall = () => {
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setHomingBallCount((c) => c + 1);
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2, y: CANVAS_H / 2,
+      speed: homingCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: homingCurrentDamageRef.current,
+      type: "homing", color: "#00ff88",
+      radius: homingCurrentRadiusRef.current,
+      turnRate: homingCurrentTurnRateRef.current,
+    });
+  };
+
+  const spawnBombBall = () => {
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setBombBallCount((c) => c + 1);
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2, y: CANVAS_H / 2,
+      speed: bombCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: bombCurrentDamageRef.current,
+      type: "bomb", color: "#ff8c00",
+      radius: bombCurrentRadiusRef.current,
+      splashRadius: bombCurrentSplashRadiusRef.current,
+    });
+  };
+
+  const spawnChainBall = () => {
+    ballCountRef.current += 1;
+    setBallCount(ballCountRef.current);
+    setChainBallCount((c) => c + 1);
+    ballsRef.current.push({
+      id: ballIdRef.current++,
+      x: CANVAS_W / 2, y: CANVAS_H / 2,
+      speed: chainCurrentSpeedRef.current,
+      direction: Math.random() * TWO_PI,
+      damage: chainCurrentDamageRef.current,
+      type: "chain", color: "#cc44ff",
+      radius: chainCurrentRadiusRef.current,
+      chainCount: chainCurrentCountRef.current,
+    });
+  };
+
+  /* ACTIONS */
+  const buyBall = () => {
+    const basePrice = ballPriceRef.current;
+    const price = Math.floor(basePrice * shopDiscountRef.current);
+    if (gemsRef.current < price) return;
+    gemsRef.current -= price;
+    setGems(gemsRef.current);
+    const newPrice = basePrice * upgradePriceMultiplier;
+    ballPriceRef.current = newPrice;
+    setBallPrice(newPrice);
+    spawnStandardBall();
     saveGameState();
   };
 
   const buySwarmBall = () => {
-    const price = swarmBallPriceRef.current;
+    const basePrice = swarmBallPriceRef.current;
+    const price = Math.floor(basePrice * shopDiscountRef.current);
     if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
-    const newPrice = price * upgradePriceMultiplier;
+    const newPrice = basePrice * upgradePriceMultiplier;
     swarmBallPriceRef.current = newPrice;
     setSwarmBallPrice(newPrice);
-    ballCountRef.current += 1;
-    setBallCount(ballCountRef.current);
-    setSwarmBallCount((c) => c + 1);
-
-    ballsRef.current.push({
-      id: ballIdRef.current++,
-      x: CANVAS_W / 2,
-      y: CANVAS_H / 2,
-      speed: swarmCurrentSpeedRef.current,
-      direction: Math.random() * TWO_PI,
-      damage: swarmCurrentDamageRef.current,
-      type: "swarm",
-      color: "#00e5ff",
-      radius: swarmCurrentRadiusRef.current,
-    });
+    spawnSwarmBall();
     saveGameState();
   };
 
@@ -1124,29 +1358,15 @@ function Game() {
   };
 
   const buyHomingBall = () => {
-    const price = homingBallPriceRef.current;
+    const basePrice = homingBallPriceRef.current;
+    const price = Math.floor(basePrice * shopDiscountRef.current);
     if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
-    const newPrice = price * upgradePriceMultiplier;
+    const newPrice = basePrice * upgradePriceMultiplier;
     homingBallPriceRef.current = newPrice;
     setHomingBallPrice(newPrice);
-    ballCountRef.current += 1;
-    setBallCount(ballCountRef.current);
-    setHomingBallCount((c) => c + 1);
-
-    ballsRef.current.push({
-      id: ballIdRef.current++,
-      x: CANVAS_W / 2,
-      y: CANVAS_H / 2,
-      speed: homingCurrentSpeedRef.current,
-      direction: Math.random() * TWO_PI,
-      damage: homingCurrentDamageRef.current,
-      type: "homing",
-      color: "#00ff88",
-      radius: homingCurrentRadiusRef.current,
-      turnRate: homingCurrentTurnRateRef.current,
-    });
+    spawnHomingBall();
     saveGameState();
   };
 
@@ -1194,29 +1414,15 @@ function Game() {
   };
 
   const buyBombBall = () => {
-    const price = bombBallPriceRef.current;
+    const basePrice = bombBallPriceRef.current;
+    const price = Math.floor(basePrice * shopDiscountRef.current);
     if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
-    const newPrice = price * upgradePriceMultiplier;
+    const newPrice = basePrice * upgradePriceMultiplier;
     bombBallPriceRef.current = newPrice;
     setBombBallPrice(newPrice);
-    ballCountRef.current += 1;
-    setBallCount(ballCountRef.current);
-    setBombBallCount((c) => c + 1);
-
-    ballsRef.current.push({
-      id: ballIdRef.current++,
-      x: CANVAS_W / 2,
-      y: CANVAS_H / 2,
-      speed: bombCurrentSpeedRef.current,
-      direction: Math.random() * TWO_PI,
-      damage: bombCurrentDamageRef.current,
-      type: "bomb",
-      color: "#ff8c00",
-      radius: bombCurrentRadiusRef.current,
-      splashRadius: bombCurrentSplashRadiusRef.current,
-    });
+    spawnBombBall();
     saveGameState();
   };
 
@@ -1311,29 +1517,15 @@ function Game() {
   };
 
   const buyChainBall = () => {
-    const price = chainBallPriceRef.current;
+    const basePrice = chainBallPriceRef.current;
+    const price = Math.floor(basePrice * shopDiscountRef.current);
     if (gemsRef.current < price) return;
     gemsRef.current -= price;
     setGems(gemsRef.current);
-    const newPrice = price * upgradePriceMultiplier;
+    const newPrice = basePrice * upgradePriceMultiplier;
     chainBallPriceRef.current = newPrice;
     setChainBallPrice(newPrice);
-    ballCountRef.current += 1;
-    setBallCount(ballCountRef.current);
-    setChainBallCount((c) => c + 1);
-
-    ballsRef.current.push({
-      id: ballIdRef.current++,
-      x: CANVAS_W / 2,
-      y: CANVAS_H / 2,
-      speed: chainCurrentSpeedRef.current,
-      direction: Math.random() * TWO_PI,
-      damage: chainCurrentDamageRef.current,
-      type: "chain",
-      color: "#cc44ff",
-      radius: chainCurrentRadiusRef.current,
-      chainCount: chainCurrentCountRef.current,
-    });
+    spawnChainBall();
     saveGameState();
   };
 
@@ -1394,11 +1586,44 @@ function Game() {
     saveGameState();
   };
 
+  const handleChoicePick = (cardId) => {
+    const card = CHOICE_POOL.find(c => c.id === cardId);
+    if (!card) return;
+
+    card.apply({
+      gemBonusMultiplierRef, piercingRef, gemRainRef, clickNovaRef,
+      bombChainOnKillRef, shopDiscountRef,
+      ballsRef, ballSpeedRef, ballDamageRef, ballRadiusRef,
+      swarmCurrentSpeedRef, swarmCurrentDamageRef, swarmCurrentRadiusRef,
+      homingCurrentSpeedRef, homingCurrentDamageRef, homingCurrentRadiusRef,
+      bombCurrentSpeedRef, bombCurrentDamageRef, bombCurrentRadiusRef,
+      chainCurrentSpeedRef, chainCurrentDamageRef, chainCurrentRadiusRef,
+      spawnFns: {
+        standard: spawnStandardBall,
+        swarm: spawnSwarmBall,
+        homing: spawnHomingBall,
+        bomb: spawnBombBall,
+        chain: spawnChainBall,
+      },
+    });
+
+    const newPerks = { ...activePerksRef.current };
+    newPerks[cardId] = (newPerks[cardId] || 0) + 1;
+    activePerksRef.current = newPerks;
+    setActivePerks(newPerks);
+
+    setShowChoiceOverlay(false);
+    setChoiceCards([]);
+    isPausedRef.current = false;
+    saveGameState();
+  };
+
   return (
     <>
       <Navbar
         gems={gems}
         onNewGame={handleNewGame}
+        milestoneProgress={milestoneProgress}
       />
       <div className="canvas--wrapper">
         <canvas
@@ -1407,6 +1632,13 @@ function Game() {
           width={CANVAS_W}
           height={CANVAS_H}
         />
+        {showChoiceOverlay && (
+          <ChoiceOverlay
+            cards={choiceCards}
+            onPick={handleChoicePick}
+            activePerks={activePerks}
+          />
+        )}
       </div>
       <ShopPanel
         gems={gems}
@@ -1457,6 +1689,8 @@ function Game() {
         buyChainCountUpgrade={buyChainCountUpgrade}
         chainDamageUpgradePrice={chainDamageUpgradePrice}
         buyChainDamageUpgrade={buyChainDamageUpgrade}
+        activePerks={activePerks}
+        shopDiscount={shopDiscountRef.current}
       />
     </>
   );
