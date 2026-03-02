@@ -29,6 +29,8 @@ const TypeLabel = ({ icon, label, color, count }) => (
 
 const SectionDivider = () => <div className="upgrade-section-divider" />;
 
+const lvl = (price, base) => Math.round(Math.log2(price / base));
+
 const ShopPanel = ({
   gems,
   ballCount,
@@ -165,6 +167,7 @@ const ShopPanel = ({
               canAfford={gems >= ballSpeedUpgradePrice}
               locked={standardBallCount < 1}
               onClick={buyBallSpeedUpgrade}
+              level={lvl(ballSpeedUpgradePrice, 100)}
             />
             <UpgradeCard
               icon="📏" name="Size"
@@ -172,6 +175,7 @@ const ShopPanel = ({
               canAfford={gems >= ballRadiusUpgradePrice}
               locked={standardBallCount < 1}
               onClick={buyBallRadiusUpgrade}
+              level={lvl(ballRadiusUpgradePrice, 100)}
             />
             <UpgradeCard
               icon="💥" name="Damage"
@@ -179,6 +183,7 @@ const ShopPanel = ({
               canAfford={gems >= ballDamageUpgradePrice}
               locked={standardBallCount < 1}
               onClick={buyBallDamageUpgrade}
+              level={lvl(ballDamageUpgradePrice, 100)}
             />
 
             <SectionDivider />
@@ -197,6 +202,7 @@ const ShopPanel = ({
               locked={swarmBallCount < 1}
               onClick={buySwarmSpeedUpgrade}
               accentColor={BALL_TYPES.swarm.color}
+              level={lvl(swarmSpeedUpgradePrice, 150)}
             />
             <UpgradeCard
               icon="📏" name="Size"
@@ -205,6 +211,7 @@ const ShopPanel = ({
               locked={swarmBallCount < 1}
               onClick={buySwarmSizeUpgrade}
               accentColor={BALL_TYPES.swarm.color}
+              level={lvl(swarmSizeUpgradePrice, 150)}
             />
             <UpgradeCard
               icon="💥" name="Damage"
@@ -213,6 +220,7 @@ const ShopPanel = ({
               locked={swarmBallCount < 1}
               onClick={buySwarmDamageUpgrade}
               accentColor={BALL_TYPES.swarm.color}
+              level={lvl(swarmDamageUpgradePrice, 150)}
             />
 
             <SectionDivider />
@@ -231,6 +239,7 @@ const ShopPanel = ({
               locked={homingBallCount < 1}
               onClick={buyHomingSpeedUpgrade}
               accentColor={BALL_TYPES.homing.color}
+              level={lvl(homingSpeedUpgradePrice, 200)}
             />
             <UpgradeCard
               icon="🎯" name="Accuracy"
@@ -239,6 +248,7 @@ const ShopPanel = ({
               locked={homingBallCount < 1}
               onClick={buyHomingAccuracyUpgrade}
               accentColor={BALL_TYPES.homing.color}
+              level={lvl(homingAccuracyUpgradePrice, 200)}
             />
             <UpgradeCard
               icon="💥" name="Damage"
@@ -247,6 +257,7 @@ const ShopPanel = ({
               locked={homingBallCount < 1}
               onClick={buyHomingDamageUpgrade}
               accentColor={BALL_TYPES.homing.color}
+              level={lvl(homingDamageUpgradePrice, 200)}
             />
 
             <SectionDivider />
@@ -265,6 +276,7 @@ const ShopPanel = ({
               locked={bombBallCount < 1}
               onClick={buyBombSpeedUpgrade}
               accentColor={BALL_TYPES.bomb.color}
+              level={lvl(bombSpeedUpgradePrice, 300)}
             />
             <UpgradeCard
               icon="📏" name="Blast"
@@ -273,6 +285,7 @@ const ShopPanel = ({
               locked={bombBallCount < 1}
               onClick={buyBombSizeUpgrade}
               accentColor={BALL_TYPES.bomb.color}
+              level={lvl(bombSizeUpgradePrice, 300)}
             />
             <UpgradeCard
               icon="💥" name="Damage"
@@ -281,6 +294,7 @@ const ShopPanel = ({
               locked={bombBallCount < 1}
               onClick={buyBombDamageUpgrade}
               accentColor={BALL_TYPES.bomb.color}
+              level={lvl(bombDamageUpgradePrice, 300)}
             />
 
             <SectionDivider />
@@ -299,6 +313,7 @@ const ShopPanel = ({
               locked={chainBallCount < 1}
               onClick={buyChainSpeedUpgrade}
               accentColor={BALL_TYPES.chain.color}
+              level={lvl(chainSpeedUpgradePrice, 350)}
             />
             <UpgradeCard
               icon="🔗" name="Chains"
@@ -307,6 +322,7 @@ const ShopPanel = ({
               locked={chainBallCount < 1}
               onClick={buyChainCountUpgrade}
               accentColor={BALL_TYPES.chain.color}
+              level={lvl(chainCountUpgradePrice, 350)}
             />
             <UpgradeCard
               icon="💥" name="Damage"
@@ -315,6 +331,7 @@ const ShopPanel = ({
               locked={chainBallCount < 1}
               onClick={buyChainDamageUpgrade}
               accentColor={BALL_TYPES.chain.color}
+              level={lvl(chainDamageUpgradePrice, 350)}
             />
 
             <SectionDivider />
@@ -326,6 +343,7 @@ const ShopPanel = ({
               canAfford={gems >= clickDamageUpgradePrice}
               locked={false}
               onClick={buyClickDamageUpgrade}
+              level={lvl(clickDamageUpgradePrice, 100)}
             />
           </>
         )}

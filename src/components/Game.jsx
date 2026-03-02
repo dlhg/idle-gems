@@ -522,7 +522,26 @@ function Game() {
   };
 
   const createChainArc = (x1, y1, x2, y2, color) => {
-    chainArcsRef.current.push({ x1, y1, x2, y2, color, life: 1.0 });
+    // Pre-compute zigzag points for a lightning bolt look
+    const segments = 10;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.hypot(dx, dy);
+    const perpX = -dy / len;
+    const perpY = dx / len;
+    const points = [];
+    for (let s = 0; s <= segments; s++) {
+      const t = s / segments;
+      const px = x1 + dx * t;
+      const py = y1 + dy * t;
+      if (s > 0 && s < segments) {
+        const offset = (Math.random() - 0.5) * len * 0.35;
+        points.push({ x: px + perpX * offset, y: py + perpY * offset });
+      } else {
+        points.push({ x: px, y: py });
+      }
+    }
+    chainArcsRef.current.push({ x1, y1, x2, y2, color, life: 1.0, points });
   };
 
   const handleCanvasClick = useCallback((event) => {
@@ -834,6 +853,33 @@ function Game() {
 
       balls.forEach(ball => {
         const r = ball.radius ?? ballRad;
+
+        // Chain ball: pulsing electric aura behind the ball
+        if (ball.type === "chain") {
+          const pulse = Math.sin(Date.now() / 80) * 0.3 + 0.7;
+          // Outer halo
+          ctx.globalAlpha = 0.22 * pulse;
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, r * 2.2, 0, TWO_PI);
+          ctx.fillStyle = "#cc44ff";
+          ctx.fill();
+          // Mid ring
+          ctx.globalAlpha = 0.45 * pulse;
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, r * 1.6, 0, TWO_PI);
+          ctx.strokeStyle = "#ee88ff";
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          // Crackling ring
+          ctx.globalAlpha = 0.7 * pulse;
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, r * 1.25, 0, TWO_PI);
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          ctx.globalAlpha = 1.0;
+        }
+
         const grad = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, r);
         grad.addColorStop(0, "white");
         grad.addColorStop(1, ball.color ?? "grey");
@@ -902,33 +948,59 @@ function Game() {
       }
       ctx.globalAlpha = 1.0;
 
-      // Chain arcs (chain ball visual)
+      // Chain arcs (chain ball visual) — neon lightning bolt
       const chainArcs = chainArcsRef.current;
+      ctx.setLineDash([]);
       for (let i = chainArcs.length - 1; i >= 0; i--) {
         const arc = chainArcs[i];
-        arc.life -= 0.04;
+        arc.life -= 0.06;
         if (arc.life <= 0) { chainArcs.splice(i, 1); continue; }
 
-        const mx = (arc.x1 + arc.x2) / 2;
-        const my = (arc.y1 + arc.y2) / 2;
-        const dx = arc.x2 - arc.x1;
-        const dy = arc.y2 - arc.y1;
-        const cpx = mx - dy * 0.4;
-        const cpy = my + dx * 0.4;
+        const pts = arc.points;
+        const drawPath = () => {
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x, pts[0].y);
+          for (let p = 1; p < pts.length; p++) ctx.lineTo(pts[p].x, pts[p].y);
+        };
 
-        ctx.globalAlpha = arc.life * 0.9;
-        ctx.beginPath();
-        ctx.moveTo(arc.x1, arc.y1);
-        ctx.quadraticCurveTo(cpx, cpy, arc.x2, arc.y2);
-        ctx.strokeStyle = arc.color;
-        ctx.lineWidth = 3 * arc.life + 1;
-        ctx.setLineDash([]);
+        // Outer wide glow
+        ctx.globalAlpha = arc.life * 0.25;
+        drawPath();
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 18 * arc.life;
         ctx.stroke();
 
-        // Bright endpoint dot
+        // Mid color glow
+        ctx.globalAlpha = arc.life * 0.55;
+        drawPath();
+        ctx.strokeStyle = arc.color;
+        ctx.lineWidth = 8 * arc.life;
+        ctx.stroke();
+
+        // Bright white core
+        ctx.globalAlpha = arc.life;
+        drawPath();
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2.5 * arc.life;
+        ctx.stroke();
+
+        // Impact sparks at both endpoints
+        ctx.globalAlpha = arc.life;
+        ctx.beginPath();
+        ctx.arc(arc.x1, arc.y1, 7 * arc.life, 0, TWO_PI);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+
+        ctx.globalAlpha = arc.life * 0.8;
+        ctx.beginPath();
+        ctx.arc(arc.x2, arc.y2, 9 * arc.life, 0, TWO_PI);
+        ctx.fillStyle = arc.color;
+        ctx.fill();
+
+        ctx.globalAlpha = arc.life;
         ctx.beginPath();
         ctx.arc(arc.x2, arc.y2, 4 * arc.life, 0, TWO_PI);
-        ctx.fillStyle = arc.color;
+        ctx.fillStyle = "#ffffff";
         ctx.fill();
       }
       ctx.globalAlpha = 1.0;

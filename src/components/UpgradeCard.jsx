@@ -1,4 +1,4 @@
-const UpgradeCard = ({ icon, name, price, canAfford, locked, onClick, count, accentColor }) => {
+const UpgradeCard = ({ icon, name, price, canAfford, locked, onClick, count, accentColor, level }) => {
   const accentStyle = accentColor
     ? { borderColor: accentColor, boxShadow: `0 0 10px ${accentColor}55` }
     : {};
@@ -17,6 +17,9 @@ const UpgradeCard = ({ icon, name, price, canAfford, locked, onClick, count, acc
       <div className="upgrade-card__name">{name}</div>
       {count !== undefined && (
         <div className="upgrade-card__count">×{count}</div>
+      )}
+      {level !== undefined && (
+        <div className="upgrade-card__level">Lv {level}</div>
       )}
       <div className={`upgrade-card__price ${canAfford ? "can-afford" : "cant-afford"}`}>
         {price.toFixed(0)}g

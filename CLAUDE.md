@@ -58,3 +58,5 @@ Ball properties: `{ id, x, y, speed, direction, damage, type, color, radius, ...
 - **Lint:** Project has pre-existing prop-types errors (~70). `npm run build` passes; `npm run lint` does not.
 - **localStorage save state:** Changing a default stat value only affects new games. Existing saves load the old value. Use "New Game" to test fresh defaults.
 - **Ball radius localStorage:** `brickRadius` and `ballRadius` are persisted — changed defaults won't apply until the save is cleared.
+
+- If making code changes, also provide a commit message to me 

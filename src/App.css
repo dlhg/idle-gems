@@ -298,6 +298,12 @@ canvas {
   color: rgba(255, 255, 255, 0.5);
 }
 
+.upgrade-card__level {
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+}
+
 .upgrade-card__price {
   font-size: 1em;
   font-weight: 700;
