@@ -1326,11 +1326,6 @@ function Game() {
     <>
       <Navbar
         gems={gems}
-        playerLevel={playerLevel}
-        ballSpeed={ballSpeed}
-        ballDamage={ballDamage}
-        clickDamage={clickDamage}
-        ballRadius={ballRadius}
         onNewGame={handleNewGame}
       />
       <div className="canvas--wrapper">
