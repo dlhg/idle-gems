@@ -922,6 +922,7 @@ function Game() {
 
         for (let i = bricks.length - 1; i >= 0; i--) {
           const brick = bricks[i];
+          if (!brick) continue;
           if (piercingRef.current && ball.recentHits instanceof Set && ball.recentHits.has(brick.id)) continue;
           const dist = Math.hypot(ball.x - brick.x, ball.y - brick.y);
 
@@ -992,7 +993,7 @@ function Game() {
 
             if (piercingRef.current) {
               // Piercing: skip bounce, track hit bricks to avoid re-hitting
-              if (!ball.recentHits) ball.recentHits = new Set();
+              if (!(ball.recentHits instanceof Set)) ball.recentHits = new Set();
               ball.recentHits.add(brick.id);
             } else {
               const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
