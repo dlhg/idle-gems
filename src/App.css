@@ -132,6 +132,7 @@ body {
   justify-content: center;
   overflow: hidden;
   position: relative;
+  padding-bottom: 40px;
 }
 
 /* ── Choice Overlay ──────────────────────────────── */
@@ -236,110 +237,213 @@ canvas {
   max-width: 100%;
   max-height: 100%;
 }
-/* ── Shop Panel ─────────────────────────────────── */
-.shop-panel {
-  background-color: #2a3060cc;
+/* ── Shop Drawer ────────────────────────────────── */
+.shop-drawer__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 4;
+  pointer-events: auto;
+}
+
+.shop-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column-reverse;
+  pointer-events: none;
+}
+
+.shop-drawer__bar {
+  height: 40px;
+  background-color: #2a3060ee;
   background-image: url(./assets/images/backgrounds/repeatingbricks.png);
   background-blend-mode: overlay;
   display: flex;
-  flex-direction: column;
-  height: 22vh;
-  width: 100vw;
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-}
-
-.shop-panel__tabs {
-  display: flex;
-  gap: 2px;
-  padding: 6px 10px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.shop-tab {
-  background: transparent;
-  border: none;
-  border-radius: 6px 6px 0 0;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.6em;
-  font-family: inherit;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 4px 14px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
   cursor: pointer;
-  min-width: unset;
-  transition: background 0.15s, color 0.15s;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 6;
+  pointer-events: auto;
 }
 
-.shop-tab:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.8);
-  border-color: transparent;
+.shop-drawer__bar:hover {
+  background-color: #2a3060ff;
 }
 
-.shop-tab--active {
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-  border-bottom: 2px solid #7b8fff;
+.shop-drawer__gems {
+  color: #6dffaa;
+  font-size: 0.8em;
+  font-weight: 700;
 }
 
-.shop-panel__content {
-  flex: 1;
+.shop-drawer__mini-perks {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  gap: 4px;
+  font-size: 0.7em;
+  overflow: hidden;
 }
 
-.shop-panel__empty {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 0.65em;
-  margin: auto;
-  font-style: italic;
-}
-
-.upgrade-section-divider {
-  width: 1px;
-  height: 70%;
-  background: rgba(255, 255, 255, 0.15);
-  flex-shrink: 0;
-  align-self: center;
-  margin: 0 4px;
-}
-
-.upgrade-type-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  flex-shrink: 0;
-  width: 56px;
-  height: 100%;
-  border-radius: 6px;
-  padding: 6px;
-  font-size: 0.5em;
-}
-
-.upgrade-type-label__icon {
-  font-size: 1.8em;
+.shop-drawer__mini-perk {
   line-height: 1;
 }
 
-.upgrade-type-label__name {
+.shop-drawer__toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: inherit;
+  font-size: 0.6em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: unset;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.shop-drawer__toggle:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.shop-drawer__chevron {
+  display: inline-block;
+  font-size: 0.7em;
+  transition: transform 0.3s ease;
+  transform: rotate(180deg);
+}
+
+.shop-drawer__chevron--up {
+  transform: rotate(0deg);
+}
+
+.shop-drawer__content {
+  height: 50vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #2a3060ee;
+  background-image: url(./assets/images/backgrounds/repeatingbricks.png);
+  background-blend-mode: overlay;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px 0;
+}
+
+.shop-drawer--open .shop-drawer__content {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Ball Section ───────────────────────────────── */
+.ball-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
+}
+
+.ball-section--global {
+  border-left-color: rgba(255, 255, 255, 0.3);
+}
+
+.ball-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ball-section__info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7em;
+}
+
+.ball-section__icon {
+  font-size: 1.4em;
+  line-height: 1;
+}
+
+.ball-section__label {
   font-weight: 700;
-  font-size: 1.1em;
+  color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.upgrade-type-label__count {
+.ball-section__count {
   color: rgba(255, 255, 255, 0.45);
-  font-size: 0.95em;
+}
+
+.ball-section__buy {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.55em;
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  min-width: unset;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.ball-section__buy:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.ball-section__buy:active {
+  transform: translateY(0);
+}
+
+.ball-section__buy.can-afford {
+  color: #6dffaa;
+  border-color: #6dffaa44;
+}
+
+.ball-section__buy.cant-afford {
+  color: #ff7070;
+  border-color: #ff707044;
+}
+
+.ball-section__upgrades {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Perks Section (in drawer) ─────────────────── */
+.shop-drawer__perks-section {
+  padding: 8px 16px;
+}
+
+.shop-drawer__section-title {
+  font-size: 0.6em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.shop-drawer__perks-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 /* ── Upgrade Card ────────────────────────────────── */
@@ -351,7 +455,6 @@ canvas {
   gap: 3px;
   flex-shrink: 0;
   width: 88px;
-  height: 100%;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 10px;
@@ -426,7 +529,6 @@ canvas {
   gap: 4px;
   flex-shrink: 0;
   width: 80px;
-  height: 100%;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;

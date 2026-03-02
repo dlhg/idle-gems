@@ -1,380 +1,126 @@
-import { useState } from "react";
-import UpgradeCard from "./UpgradeCard";
+import { useState, useRef, useEffect } from "react";
+import BallSection from "./BallSection";
 import { CHOICE_POOL } from "./choiceCards";
 
-const TABS = ["Balls", "Upgrades", "Perks"];
-
 export const BALL_TYPES = {
-  standard: { color: null,      icon: "⚪", label: "Ball"   },
-  swarm:    { color: "#00e5ff", icon: "🔵", label: "Swarm"  },
-  homing:   { color: "#00ff88", icon: "🟢", label: "Homing" },
-  bomb:     { color: "#ff8c00", icon: "🟠", label: "Bomb"   },
-  chain:    { color: "#cc44ff", icon: "🟣", label: "Chain"  },
+  standard: { color: null,      icon: "\u26AA", label: "Ball"   },
+  swarm:    { color: "#00e5ff", icon: "\u{1F535}", label: "Swarm"  },
+  homing:   { color: "#00ff88", icon: "\u{1F7E2}", label: "Homing" },
+  bomb:     { color: "#ff8c00", icon: "\u{1F7E0}", label: "Bomb"   },
+  chain:    { color: "#cc44ff", icon: "\u{1F7E3}", label: "Chain"  },
 };
-
-const TypeLabel = ({ icon, label, color, count }) => (
-  <div
-    className="upgrade-type-label"
-    style={{
-      borderColor: color ?? "rgba(255,255,255,0.2)",
-      color: color ?? "white",
-    }}
-  >
-    <span className="upgrade-type-label__icon">{icon}</span>
-    <span className="upgrade-type-label__name">{label}</span>
-    {count !== undefined && (
-      <span className="upgrade-type-label__count">×{count}</span>
-    )}
-  </div>
-);
-
-const SectionDivider = () => <div className="upgrade-section-divider" />;
 
 const lvl = (price, base) => Math.round(Math.log2(price / base));
 
-const ShopPanel = ({
-  gems,
-  ballCount,
-  ballPrice,
-  buyBall,
-  swarmBallCount,
-  swarmBallPrice,
-  buySwarmBall,
-  homingBallCount,
-  homingBallPrice,
-  buyHomingBall,
-  homingSpeedUpgradePrice,
-  buyHomingSpeedUpgrade,
-  homingAccuracyUpgradePrice,
-  buyHomingAccuracyUpgrade,
-  homingDamageUpgradePrice,
-  buyHomingDamageUpgrade,
-  bombBallCount,
-  bombBallPrice,
-  buyBombBall,
-  ballSpeedUpgradePrice,
-  buyBallSpeedUpgrade,
-  ballRadiusUpgradePrice,
-  buyBallRadiusUpgrade,
-  ballDamageUpgradePrice,
-  buyBallDamageUpgrade,
-  swarmSpeedUpgradePrice,
-  buySwarmSpeedUpgrade,
-  swarmSizeUpgradePrice,
-  buySwarmSizeUpgrade,
-  swarmDamageUpgradePrice,
-  buySwarmDamageUpgrade,
-  bombSpeedUpgradePrice,
-  buyBombSpeedUpgrade,
-  bombSizeUpgradePrice,
-  buyBombSizeUpgrade,
-  bombDamageUpgradePrice,
-  buyBombDamageUpgrade,
-  chainBallCount,
-  chainBallPrice,
-  buyChainBall,
-  chainSpeedUpgradePrice,
-  buyChainSpeedUpgrade,
-  chainCountUpgradePrice,
-  buyChainCountUpgrade,
-  chainDamageUpgradePrice,
-  buyChainDamageUpgrade,
-  clickDamageUpgradePrice,
-  buyClickDamageUpgrade,
-  activePerks,
-  shopDiscount,
-}) => {
-  const [activeTab, setActiveTab] = useState("Balls");
-  const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount - chainBallCount;
+const ShopPanel = ({ shopData }) => {
+  const { gems, activePerks, ballTypes, globalUpgrades } = shopData;
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef(null);
+
+  // Scroll to top when drawer opens
+  useEffect(() => {
+    if (isOpen && contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [isOpen]);
 
   return (
-    <div className="shop-panel">
-      <div className="shop-panel__tabs">
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            className={`shop-tab ${activeTab === tab ? "shop-tab--active" : ""}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
+    <>
+      {/* Backdrop */}
+      {isOpen && (
+        <div
+          className="shop-drawer__backdrop"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      <div className={`shop-drawer ${isOpen ? "shop-drawer--open" : ""}`}>
+        {/* Collapsed bar — always visible */}
+        <div className="shop-drawer__bar" onClick={() => setIsOpen((o) => !o)}>
+          <span className="shop-drawer__gems">{gems.toFixed(0)}g</span>
+
+          <div className="shop-drawer__mini-perks">
+            {Object.entries(activePerks || {}).map(([id]) => {
+              const card = CHOICE_POOL.find((c) => c.id === id);
+              if (!card) return null;
+              return (
+                <span key={id} className="shop-drawer__mini-perk" title={card.name}>
+                  {card.icon}
+                </span>
+              );
+            })}
+          </div>
+
+          <button className="shop-drawer__toggle">
+            Shop
+            <span className={`shop-drawer__chevron ${isOpen ? "shop-drawer__chevron--up" : ""}`}>
+              {"\u25B2"}
+            </span>
           </button>
-        ))}
-      </div>
+        </div>
 
-      <div className="shop-panel__content">
-        {activeTab === "Balls" && (
-          <>
-            <UpgradeCard
-              icon={BALL_TYPES.standard.icon}
-              name={BALL_TYPES.standard.label}
-              price={ballPrice}
-              canAfford={gems >= ballPrice}
-              locked={false}
-              onClick={buyBall}
-              count={standardBallCount}
-            />
-            <UpgradeCard
-              icon={BALL_TYPES.swarm.icon}
-              name={BALL_TYPES.swarm.label}
-              price={swarmBallPrice}
-              canAfford={gems >= swarmBallPrice}
-              locked={false}
-              onClick={buySwarmBall}
-              count={swarmBallCount}
-              accentColor={BALL_TYPES.swarm.color}
-            />
-            <UpgradeCard
-              icon={BALL_TYPES.homing.icon}
-              name={BALL_TYPES.homing.label}
-              price={homingBallPrice}
-              canAfford={gems >= homingBallPrice}
-              locked={false}
-              onClick={buyHomingBall}
-              count={homingBallCount}
-              accentColor={BALL_TYPES.homing.color}
-            />
-            <UpgradeCard
-              icon={BALL_TYPES.bomb.icon}
-              name={BALL_TYPES.bomb.label}
-              price={bombBallPrice}
-              canAfford={gems >= bombBallPrice}
-              locked={false}
-              onClick={buyBombBall}
-              count={bombBallCount}
-              accentColor={BALL_TYPES.bomb.color}
-            />
-            <UpgradeCard
-              icon={BALL_TYPES.chain.icon}
-              name={BALL_TYPES.chain.label}
-              price={chainBallPrice}
-              canAfford={gems >= chainBallPrice}
-              locked={false}
-              onClick={buyChainBall}
-              count={chainBallCount}
-              accentColor={BALL_TYPES.chain.color}
-            />
-          </>
-        )}
+        {/* Expanded content */}
+        <div className="shop-drawer__content" ref={contentRef}>
+          {/* Ball type sections */}
+          {ballTypes.map((bt) => (
+            <BallSection key={bt.type} ballType={bt} gems={gems} />
+          ))}
 
-        {activeTab === "Upgrades" && (
-          <>
-            {/* ── Standard ── */}
-            <TypeLabel
-              icon={BALL_TYPES.standard.icon}
-              label={BALL_TYPES.standard.label}
-              count={standardBallCount}
-            />
-            <UpgradeCard
-              icon="⚡" name="Speed"
-              price={ballSpeedUpgradePrice}
-              canAfford={gems >= ballSpeedUpgradePrice}
-              locked={standardBallCount < 1}
-              onClick={buyBallSpeedUpgrade}
-              level={lvl(ballSpeedUpgradePrice, 100)}
-            />
-            <UpgradeCard
-              icon="📏" name="Size"
-              price={ballRadiusUpgradePrice}
-              canAfford={gems >= ballRadiusUpgradePrice}
-              locked={standardBallCount < 1}
-              onClick={buyBallRadiusUpgrade}
-              level={lvl(ballRadiusUpgradePrice, 100)}
-            />
-            <UpgradeCard
-              icon="💥" name="Damage"
-              price={ballDamageUpgradePrice}
-              canAfford={gems >= ballDamageUpgradePrice}
-              locked={standardBallCount < 1}
-              onClick={buyBallDamageUpgrade}
-              level={lvl(ballDamageUpgradePrice, 100)}
-            />
-
-            <SectionDivider />
-
-            {/* ── Swarm ── */}
-            <TypeLabel
-              icon={BALL_TYPES.swarm.icon}
-              label={BALL_TYPES.swarm.label}
-              color={BALL_TYPES.swarm.color}
-              count={swarmBallCount}
-            />
-            <UpgradeCard
-              icon="⚡" name="Speed"
-              price={swarmSpeedUpgradePrice}
-              canAfford={gems >= swarmSpeedUpgradePrice}
-              locked={swarmBallCount < 1}
-              onClick={buySwarmSpeedUpgrade}
-              accentColor={BALL_TYPES.swarm.color}
-              level={lvl(swarmSpeedUpgradePrice, 150)}
-            />
-            <UpgradeCard
-              icon="📏" name="Size"
-              price={swarmSizeUpgradePrice}
-              canAfford={gems >= swarmSizeUpgradePrice}
-              locked={swarmBallCount < 1}
-              onClick={buySwarmSizeUpgrade}
-              accentColor={BALL_TYPES.swarm.color}
-              level={lvl(swarmSizeUpgradePrice, 150)}
-            />
-            <UpgradeCard
-              icon="💥" name="Damage"
-              price={swarmDamageUpgradePrice}
-              canAfford={gems >= swarmDamageUpgradePrice}
-              locked={swarmBallCount < 1}
-              onClick={buySwarmDamageUpgrade}
-              accentColor={BALL_TYPES.swarm.color}
-              level={lvl(swarmDamageUpgradePrice, 150)}
-            />
-
-            <SectionDivider />
-
-            {/* ── Homing ── */}
-            <TypeLabel
-              icon={BALL_TYPES.homing.icon}
-              label={BALL_TYPES.homing.label}
-              color={BALL_TYPES.homing.color}
-              count={homingBallCount}
-            />
-            <UpgradeCard
-              icon="⚡" name="Speed"
-              price={homingSpeedUpgradePrice}
-              canAfford={gems >= homingSpeedUpgradePrice}
-              locked={homingBallCount < 1}
-              onClick={buyHomingSpeedUpgrade}
-              accentColor={BALL_TYPES.homing.color}
-              level={lvl(homingSpeedUpgradePrice, 200)}
-            />
-            <UpgradeCard
-              icon="🎯" name="Accuracy"
-              price={homingAccuracyUpgradePrice}
-              canAfford={gems >= homingAccuracyUpgradePrice}
-              locked={homingBallCount < 1}
-              onClick={buyHomingAccuracyUpgrade}
-              accentColor={BALL_TYPES.homing.color}
-              level={lvl(homingAccuracyUpgradePrice, 200)}
-            />
-            <UpgradeCard
-              icon="💥" name="Damage"
-              price={homingDamageUpgradePrice}
-              canAfford={gems >= homingDamageUpgradePrice}
-              locked={homingBallCount < 1}
-              onClick={buyHomingDamageUpgrade}
-              accentColor={BALL_TYPES.homing.color}
-              level={lvl(homingDamageUpgradePrice, 200)}
-            />
-
-            <SectionDivider />
-
-            {/* ── Bomb ── */}
-            <TypeLabel
-              icon={BALL_TYPES.bomb.icon}
-              label={BALL_TYPES.bomb.label}
-              color={BALL_TYPES.bomb.color}
-              count={bombBallCount}
-            />
-            <UpgradeCard
-              icon="⚡" name="Speed"
-              price={bombSpeedUpgradePrice}
-              canAfford={gems >= bombSpeedUpgradePrice}
-              locked={bombBallCount < 1}
-              onClick={buyBombSpeedUpgrade}
-              accentColor={BALL_TYPES.bomb.color}
-              level={lvl(bombSpeedUpgradePrice, 300)}
-            />
-            <UpgradeCard
-              icon="📏" name="Blast"
-              price={bombSizeUpgradePrice}
-              canAfford={gems >= bombSizeUpgradePrice}
-              locked={bombBallCount < 1}
-              onClick={buyBombSizeUpgrade}
-              accentColor={BALL_TYPES.bomb.color}
-              level={lvl(bombSizeUpgradePrice, 300)}
-            />
-            <UpgradeCard
-              icon="💥" name="Damage"
-              price={bombDamageUpgradePrice}
-              canAfford={gems >= bombDamageUpgradePrice}
-              locked={bombBallCount < 1}
-              onClick={buyBombDamageUpgrade}
-              accentColor={BALL_TYPES.bomb.color}
-              level={lvl(bombDamageUpgradePrice, 300)}
-            />
-
-            <SectionDivider />
-
-            {/* ── Chain ── */}
-            <TypeLabel
-              icon={BALL_TYPES.chain.icon}
-              label={BALL_TYPES.chain.label}
-              color={BALL_TYPES.chain.color}
-              count={chainBallCount}
-            />
-            <UpgradeCard
-              icon="⚡" name="Speed"
-              price={chainSpeedUpgradePrice}
-              canAfford={gems >= chainSpeedUpgradePrice}
-              locked={chainBallCount < 1}
-              onClick={buyChainSpeedUpgrade}
-              accentColor={BALL_TYPES.chain.color}
-              level={lvl(chainSpeedUpgradePrice, 350)}
-            />
-            <UpgradeCard
-              icon="🔗" name="Chains"
-              price={chainCountUpgradePrice}
-              canAfford={gems >= chainCountUpgradePrice}
-              locked={chainBallCount < 1}
-              onClick={buyChainCountUpgrade}
-              accentColor={BALL_TYPES.chain.color}
-              level={lvl(chainCountUpgradePrice, 350)}
-            />
-            <UpgradeCard
-              icon="💥" name="Damage"
-              price={chainDamageUpgradePrice}
-              canAfford={gems >= chainDamageUpgradePrice}
-              locked={chainBallCount < 1}
-              onClick={buyChainDamageUpgrade}
-              accentColor={BALL_TYPES.chain.color}
-              level={lvl(chainDamageUpgradePrice, 350)}
-            />
-
-            <SectionDivider />
-
-            {/* ── Global ── */}
-            <UpgradeCard
-              icon="👆" name="Click Dmg"
-              price={clickDamageUpgradePrice}
-              canAfford={gems >= clickDamageUpgradePrice}
-              locked={false}
-              onClick={buyClickDamageUpgrade}
-              level={lvl(clickDamageUpgradePrice, 100)}
-            />
-          </>
-        )}
-
-        {activeTab === "Perks" && (
-          Object.keys(activePerks || {}).length === 0
-            ? <p className="shop-panel__empty">Earn gems to unlock perk choices!</p>
-            : Object.entries(activePerks).map(([id, stacks]) => {
-                const card = CHOICE_POOL.find(c => c.id === id);
-                if (!card) return null;
-                return (
-                  <div
-                    key={id}
-                    className="perk-badge"
-                    style={{
-                      borderColor: card.category.color,
-                      boxShadow: `0 0 8px ${card.category.color}33`,
-                    }}
-                  >
-                    <span className="perk-badge__icon">{card.icon}</span>
-                    <span className="perk-badge__name">{card.name}</span>
-                    {stacks > 1 && <span className="perk-badge__stacks">x{stacks}</span>}
+          {/* Global upgrades */}
+          <div className="ball-section ball-section--global">
+            <div className="ball-section__header">
+              <div className="ball-section__info">
+                <span className="ball-section__label">Global</span>
+              </div>
+            </div>
+            <div className="ball-section__upgrades">
+              {globalUpgrades.map((upg) => (
+                <button
+                  key={upg.id}
+                  className="upgrade-card"
+                  onClick={upg.buy}
+                  title={upg.name}
+                >
+                  <div className="upgrade-card__icon">{upg.icon}</div>
+                  <div className="upgrade-card__name">{upg.name}</div>
+                  <div className="upgrade-card__level">Lv {lvl(upg.price, upg.basePrice)}</div>
+                  <div className={`upgrade-card__price ${gems >= upg.price ? "can-afford" : "cant-afford"}`}>
+                    {upg.price.toFixed(0)}g
                   </div>
-                );
-              })
-        )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Active perks */}
+          {Object.keys(activePerks || {}).length > 0 && (
+            <div className="shop-drawer__perks-section">
+              <div className="shop-drawer__section-title">Active Perks</div>
+              <div className="shop-drawer__perks-grid">
+                {Object.entries(activePerks).map(([id, stacks]) => {
+                  const card = CHOICE_POOL.find((c) => c.id === id);
+                  if (!card) return null;
+                  return (
+                    <div
+                      key={id}
+                      className="perk-badge"
+                      style={{
+                        borderColor: card.category.color,
+                        boxShadow: `0 0 8px ${card.category.color}33`,
+                      }}
+                    >
+                      <span className="perk-badge__icon">{card.icon}</span>
+                      <span className="perk-badge__name">{card.name}</span>
+                      {stacks > 1 && <span className="perk-badge__stacks">x{stacks}</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { assets } from "./assetImports";
 
 //React imports
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 
 //Tone JS imports
 import * as Tone from "tone";
@@ -1601,6 +1601,77 @@ function Game() {
     saveGameState();
   };
 
+  const standardBallCount = ballCount - swarmBallCount - homingBallCount - bombBallCount - chainBallCount;
+
+  const shopData = useMemo(() => ({
+    gems,
+    activePerks,
+    globalUpgrades: [
+      { id: "clickDamage", icon: "\u{1F446}", name: "Click Dmg", price: clickDamageUpgradePrice, basePrice: 100, buy: buyClickDamageUpgrade },
+    ],
+    ballTypes: [
+      {
+        type: "standard", icon: "\u26AA", label: "Ball", color: null,
+        count: standardBallCount, buyBall, ballPrice,
+        upgrades: [
+          { id: "speed",  icon: "\u26A1", name: "Speed",  price: ballSpeedUpgradePrice,  buy: buyBallSpeedUpgrade,  basePrice: 100 },
+          { id: "size",   icon: "\u{1F4CF}", name: "Size",   price: ballRadiusUpgradePrice, buy: buyBallRadiusUpgrade, basePrice: 100 },
+          { id: "damage", icon: "\u{1F4A5}", name: "Damage", price: ballDamageUpgradePrice, buy: buyBallDamageUpgrade, basePrice: 100 },
+        ],
+      },
+      {
+        type: "swarm", icon: "\u{1F535}", label: "Swarm", color: "#00e5ff",
+        count: swarmBallCount, buyBall: buySwarmBall, ballPrice: swarmBallPrice,
+        upgrades: [
+          { id: "speed",  icon: "\u26A1", name: "Speed",  price: swarmSpeedUpgradePrice,  buy: buySwarmSpeedUpgrade,  basePrice: 150 },
+          { id: "size",   icon: "\u{1F4CF}", name: "Size",   price: swarmSizeUpgradePrice,   buy: buySwarmSizeUpgrade,   basePrice: 150 },
+          { id: "damage", icon: "\u{1F4A5}", name: "Damage", price: swarmDamageUpgradePrice, buy: buySwarmDamageUpgrade, basePrice: 150 },
+        ],
+      },
+      {
+        type: "homing", icon: "\u{1F7E2}", label: "Homing", color: "#00ff88",
+        count: homingBallCount, buyBall: buyHomingBall, ballPrice: homingBallPrice,
+        upgrades: [
+          { id: "speed",    icon: "\u26A1", name: "Speed",    price: homingSpeedUpgradePrice,    buy: buyHomingSpeedUpgrade,    basePrice: 200 },
+          { id: "accuracy", icon: "\u{1F3AF}", name: "Accuracy", price: homingAccuracyUpgradePrice, buy: buyHomingAccuracyUpgrade, basePrice: 200 },
+          { id: "damage",   icon: "\u{1F4A5}", name: "Damage",   price: homingDamageUpgradePrice,   buy: buyHomingDamageUpgrade,   basePrice: 200 },
+        ],
+      },
+      {
+        type: "bomb", icon: "\u{1F7E0}", label: "Bomb", color: "#ff8c00",
+        count: bombBallCount, buyBall: buyBombBall, ballPrice: bombBallPrice,
+        upgrades: [
+          { id: "speed",  icon: "\u26A1", name: "Speed",  price: bombSpeedUpgradePrice,  buy: buyBombSpeedUpgrade,  basePrice: 300 },
+          { id: "blast",  icon: "\u{1F4CF}", name: "Blast",  price: bombSizeUpgradePrice,   buy: buyBombSizeUpgrade,   basePrice: 300 },
+          { id: "damage", icon: "\u{1F4A5}", name: "Damage", price: bombDamageUpgradePrice, buy: buyBombDamageUpgrade, basePrice: 300 },
+        ],
+      },
+      {
+        type: "chain", icon: "\u{1F7E3}", label: "Chain", color: "#cc44ff",
+        count: chainBallCount, buyBall: buyChainBall, ballPrice: chainBallPrice,
+        upgrades: [
+          { id: "speed",  icon: "\u26A1", name: "Speed",  price: chainSpeedUpgradePrice,  buy: buyChainSpeedUpgrade,  basePrice: 350 },
+          { id: "chains", icon: "\u{1F517}", name: "Chains", price: chainCountUpgradePrice,  buy: buyChainCountUpgrade,  basePrice: 350 },
+          { id: "damage", icon: "\u{1F4A5}", name: "Damage", price: chainDamageUpgradePrice, buy: buyChainDamageUpgrade, basePrice: 350 },
+        ],
+      },
+    ],
+  }), [
+    gems, activePerks, standardBallCount, ballPrice, ballSpeedUpgradePrice, ballRadiusUpgradePrice, ballDamageUpgradePrice,
+    swarmBallCount, swarmBallPrice, swarmSpeedUpgradePrice, swarmSizeUpgradePrice, swarmDamageUpgradePrice,
+    homingBallCount, homingBallPrice, homingSpeedUpgradePrice, homingAccuracyUpgradePrice, homingDamageUpgradePrice,
+    bombBallCount, bombBallPrice, bombSpeedUpgradePrice, bombSizeUpgradePrice, bombDamageUpgradePrice,
+    chainBallCount, chainBallPrice, chainSpeedUpgradePrice, chainCountUpgradePrice, chainDamageUpgradePrice,
+    clickDamageUpgradePrice,
+    buyBall, buySwarmBall, buyHomingBall, buyBombBall, buyChainBall,
+    buyBallSpeedUpgrade, buyBallRadiusUpgrade, buyBallDamageUpgrade,
+    buySwarmSpeedUpgrade, buySwarmSizeUpgrade, buySwarmDamageUpgrade,
+    buyHomingSpeedUpgrade, buyHomingAccuracyUpgrade, buyHomingDamageUpgrade,
+    buyBombSpeedUpgrade, buyBombSizeUpgrade, buyBombDamageUpgrade,
+    buyChainSpeedUpgrade, buyChainCountUpgrade, buyChainDamageUpgrade,
+    buyClickDamageUpgrade,
+  ]);
+
   return (
     <>
       <Navbar
@@ -1623,58 +1694,7 @@ function Game() {
           />
         )}
       </div>
-      <ShopPanel
-        gems={gems}
-        buyBall={buyBall}
-        ballCount={ballCount}
-        ballPrice={ballPrice}
-        swarmBallCount={swarmBallCount}
-        buySwarmBall={buySwarmBall}
-        swarmBallPrice={swarmBallPrice}
-        buyBallSpeedUpgrade={buyBallSpeedUpgrade}
-        ballSpeedUpgradePrice={ballSpeedUpgradePrice}
-        buyBallRadiusUpgrade={buyBallRadiusUpgrade}
-        ballRadiusUpgradePrice={ballRadiusUpgradePrice}
-        buyBallDamageUpgrade={buyBallDamageUpgrade}
-        ballDamageUpgradePrice={ballDamageUpgradePrice}
-        buySwarmSpeedUpgrade={buySwarmSpeedUpgrade}
-        swarmSpeedUpgradePrice={swarmSpeedUpgradePrice}
-        buySwarmSizeUpgrade={buySwarmSizeUpgrade}
-        swarmSizeUpgradePrice={swarmSizeUpgradePrice}
-        buySwarmDamageUpgrade={buySwarmDamageUpgrade}
-        swarmDamageUpgradePrice={swarmDamageUpgradePrice}
-        homingBallCount={homingBallCount}
-        homingBallPrice={homingBallPrice}
-        buyHomingBall={buyHomingBall}
-        homingSpeedUpgradePrice={homingSpeedUpgradePrice}
-        buyHomingSpeedUpgrade={buyHomingSpeedUpgrade}
-        homingAccuracyUpgradePrice={homingAccuracyUpgradePrice}
-        buyHomingAccuracyUpgrade={buyHomingAccuracyUpgrade}
-        homingDamageUpgradePrice={homingDamageUpgradePrice}
-        buyHomingDamageUpgrade={buyHomingDamageUpgrade}
-        bombBallCount={bombBallCount}
-        bombBallPrice={bombBallPrice}
-        buyBombBall={buyBombBall}
-        bombSpeedUpgradePrice={bombSpeedUpgradePrice}
-        buyBombSpeedUpgrade={buyBombSpeedUpgrade}
-        bombSizeUpgradePrice={bombSizeUpgradePrice}
-        buyBombSizeUpgrade={buyBombSizeUpgrade}
-        bombDamageUpgradePrice={bombDamageUpgradePrice}
-        buyBombDamageUpgrade={buyBombDamageUpgrade}
-        buyClickDamageUpgrade={buyClickDamageUpgrade}
-        clickDamageUpgradePrice={clickDamageUpgradePrice}
-        chainBallCount={chainBallCount}
-        chainBallPrice={chainBallPrice}
-        buyChainBall={buyChainBall}
-        chainSpeedUpgradePrice={chainSpeedUpgradePrice}
-        buyChainSpeedUpgrade={buyChainSpeedUpgrade}
-        chainCountUpgradePrice={chainCountUpgradePrice}
-        buyChainCountUpgrade={buyChainCountUpgrade}
-        chainDamageUpgradePrice={chainDamageUpgradePrice}
-        buyChainDamageUpgrade={buyChainDamageUpgrade}
-        activePerks={activePerks}
-        shopDiscount={shopDiscountRef.current}
-      />
+      <ShopPanel shopData={shopData} />
     </>
   );
 }
