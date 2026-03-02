@@ -407,7 +407,7 @@ function Game() {
   const activePerksRef = useRef({});
   // Perk behavior refs
   const gemBonusMultiplierRef = useRef(1.0);
-  const piercingRef = useRef(false);
+
   const gemRainRef = useRef(false);
   const clickNovaRef = useRef(false);
   const bombChainOnKillRef = useRef(false);
@@ -489,8 +489,7 @@ function Game() {
     }
     const savedGemBonus = localStorage.getItem("gemBonusMultiplier");
     if (savedGemBonus) gemBonusMultiplierRef.current = JSON.parse(savedGemBonus);
-    const savedPiercing = localStorage.getItem("piercing");
-    if (savedPiercing) piercingRef.current = JSON.parse(savedPiercing);
+
     const savedGemRain = localStorage.getItem("gemRain");
     if (savedGemRain) gemRainRef.current = JSON.parse(savedGemRain);
     const savedClickNova = localStorage.getItem("clickNova");
@@ -789,7 +788,7 @@ function Game() {
     localStorage.setItem("milestoneCount", JSON.stringify(milestoneCountRef.current));
     localStorage.setItem("activePerks", JSON.stringify(activePerksRef.current));
     localStorage.setItem("gemBonusMultiplier", JSON.stringify(gemBonusMultiplierRef.current));
-    localStorage.setItem("piercing", JSON.stringify(piercingRef.current));
+
     localStorage.setItem("gemRain", JSON.stringify(gemRainRef.current));
     localStorage.setItem("clickNova", JSON.stringify(clickNovaRef.current));
     localStorage.setItem("bombChainOnKill", JSON.stringify(bombChainOnKillRef.current));
@@ -910,20 +909,9 @@ function Game() {
           ball.y = Math.max(r, Math.min(CANVAS_H - r, ball.y));
         }
 
-        // Piercing: clear recentHits for bricks no longer overlapping
-        if (piercingRef.current && ball.recentHits instanceof Set) {
-          for (const hitId of ball.recentHits) {
-            const b = bricks.find(br => br.id === hitId);
-            if (!b || Math.hypot(ball.x - b.x, ball.y - b.y) >= r + bRad + 2) {
-              ball.recentHits.delete(hitId);
-            }
-          }
-        }
-
         for (let i = bricks.length - 1; i >= 0; i--) {
           const brick = bricks[i];
           if (!brick) continue;
-          if (piercingRef.current && ball.recentHits instanceof Set && ball.recentHits.has(brick.id)) continue;
           const dist = Math.hypot(ball.x - brick.x, ball.y - brick.y);
 
           if (dist < r + bRad) {
@@ -991,15 +979,9 @@ function Game() {
               });
             }
 
-            if (piercingRef.current) {
-              // Piercing: skip bounce, track hit bricks to avoid re-hitting
-              if (!(ball.recentHits instanceof Set)) ball.recentHits = new Set();
-              ball.recentHits.add(brick.id);
-            } else {
-              const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
-              ball.direction = 2 * angle - ball.direction + Math.PI;
-              break;
-            }
+            const angle = Math.atan2(ball.y - brick.y, ball.x - brick.x);
+            ball.direction = 2 * angle - ball.direction + Math.PI;
+            break;
           }
         }
       });
@@ -1592,7 +1574,7 @@ function Game() {
     if (!card) return;
 
     card.apply({
-      gemBonusMultiplierRef, piercingRef, gemRainRef, clickNovaRef,
+      gemBonusMultiplierRef, gemRainRef, clickNovaRef,
       bombChainOnKillRef, shopDiscountRef,
       ballsRef, ballSpeedRef, ballDamageRef, ballRadiusRef,
       swarmCurrentSpeedRef, swarmCurrentDamageRef, swarmCurrentRadiusRef,

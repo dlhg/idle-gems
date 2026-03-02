@@ -125,18 +125,6 @@ export const CHOICE_POOL = [
     },
   },
   {
-    id: "piercing_blows",
-    name: "Piercing Blows",
-    description: "Balls pass through gems instead of bouncing off",
-    icon: "🏹",
-    category: CARD_CATEGORIES.PERK,
-    stackable: false,
-    rarity: 0.35,
-    apply: (ctx) => {
-      ctx.piercingRef.current = true;
-    },
-  },
-  {
     id: "gem_rain",
     name: "Gem Rain",
     description: "Bonus gems periodically rain from above",
